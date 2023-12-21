@@ -1,0 +1,177 @@
+
+/* 마이페이지 큰 틀 컨테이너 */
+
+.mypageContainer1{
+    position: relative;
+    min-width: 1050px;
+
+}
+.mypageContainer{
+    height: 369px;
+    width: 100%;
+    padding: 50px 0px;
+    margin-bottom: -20px;
+    background-color: rgb(247, 247, 247);
+}
+
+.mypageItem{
+    display: grid;
+    grid-template-columns: 372px auto;
+    width: 1050px;
+    margin: 0px auto;
+    gap: 4px;
+}
+/* 마이페이지 큰 틀 컨테이너 끗 */
+
+.mypageUser{
+    padding: 30px;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    background: rgb(255, 255, 255);
+}
+
+
+.userContainer{
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+    min-width: 50%;
+    min-height: 48px;
+    margin-left: 20px;
+}
+
+.userItem1{
+    display: flex;
+}
+
+.unber{
+    width: 3px;
+    height: 3px;
+    margin: 0px 5px;
+    border-radius: 100%;
+    background-color: rgb(217, 217, 217);
+}
+
+.ratingContainer{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.ratingBtn{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    color: rgb(153, 153, 153);
+}
+
+.membersLink{
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 15px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    background-color: rgb(247, 247, 247);
+    color: rgb(51, 51, 51);
+}
+
+.newSpan{
+    width: 40px;
+    height: 18px;
+    margin-right: 8px;
+    border-radius: 13px;
+    font-size: 11px;
+    letter-spacing: -0.3px;
+    background-color: rgb(240, 63, 64);
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+ /* 마이페이지 유저쪽 끗 */ 
+
+
+ /* 마이페이지 캐시쪽 시작 */ 
+ .mypageCash{
+    display: flex;
+    column-gap: 4px;
+}
+
+.mypageCashItem{
+    flex: 1 1 0%;
+    overflow: hidden;
+    background: rgb(255, 255, 255);
+}
+
+
+.cashBtn{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 26px 0px 30px 30px;
+}
+
+.cashItem{
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    color: rgb(51, 51, 51);
+}
+
+.cashBtnImage{
+    width: 23px;
+    height: 23px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAQAAAACj/OVAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmAxYGNhJAM7wjAAAAd0lEQVRYw+3UsQ2AMAwAQQfRsESWiCmp2I+aJagYgZYBaGGItGYEIhQZIf3VVl5OYREAAP4oxRTrvdYUzGzh6EfHYFiss7Ve8pEFnZNpJkmSJEnT/ObGltzSrzl/KTly5PxzIjo5X8501sy1BTODyX657QcAgL8b8j9nkEwifVYAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDMtMjJUMDY6NTQ6MTYrMDA6MDClJXo+AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTAzLTIyVDA2OjU0OjE2KzAwOjAw1HjCggAAAABJRU5ErkJggg==) 50% 50% / cover no-repeat;
+}
+
+.barogo{
+    font-weight: 700;
+    font-size: 20px;
+    color: rgb(95, 0, 128);
+    margin-top: 20px;
+}
+
+ /* 마이페이지 캐시쪽 끗 */ 
+
+ /* 마이페이지 멤버스 시작 */
+ .mypageMembers{
+    display: flex;
+    column-gap: 4px;
+}
+
+.mypageMemberItem{
+    flex: 1 1 0%;
+    overflow: hidden;
+    background: rgb(255, 255, 255);
+}
+
+.mypageMemberItemBtn{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 20px 30px;
+}
+
+/* 마이페이지 쿠폰 배너 시작 */
+.couponBanner{
+    display: block;
+    width: 1050px;
+    overflow: hidden;
+    margin: 20px auto 0px;
+}
+
+.couponBannerImage{
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+}
+

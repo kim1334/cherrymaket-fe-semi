@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600&display=swap');
+
+* {
+  font-family: "Noto Sans KR", sans-serif;
+  letter-spacing: -0.5px;
+}
+:root {
+  --swiper-theme-color: #007aff;
+  font-family: "Noto Sans KR", "malgun gothic", AppleGothic, dotum, sans-serif;
+}
+html,
+button,
+input,
+select,
+textarea {
+  font-family: "Noto Sans KR", "malgun gothic", AppleGothic, dotum, sans-serif;
+  letter-spacing: -0.5px;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-size: 14px;
+  color: #333;
+}
+
+body {
+  margin: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #fff;
+}
+
+*,
+:after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  display: block;
+  margin: 0px;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  line-height: 1.15;
+}
+*,
+:after,
+:before {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+*,
+:after,
+:before,
+legend,
+td,
+th {
+  padding: 0;
+}
+
+button {
+  border-radius: 0;
+  border: none;
+}
