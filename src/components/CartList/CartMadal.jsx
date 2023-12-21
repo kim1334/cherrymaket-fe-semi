@@ -61,7 +61,7 @@ const handleAddToCart = async () => {
     );
 
     console.log(response.data);
-    setQuantity(1);
+    handleCancel();
   } catch (error) {
     console.error('Error:', error);
   }

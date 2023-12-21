@@ -7,7 +7,14 @@ export const getCartAysnc = createAsyncThunk(
   "get/CartList",
   async (data, thunkAPI) => {
     try {
-      const res = await instance.get("/cart/refresh-available");
+      const access_token = sessionStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      };
+      const res = await instance.get("/cart/refresh-available", config);
+      console.log(res.data);
       return res.data;
     } catch (error) {
       console.error(error);

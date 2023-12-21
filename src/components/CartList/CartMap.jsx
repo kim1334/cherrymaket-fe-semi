@@ -4,88 +4,103 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { calcPrice, deleteCartAysnc } from "../../redux/modules/cartSlice";
 
-const CartMap = ({ list }) => {
-  const cartItem = JSON.parse(localStorage.getItem("cartItems")) || [];
-  const ItemCount = cartItem.find(
-    (item) => list.productId === item.productId
-  )?.quantity;
+const CartMap = ({ item }) => {
 
-  const [count, setCount] = useState(ItemCount || list.quantity);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // const [count, setCount] = useState(ItemCount || item.quantity);
+
+  if (!item) {
+    // item이 null 또는 undefined인 경우, 아무것도 렌더링하지 않음
+    return null;
+  }
+
+  console.log(item.goodsName);
+  const cartItem = JSON.parse(localStorage.getItem("cartItems")) || [];
+  // const ItemCount = cartItem.find(
+  //   (item) => item.productId === item.productId
+  // )?.quantity;
+
+  
+
   const addItem = {
-    productId: list.productId,
-    quantity: list.quantity,
-    price: list.price * count,
+    // productId: item.productId,
+    // quantity: item.quantity,
+    // price: item.price * count,
   };
 
-  useEffect(() => {
-    let isExists = false;
-    cartItem.forEach((item) => {
-      if (item.productId === list.productId) {
-        // 로컬 스토리지 아이디 중복이면 내용만 수정
-        item.quantity = count || list.quantity;
-        item.price = list.price * count;
-        isExists = true;
-      }
-    });
-    if (!isExists) {
-      // 중복이 아니면 푸쉬
-      cartItem.push(addItem);
-    }
-    localStorage.setItem("cartItems", JSON.stringify(cartItem));
-    dispatch(calcPrice(cartItem));
-  }, [count]);
+  // useEffect(() => {
+  //   let isExists = false;
+  //   cartItem.forEach((item) => {
+  //     if (item.productId === list.productId) {
+  //       // 로컬 스토리지 아이디 중복이면 내용만 수정
+  //       item.quantity = count || list.quantity;
+  //       item.price = list.price * count;
+  //       isExists = true;
+  //     }
+  //   });
+  //   if (!isExists) {
+  //     // 중복이 아니면 푸쉬
+  //     cartItem.push(addItem);
+  //   }
+  //   localStorage.setItem("cartItems", JSON.stringify(cartItem));
+  //   dispatch(calcPrice(cartItem));
+  // }, [count]);
 
-  const deleteCart = () => {
-    const cartFilter = cartItem?.filter((item) => {
-      return item.productId !== list.productId;
-    });
-    // console.log(cartFilter);
-    localStorage.setItem("cartItems", JSON.stringify(cartFilter));
-    dispatch(deleteCartAysnc(list.productId));
-    navigate("/cart");
-    window.location.reload();
-  };
+  // const deleteCart = () => {
+  //   const cartFilter = cartItem?.filter((item) => {
+  //     return item.productId !== list.productId;
+  //   });
+  //   // console.log(cartFilter);
+  //   localStorage.setItem("cartItems", JSON.stringify(cartFilter));
+  //   dispatch(deleteCartAysnc(list.productId));
+  //   navigate("/cart");
+  //   window.location.reload();
+  // };
+
+  function generateImageUrl() {
+    const imageUrlBase = "https://kr.object.ncloudstorage.com/cherry-product/";
+    const imageUrl = `${imageUrlBase}${item.goodsCode}/${item.goodsCode}_0.png`;
+    return imageUrl;
+  }
 
   return (
     <CartLine>
-      <CheckButton />
-      <Img src={list.productImage}></Img>
-      <Title>{list.productName}</Title>
-      <ButtonWrap>
-        {count > 0 ? (
-          <Minus
-            onClick={() => {
-              setCount(count - 1);
-            }}
-          ></Minus>
-        ) : (
-          <Minus
-            disabled={true}
-            onClick={() => {
-              setCount(count - 1);
-            }}
-          ></Minus>
-        )}
-
-        <Number>{count}</Number>
-        <Plus
-          onClick={() => {
-            setCount(count + 1);
-          }}
-        ></Plus>
-      </ButtonWrap>
-      <CostWrap>
-        <SaleCost>
-          {(count * list.price * 0.95).toLocaleString("ko-kr")}
-        </SaleCost>
-        <PrimeCost>{(count * list.price).toLocaleString("ko-kr")}</PrimeCost>
-      </CostWrap>
-      <DeleteButton onClick={deleteCart}>
-        <span></span>
-      </DeleteButton>
-    </CartLine>
+    <CheckButton />
+    <Img src={generateImageUrl()}></Img>
+    <Title>{item.goodsName}</Title>
+    <ButtonWrap>
+      {item.quantity > 0 ? (
+        <Minus
+          // onClick={() => {
+          //   setCount(item.quantity - 1);
+          // }}
+        ></Minus>
+      ) : (
+        <Minus
+          // disabled={true}
+          // onClick={() => {
+          //   setCount(item.quantity - 1);
+          // }}
+        ></Minus>
+      )}
+      <Number>{item.quantity}</Number>
+      <Plus
+        onClick={() => {
+          // item.quantity + 1;
+        }}
+      ></Plus>
+    </ButtonWrap>
+    <CostWrap>
+      <SaleCost>
+        {(item.quantity * item.price * 0.95).toLocaleString("ko-kr")}
+      </SaleCost>
+      <PrimeCost></PrimeCost>
+    </CostWrap>
+    <DeleteButton >
+      <span></span>
+    </DeleteButton>
+  </CartLine>
   );
 };
 export default CartMap;

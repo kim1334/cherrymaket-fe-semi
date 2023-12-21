@@ -43,9 +43,6 @@ useEffect(() => {
 
 
 
-
-
-
   return (
     <>
       <Header CartList={CartList} />
