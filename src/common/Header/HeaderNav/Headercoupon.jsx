@@ -29,13 +29,13 @@ const Headercoupon = () => {
 
   return (
     <HeaderCouponTop>
-     <CouponSpan onClick = {handleTextClick}>
+      <CouponSpan onClick={handleTextClick}>
         지금 가입하고,
         <b> 1만원 할인 쿠폰 </b>
         받아가세요!
       </CouponSpan>
       <CloseButton onClick={handleClose}>
-      <MdOutlineCancel />
+        <MdOutlineCancel />
       </CloseButton>
     </HeaderCouponTop>
   );
@@ -52,7 +52,7 @@ const HeaderCouponTop = styled.div`
   left: 0;
   right: 0;
   width: 100%;
-  background-color: #950526; // Adjust the background color as per your image.
+  background-color: #e72956;; // Adjust the background color as per your image.
   color: white;
   padding: 10px 0;
   text-align: center;

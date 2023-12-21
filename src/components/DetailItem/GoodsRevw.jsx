@@ -5,30 +5,44 @@ import RevwModal from "./RevwModal";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-function GoodsRevw() {
+function GoodsRevw({ goodsId }) {
     const [isLiked, setIsLiked] = useState(false);
     // 모달
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reviews, setReviews] = useState([]); // 리뷰 목록
-    const { goodsId } = useParams(); // URL에서 상품 코드를 가져옵니다.
-    const openModal = () => setIsModalOpen(true);
+    const [selectedReview, setSelectedReview] = useState(null);
+    // URL에서 상품 코드를 가져옵니다.
+    const openModal = (userId, reviewId) => {
+        setSelectedReview({ userId, reviewId });
+        setIsModalOpen(true);
+
+    }
     const closeModal = () => setIsModalOpen(false);
-    
+
     const handleLikeClick = () => {
         setIsLiked(!isLiked);
     }
-    console.log(goodsId);
+
     useEffect(() => {
         // 리뷰 목록을 가져오는 함수
         const fetchReviews = async () => {
-          try {
-            const response = await axios.get(
-              `https://server.marketcherry.store/api/goods-review/list-goods?goodsId=${goodsId}`
-            );
-            setReviews(response.data.content); // 예시: API 응답에서 실제 리뷰 데이터를 가져와야 합니다.
-          } catch (error) {
-            console.error("Error fetching reviews", error);
-          }
+            const token = sessionStorage.getItem("accessToken");
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            };
+            try {
+                const response = await axios.get(
+                    `https://server.marketcherry.store/api/goods-review/list-goods?goodsId=1`, config
+                );
+                console.log(goodsId);
+                setReviews(response.data.content); // 예시: API 응답에서 실제 리뷰 데이터를 가져와야 합니다.
+                console.log(response.data.content);
+            } catch (error) {
+                console.error("Error fetching reviews", error);
+            }
         };
         fetchReviews(); // 함수 호출
     }, [goodsId]); // goodsId가 변경될 때마다 호출되도록 설정
@@ -38,9 +52,12 @@ function GoodsRevw() {
                 {/* Content */}
                 <GoodsReviewText>상품후기</GoodsReviewText>
                 <GoodsReviewPhotoWrapper>
-                    <GoodsReviewPhotoButton onClick = {openModal}>
-                        <GoodsReviewPhotoImage src="https://kr.object.ncloudstorage.com/cherry-product/0093774/0093774_0.png" alt="상품후기 이미지" />
-                    </GoodsReviewPhotoButton>
+                    {reviews.map((review) => (
+                        <GoodsReviewPhotoButton onClick={() => openModal(review.userId, review.reviewId)}>
+
+                            <GoodsReviewPhotoImage src={`https://kr.object.ncloudstorage.com/cherry-resource/goodReview/${review.userId}/${review.reviewId}/2.jpg`} alt="상품후기 이미지" />
+                        </GoodsReviewPhotoButton>
+                    ))}
                 </GoodsReviewPhotoWrapper>
 
                 <div>
@@ -51,61 +68,54 @@ function GoodsRevw() {
                             <button>상품후기 적립금 정책 안내</button>
                         </GoodsReviewNotice>
                     </GoodsReviewNoticeWrapper>
-                   
-                    <GoodsReviewWrapper>
-                        <GoodsReviewLeft>
-                            <span>{reviews.userId}</span>
-                        </GoodsReviewLeft>
-                        <GoodsReviewRight>
-                            <div>
-                                <GoodsReviewItemTitle>
-                                    <h3>[태우한우] 1+ 한우 등심 스테이크 200g(냉장)</h3>
-                                </GoodsReviewItemTitle>
-                                <GoodsReviewContext>
-{`집에서 쉽고 간단하게 스테이크 즐기기 어렵지 않아요.
-준비: 태우한우 등심, 비가염버터, 그린빈, 스테이크소스, 허브솔트
-1. 한우는 냉장고에서 30분정도 미리 꺼내 놓는게 좋아요.
-2. 예열된 팬에 버터 넣고 약중불에 고기를 1분 구워요.
-3. 뒤집어서 1분 구우면서 허브솔트 고르게 뿌려요.
-4. 뒤집어서 허브솔트 뿌리고 강불에 30초 구워요.
-5. 마지막으로 뒤집어 강불 유지하며 30초 구워요.
-6. 접시에 고기를 담아두고 중약불에 그린빈을 구워요.
-7. 겉이 노릇해지면 그린빈을 꺼내고, 팬을 키친타올로 가볍게 닦으세요.
-8. 소스를 살짝 데우세요.
-3번째에서 그린빈을 함께 구우셔도 됩니다.`}
-                                </GoodsReviewContext>
-                                <GoodsReviewSmallPhotoWrapper>
-                                    <GoodsReviewSmallPhotoButton onClick = {openModal}>
-                                        <GoodsReviewSmallPhotoImage src="https://kr.object.ncloudstorage.com/cherry-product/0093774/0093774_0.png" alt="상품후기 이미지" />
-                                    </GoodsReviewSmallPhotoButton>
-                                </GoodsReviewSmallPhotoWrapper>
-                                <GoodsReviewFooterWrapper>
-                                    <div>
-                                        <span style={
-                                            {
-                                                color : 'rgb(153, 153, 153)',
-                                            }
-                                        }>2022.12.31</span>
-                                    </div>
-                                    <GoodsReviewLikeButton onClick={handleLikeClick}>
-                                        <GoodsReviewLikeButtonIcon>
-                                            {isLiked ?  <FaHeart /> : <FaRegHeart />}
-                                        </GoodsReviewLikeButtonIcon>
-                                        <span>좋아요</span>
-                                    </GoodsReviewLikeButton>
-                                </GoodsReviewFooterWrapper>
-                            </div>
-                        </GoodsReviewRight>
-                    </GoodsReviewWrapper>
-                        <GoodsPagination>
-                                    <GoodsReftButton disabled = {true}></GoodsReftButton>
-                                    <GoddsRightButton></GoddsRightButton>
-                        </GoodsPagination>
 
-                   
+                    <div>
+                        {/* 리뷰 매핑 및 렌더링 */}
+                        {reviews.map((review) => (
+                            <GoodsReviewWrapper key={review.reviewId}>
+                                <GoodsReviewLeft>
+                                    <span>{review.userName}</span>
+                                </GoodsReviewLeft>
+                                <GoodsReviewRight>
+                                    <div>
+                                        <GoodsReviewItemTitle>
+                                            <h3>{review.subject}</h3> { /*리뷰 제목 OR 상품명 */}
+                                        </GoodsReviewItemTitle>
+                                        <GoodsReviewContext>
+                                            {review.content}
+                                        </GoodsReviewContext>
+                                        <GoodsReviewSmallPhotoWrapper>
+                                            <GoodsReviewSmallPhotoButton onClick={() => openModal(review.userId, review.reviewId)}>
+                                                <GoodsReviewSmallPhotoImage src={`https://kr.object.ncloudstorage.com/cherry-resource/goodReview/${review.userId}/${review.reviewId}/2.jpg`} alt="상품후기 이미지" />
+                                            </GoodsReviewSmallPhotoButton>
+                                        </GoodsReviewSmallPhotoWrapper>
+                                        <GoodsReviewFooterWrapper>
+                                            <div>
+                                                <span style={
+                                                    {
+                                                        color: 'rgb(153, 153, 153)',
+                                                    }
+                                                }>2022.12.31</span>
+                                            </div>
+                                            <GoodsReviewLikeButton onClick={handleLikeClick}>
+                                                <GoodsReviewLikeButtonIcon>
+                                                    {isLiked ? <FaHeart /> : <FaRegHeart />}
+                                                </GoodsReviewLikeButtonIcon>
+                                                <span>좋아요</span>
+                                            </GoodsReviewLikeButton>
+                                        </GoodsReviewFooterWrapper>
+                                    </div>
+                                </GoodsReviewRight>
+                            </GoodsReviewWrapper>
+                        ))}
+                        <GoodsPagination>
+                            <GoodsLeftButton disabled={true}></GoodsLeftButton>
+                            <GoddsRightButton></GoddsRightButton>
+                        </GoodsPagination>
+                    </div>
                 </div>
             </section>
-            <RevwModal isOpen={isModalOpen} onClose={closeModal}></RevwModal>
+            <RevwModal isOpen={isModalOpen} onClose={closeModal} userId={selectedReview?.userId} reviewId={selectedReview?.reviewId}></RevwModal>
         </>
     );
 }
@@ -120,7 +130,7 @@ justify-content: center;
 padding-top: 20px;
 `;
 
-const GoodsReftButton = styled.button`
+const GoodsLeftButton = styled.button`
 width: 44px;
 height: 44px;
 padding: 0px;
