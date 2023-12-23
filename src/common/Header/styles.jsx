@@ -198,7 +198,7 @@ export const CartIconWrap = styled.div`
     padding: 1px 5px;
     border: 2px solid rgb(255, 255, 255);
     border-radius: 10px;
-    background-color: rgb(95, 0, 128);
+    background-color: rgb(149, 5, 38);
     font-size: 9px;
     color: rgb(255, 255, 255);
     line-height: 15px;

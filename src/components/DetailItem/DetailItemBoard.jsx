@@ -53,7 +53,9 @@ import GoodsRevw from './GoodsRevw';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import CartMadal from '../CartList/CartMadal';
 function DetailItemBoard() {
+    
 
     const TYPE_MAPPINGS = {
     
@@ -69,6 +71,8 @@ function DetailItemBoard() {
     const [quantity, setQuantity] = useState(1);
     const { goodsCode } = useParams();
     const [productData, setProductData] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
   
 
     // nav 이동
@@ -111,6 +115,21 @@ function DetailItemBoard() {
     const handleBellClick = () => {
         setIsBell(!isBell);
     }
+
+    console.log(productData);
+
+    const handleItemClick = () => {
+        openModal();
+      };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      // 모달 닫기 함수
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
 
     
 
@@ -311,7 +330,7 @@ function DetailItemBoard() {
                                         
                                     </ItemCartLikeImage>
                                 </ItemCartLikeButton>    
-                                <ItemCartButton>
+                                <ItemCartButton onClick={handleItemClick}>
                                     <ItemCartButtonSpan>
                                         장바구니 담기
                                     </ItemCartButtonSpan>
@@ -361,7 +380,7 @@ function DetailItemBoard() {
                     </div>
                     </ItemDetailWrapper>    
 
-                
+                    <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={productData} />
             </Container>
             
         </>

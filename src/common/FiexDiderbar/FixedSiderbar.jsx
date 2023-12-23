@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
+
 
 const FixedSiderbar = () => {
   return (
@@ -15,9 +17,11 @@ const FixedSiderbar = () => {
             </A>
           </ImgDiv>
           <BtnDiv>
+          <Link to="/order/completepayment">
             <BtnA>
               <BtnItem>등급별 혜택</BtnItem>
             </BtnA>
+            </Link>
             <BtnA>
               <BtnItem>레시피</BtnItem>
             </BtnA>

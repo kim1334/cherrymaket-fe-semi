@@ -1,45 +1,71 @@
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 
 
-const FinalAmount = () => {
+const PaymentSheetDetail = (finalPrice) => {
+    const [price, setPrice] = useState(finalPrice);
+    const deliveryFee = 2500;
+    const [isSticky, setIsSticky] = useState(false);
+
+    const handleScroll = () => {
+        const offset = window.scrollY;
+        if (offset > 200) { // 200px 이상 스크롤됐을 때 sticky로 변경
+          setIsSticky(true);
+        } else {
+          setIsSticky(false);
+        }
+      };
+    
+      useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+      }, []);
+    
+
+    useEffect(() => {
+        setPrice(finalPrice.finalPrice)
+      }, [finalPrice]);
+  
 
     return (
-        <FinalAmountContainer>
+        <FinalAmountContainer sticky={isSticky}>
           <FinalAmountTitle>
             <Title>결제 금액</Title>
           </FinalAmountTitle>
           <DetailBoxContainer>
             <DetailContainer>
                 <div>주문금액</div>
-                <div><span>28,000원</span></div>
+                <div><span>{new Intl.NumberFormat("ko-KR").format(price - (price * 0.25))}</span></div>
             </DetailContainer>
             <DownTagContainer>
                 <div>상품금액</div>
-                <div><span>32,890원</span></div>
+                <div><span>{new Intl.NumberFormat("ko-KR").format(price)}</span></div>
             </DownTagContainer>
             <DownTagContainer>
                 <div>상품할인금액</div>
-                <div><span>-4,185원</span></div>
+                <div><span>- {new Intl.NumberFormat("ko-KR").format(price * 0.25)}</span></div>
             </DownTagContainer>
             <DetailContainer>
             <div>배송비</div>
-                <div><span>+3,000원</span></div>
+                <div><span>+{new Intl.NumberFormat("ko-KR").format(deliveryFee)}원</span></div>
             </DetailContainer>
             <DetailContainer>
             <div>쿠폰할인</div>
                 <div><span>0원</span></div>
             </DetailContainer>
-            <DetailContainer>
+            {/* <DetailContainer>
             <div>카드즉시할인</div>
                 <div><span>0원</span></div>
-            </DetailContainer>
+            </DetailContainer> */}
             <DetailContainer>
             <div>적립금</div>
                 <div><span>0원</span></div>
             </DetailContainer>
             <DetailContainer>
                 <div>최종결제금액</div>
-                <div><span style={{fontSize: '26px'}}>31,705원</span></div>
+                <div><span style={{fontSize: '26px'}}>{new Intl.NumberFormat("ko-KR").format(price - (price * 0.25) + deliveryFee)}</span></div>
             </DetailContainer>
             <BonusPoint>
                 컬리카드 결제시 최대 1,585원 추가 적립
@@ -50,17 +76,16 @@ const FinalAmount = () => {
             <Img src="https://product-image.kurly.com/banner/da-banner/91f7f182-22c2-45fc-b5a8-ebbf605520ad.png" alt='BenefitsBtn'/>
             </BenefitsSpan>
           </BenefitsBtn>
-
         </FinalAmountContainer>
     );
 }
 
-export default FinalAmount;
+export default PaymentSheetDetail;
 
 const FinalAmountContainer = styled.div`
-position: absolute;
 width: 284px;
-top: 0px;
+position: ${(props) => props.sticky ? 'sticky' : 'absolute'};
+top: ${(props) => props.sticky ? '60px' : '0px'};
 `;
 
 const FinalAmountTitle = styled.div`

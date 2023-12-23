@@ -66,9 +66,8 @@ const Main = () => {
   return (
     <>
 
-      <CartModal />
-
       <Header />
+      <>
       <MainBanner />
       <FixedImg openModal={openModal} closeModal={closeModal} />
       <PopupList popupData={popupData} />
@@ -78,7 +77,7 @@ const Main = () => {
       <Suggest list={CateogryFilter}>
       </Suggest>
       <FixedSiderbar />
-      
+      </>
       <Footer/>
     </>
   );

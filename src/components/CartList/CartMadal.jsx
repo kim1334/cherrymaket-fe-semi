@@ -2,6 +2,8 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { getCartAysnc } from '../../redux/modules/cartSlice';
 
 
 const CartMadal = ({ isOpen, closeModal, item }) => {
@@ -9,18 +11,20 @@ const CartMadal = ({ isOpen, closeModal, item }) => {
   const access_token = sessionStorage.getItem("accessToken");
   const baseUrl = process.env.REACT_APP_API;
   const [cartAdd, setCartAdd] = useState([]);
+  const dispatch = useDispatch();
+  
 
   if (!item) {
     return null; // item이 정의된 경우에만 출력
   }
-
-  console.log(item);
 
   function generateImageUrl() {
     const imageUrlBase = "https://kr.object.ncloudstorage.com/cherry-product/";
     const imageUrl = `${imageUrlBase}${item.goodsCode}/${item.goodsCode}_0.png`;
     return imageUrl;
   }
+
+  console.log(item);
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -42,6 +46,8 @@ const CartMadal = ({ isOpen, closeModal, item }) => {
     return new Intl.NumberFormat({ style: 'currency', currency: 'KRW' }).format(price);
 };
 
+
+
 const handleAddToCart = async () => {
   try {
     const goodsId = item.goodsId;
@@ -61,13 +67,12 @@ const handleAddToCart = async () => {
     );
 
     console.log(response.data);
+    dispatch(getCartAysnc()); 
     handleCancel();
   } catch (error) {
     console.error('Error:', error);
   }
 };
-
-
 
   return (
     <ModalWrapper isOpen={isOpen}>

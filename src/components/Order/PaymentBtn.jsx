@@ -1,15 +1,51 @@
 import { useEffect, useRef, useState } from "react";
 import { loadPaymentWidget, ANONYMOUS } from "@tosspayments/payment-widget-sdk";
 import styled from "styled-components";
+import { instance } from "../../redux/modules/instance";
+
 
 const generateRandomString = () => window.btoa(Math.random()).slice(0, 20);
 
-const PaymentBtn = () => {
+const PaymentBtn = (finalPrice, {cartData}) => {
     const paymentWidgetRef = useRef(null);
     const paymentMethodsWidgetRef = useRef(null);
     const agreementWidgetRef = useRef(null);
-    const [price, setPrice] = useState(1000);
+    const [price, setPrice] = useState(finalPrice);
+    const deliveryFee = 2500;
+    const [userData, setUserData] = useState([]);
 
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const access_token = sessionStorage.getItem("accessToken");
+          const config = {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          };
+          const res = await instance.get("/account/my-info", config);
+          setUserData(res.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchData();
+    }, []); 
+
+
+  const orderName = finalPrice?.cartData?.length === 1
+  ? finalPrice?.cartData[0]?.goodsName
+  : `${finalPrice?.cartData[0]?.goodsName}외 ${finalPrice?.cartData?.length - 1}개`;
+
+
+    useEffect(() => {
+      setPrice(finalPrice.finalPrice)
+    }, [finalPrice]);
+
+    const finalAmount = price - (price * 0.25) + deliveryFee;
+
+    
     useEffect(() => {
         (async () => {
           const paymentWidget = await loadPaymentWidget("test_ck_nRQoOaPz8LN1nXR0LEyzVy47BMw6",  ANONYMOUS); // 비회원 customerKey
@@ -24,7 +60,7 @@ const PaymentBtn = () => {
            */
           const paymentMethodsWidget = paymentWidgetRef.current.renderPaymentMethods(
             "#payment-method",
-            { value: price },
+            { value: finalAmount },
             { variantKey: "DEFAULT" }
           );
     
@@ -36,7 +72,8 @@ const PaymentBtn = () => {
     
           paymentMethodsWidgetRef.current = paymentMethodsWidget;
         })();
-      }, []);
+      }, [finalPrice]); //여기 수정해야될 수도 
+
 
     return (
         <ActionBtn
@@ -50,10 +87,10 @@ const PaymentBtn = () => {
              * @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment%EA%B2%B0%EC%A0%9C-%EC%A0%95%EB%B3%B4
              */
             await paymentWidget?.requestPayment({
-              orderId: "cherryOrder",
-              orderName: "토스 티셔츠 외 2건",
-              customerName: "네클3주문&결제",
-              customerEmail: "customer123@gmail.com",
+              orderId: generateRandomString(),
+              orderName: orderName,
+              customerName: userData?.name,
+              customerEmail: userData?.email,
               successUrl: window.location.origin + "/sandbox/success" + window.location.search,
               failUrl: window.location.origin + "/sandbox/fail" + window.location.search
             });
@@ -62,12 +99,15 @@ const PaymentBtn = () => {
           }
         }}
       >
-        31,705원 결제하기
+        {new Intl.NumberFormat("ko-KR").format(finalAmount)}원 결제하기
       </ActionBtn>
 
     );
 
 };
+
+
+
 
 export default PaymentBtn;
 
@@ -80,7 +120,7 @@ const ActionBtn = styled.button`
     height: 56px;
     border-radius: 3px;
     color: rgb(255, 255, 255);
-    background-color: rgb(95, 0, 128);
+    background-color: rgb(149, 5, 38);
     border: 0px none;
     margin: 40px auto 30px;
     font-weight: 500;

@@ -39,9 +39,26 @@ const Header = () => {
   const userData = useSelector((state) => state.login.user);
   const dispatch = useDispatch();
   const [userName, setUserName] = useState('');
-
   const access_token = sessionStorage.getItem('accessToken');
   const baseUrl = process.env.REACT_APP_API;
+  const CartList = useSelector((state) => state.cart?.cart);
+  const [cartLength, setCartLength] = useState(0);
+
+  useEffect(() => {
+    if (CartList && CartList.itemsByType) {
+      const newCartData = Object.values(CartList.itemsByType).flat();
+      setCartLength(newCartData);
+    } else {
+      setCartLength([]);
+    }
+  }, [CartList]);
+
+  useEffect(() => {
+ 
+    if (isLoggedIn && access_token) {
+      dispatch(getCartAysnc()); 
+    }
+  }, [isLoggedIn, access_token]);
 
 
   // async 함수 정의 
@@ -72,7 +89,6 @@ const Header = () => {
     }
   }, [dispatch]);
 
-  const CartList = useSelector((state) => state?.cart?.cart?.cart);
 
 
   useEffect(() => {
@@ -224,7 +240,7 @@ const Header = () => {
               <CartIconWrap>
                 <Link to="/cart">
                   <button>
-                    {CartList?.length > 0 && <span>{CartList?.length}</span>}
+                    {cartLength?.length > 0 && <span>{cartLength?.length}</span>}
                   </button>
                 </Link>
               </CartIconWrap>

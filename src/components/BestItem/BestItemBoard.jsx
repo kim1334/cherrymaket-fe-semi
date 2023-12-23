@@ -5,6 +5,7 @@ import { Container, SubTitleWrapper,SubTitleItemWrapper, SubTitleItem, Title, Ti
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ItemList from './ItemList';
+import CartMadal from '../CartList/CartMadal';
 const BestItemBoard = () => {
     const [items, setItems] = useState([]);
     // 페이징
@@ -13,8 +14,10 @@ const BestItemBoard = () => {
     const indexOfLastNotice = currentPage * noticePerPage;
     const indexOfFirstNotice = indexOfLastNotice - noticePerPage;
     const currentItems = items.slice(indexOfFirstNotice, indexOfLastNotice);
-
     const totalPages = Math.ceil(items.length / noticePerPage);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+
     useEffect(() => {
             const fetchItem = async () => {
                 try {
@@ -41,6 +44,20 @@ const BestItemBoard = () => {
     const handleNext = () => {
     setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
     };
+
+    const handleItemClick = (items) => {
+        setSelectedItem(items);
+        openModal();
+      };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      // 모달 닫기 함수
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
     return (
         <>
             <Container>
@@ -119,6 +136,8 @@ const BestItemBoard = () => {
                     originalPrice={item.price}
                     discountedPrice = {item.discountedPrice}
                     sale={item.discountRate}
+                    onItemClick={handleItemClick}
+                    item={item}
                   />
                   ))}
                 </ItemListWrapper>
@@ -132,6 +151,7 @@ const BestItemBoard = () => {
                     <NextButton onClick={handleNext} disabled={currentPage === totalPages}></NextButton>
                 </div>
                 </ButtonWrapper>
+                <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={selectedItem} />
             </Container>
             
         </>

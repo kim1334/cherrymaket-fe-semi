@@ -21,6 +21,10 @@ const FixedCard = ({item, openModal, closeModal, onItemClick }) => {
     // item이나 item.goodsCode가 정의되지 않았을 경우 처리
     return null; // 또는 에러 처리를 수행하거나 다른 대안을 고려할 수 있음
   }
+
+
+
+
   
 
   function generateImageUrl() { //오더코드로 이미지 url 생성
