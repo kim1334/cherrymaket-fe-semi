@@ -17,11 +17,12 @@ import FixedSiderbar from "../../common/FiexDiderbar/FixedSiderbar.jsx";
 import { useEffect } from "react";
 import React, { useState } from 'react';
 import axios from "axios";
-
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Coupon = () => {
 
-
+   
     return (
         <>
             <Header />

@@ -13,6 +13,7 @@ const PaymentBtn = (finalPrice, {cartData}) => {
     const [price, setPrice] = useState(finalPrice);
     const deliveryFee = 2500;
     const [userData, setUserData] = useState([]);
+    const [totalDiscounted, setTotalDiscounted] = useState(0);
 
 
     useEffect(() => {
@@ -43,7 +44,32 @@ const PaymentBtn = (finalPrice, {cartData}) => {
       setPrice(finalPrice.finalPrice)
     }, [finalPrice]);
 
-    const finalAmount = price - (price * 0.25) + deliveryFee;
+    useEffect(() => {
+ 
+  
+      // 디스카운트를 적용한 상품 가격을 계산하고 저장할 배열 초기화
+      const calculatedDiscountAmounts = finalPrice?.cartData?.map((item) => {
+        if (item.discountedPrice !== null) {
+          return (item.price - item.discountedPrice) * item.quantity;
+        } else {
+          return 0; // 할인이 적용되지 않은 경우 할인 금액은 0으로 처리
+        }
+      });
+      
+      const totalDiscountAmount = calculatedDiscountAmounts.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      );
+
+      console.log(totalDiscountAmount);
+  
+  
+      setTotalDiscounted(totalDiscountAmount);
+  }, [finalPrice]); 
+
+    const finalAmount = price - totalDiscounted + deliveryFee;
+
+
 
     
     useEffect(() => {

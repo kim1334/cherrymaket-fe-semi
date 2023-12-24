@@ -11,6 +11,8 @@ import OrderProductItem from '../components/Order/OrderProductItem';
 import { instance } from '../redux/modules/instance';
 import axios from 'axios';
 import Footer from '../common/Footer/Footer';
+import { useNavigate } from "react-router-dom";
+
 
 
 const OrderProduct = ({ isUp, toggleIcon }) => {
@@ -105,7 +107,6 @@ const Order = () => {
     const [orderList, setOrderList] = useState([]);
     const cartList = useSelector((state) => state.cart?.cart);
     const [isUp, setIsUp] = useState(false);
-    console.log(cartList);
 
     useEffect(() => {
         if (cartList && cartList.itemsByType) {
@@ -115,8 +116,6 @@ const Order = () => {
             setOrderList([]);
         }
     }, [cartList]);
-
-    console.log(orderList);
 
 
 

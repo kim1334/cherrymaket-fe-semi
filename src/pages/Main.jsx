@@ -21,6 +21,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const CateogryFilter = useSelector((state) => state.category.data);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
 
 
   const onChangeCategory = useCallback((e) => {
@@ -69,6 +70,7 @@ const Main = () => {
       <Header />
       <>
       <MainBanner />
+      
       <FixedImg openModal={openModal} closeModal={closeModal} />
       <PopupList popupData={popupData} />
       <Suggest list={list}>이 상품 어때요?</Suggest>

@@ -3,53 +3,63 @@ import styled from "styled-components";
 import { ReactComponent as Checkbox } from "./checkbox.svg";
 import { useState } from "react";
 import { useEffect } from "react";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
 const Agreement = ({
   onServiceAgreementChange,
   onPrivacyAgreementChange,
   onMarketingAgreementChange,
 }) => {
-  const [serviceAgreement, setServiceAgreement] = useState(false);
-  const [privacyAgreement, setPrivacyAgreement] = useState(false);
-  const [marketingAgreement, setMarketingAgreement] = useState(false);
+  // const [serviceAgreement, setServiceAgreement] = useState(false);
+  // const [privacyAgreement, setPrivacyAgreement] = useState(false);
+  // const [marketingAgreement, setMarketingAgreement] = useState(false);
+  const [serviceAgreementLocal, setServiceAgreementLocal] = useState(false);
+  const [privacyAgreementLocal, setPrivacyAgreementLocal] = useState(false);
+  const [marketingAgreementLocal, setMarketingAgreementLocal] = useState(false);
+  const [allAgreementsLocal, setAllAgreementsLocal] = useState(false);
   const [allAgreements, setAllAgreements] = useState(false);
 
-  // 전체 동의 체크박스 클릭 시
-  const handleCheckAll = () => {
-    const newValue = !allAgreements;
-    setAllAgreements(newValue);
-    setServiceAgreement(newValue);
-    setPrivacyAgreement(newValue);
-    setMarketingAgreement(newValue);
-    // 개별 동의 항목의 값을 상위 컴포넌트로 전달
-    onServiceAgreementChange(newValue);
-    onPrivacyAgreementChange(newValue);
-    onMarketingAgreementChange(newValue);
-  };
+  // const allAgreementsChecked = serviceAgreement && privacyAgreement && marketingAgreement;
 
   
 
-  // 개별 동의 체크박스 클릭 시
+    console.log(serviceAgreementLocal, privacyAgreementLocal, marketingAgreementLocal, allAgreementsLocal);
+  
+
+
+
+  useEffect(() => {
+    const allChecked = serviceAgreementLocal && privacyAgreementLocal && marketingAgreementLocal;
+    setAllAgreementsLocal(allChecked);
+
+    // 상위 컴포넌트에 상태 업데이트를 알립니다.
+    onServiceAgreementChange(serviceAgreementLocal);
+    onPrivacyAgreementChange(privacyAgreementLocal);
+    onMarketingAgreementChange(marketingAgreementLocal);
+  }, [serviceAgreementLocal, privacyAgreementLocal, marketingAgreementLocal]);
+
+  
+
+  const handleCheckAll = () => {
+    const newValue = !allAgreementsLocal;
+    setAllAgreementsLocal(newValue);
+    setServiceAgreementLocal(newValue);
+    setPrivacyAgreementLocal(newValue);
+    setMarketingAgreementLocal(newValue);
+  };
+
   const handleServiceAgreementChange = () => {
-    const newValue = !serviceAgreement;
-    setServiceAgreement(newValue);
-    // 상위 컴포넌트로 전달
-    onServiceAgreementChange(newValue);
+    setServiceAgreementLocal(!serviceAgreementLocal);
   };
 
   const handlePrivacyAgreementChange = () => {
-    const newValue = !privacyAgreement;
-    setPrivacyAgreement(newValue);
-    // 상위 컴포넌트로 전달
-    onPrivacyAgreementChange(newValue);
+    setPrivacyAgreementLocal(!privacyAgreementLocal);
   };
 
   const handleMarketingAgreementChange = () => {
-    const newValue = !marketingAgreement;
-    setMarketingAgreement(newValue);
-    // 상위 컴포넌트로 전달
-    onMarketingAgreementChange(newValue);
+    setMarketingAgreementLocal(!marketingAgreementLocal);
   };
+  // };
 
   return (
     <AgreementSection>
@@ -65,7 +75,7 @@ const Agreement = ({
               onChange={handleCheckAll}
             />
             <ImageWrapper>
-              <Checkbox />
+            <CheckIcon checked={allAgreementsLocal} />
             </ImageWrapper>
             전체 동의합니다.
           </label>
@@ -78,12 +88,13 @@ const Agreement = ({
           <div>
             <label>
               <CheckboxInput
+              name="serviceAgreement"
                 type="checkbox"
-                checked={serviceAgreement}
+                checked={serviceAgreementLocal}
                 onChange={handleServiceAgreementChange}
               />
               <ImageWrapper>
-                <Checkbox />
+              <CheckIcon checked={serviceAgreementLocal} />
               </ImageWrapper>
               이용약관 동의
             </label>
@@ -97,11 +108,12 @@ const Agreement = ({
               <CheckboxInput
                 name="privacyAgreement"
                 type="checkbox"
-                checked={privacyAgreement}
+                checked={privacyAgreementLocal}
                 onChange={handlePrivacyAgreementChange}
+                // onChange={handlePrivacyAgreementChange}
               />
               <ImageWrapper>
-                <Checkbox />
+              <CheckIcon checked={privacyAgreementLocal} />
               </ImageWrapper>
               개인정보 수집 및 이용 동의
             </label>
@@ -115,11 +127,11 @@ const Agreement = ({
               <CheckboxInput
                 name="marketingAgreement"
                 type="checkbox"
-                checked={marketingAgreement}
+                checked={marketingAgreementLocal}
                 onChange={handleMarketingAgreementChange}
               />
               <ImageWrapper>
-                <Checkbox />
+              <CheckIcon checked={marketingAgreementLocal} />
               </ImageWrapper>
               본인은 만 14세 이상입니다.
             </label>
@@ -133,6 +145,19 @@ const Agreement = ({
 };
 
 export default Agreement;
+
+const CheckIcon = styled(IoIosCheckmarkCircleOutline)`
+  margin-top : 10px;
+  font-size: 24px;
+  color: ${props => (props.checked ? '#fff' : '#000')}; 
+  background-color: ${props => (props.checked ? 'rgb(149, 5, 38)' : 'transparent')}; 
+  border-radius: 50%; // 원형 아이콘 표현
+  transition: background-color 0.3s, color 0.3s, transform 0.3s; 
+
+  &:hover {
+    transform: scale(1.1); 
+  }
+`;
 
 const AgreementSection = styled.div`
   display: inline-flex;
@@ -182,10 +207,9 @@ const CheckboxInput = styled.input`
   clip-path: inset(50%);
   width: 1px;
   height: 1px;
-   &:checked + div {
-    background-color: rgb(149, 5, 38);
-  }
-  }
+  //  &:checked + div {
+  //   background-color: rgb(149, 5, 38);
+  // }
 `;
 const ImageWrapper = styled.div`
   display: inline-block;

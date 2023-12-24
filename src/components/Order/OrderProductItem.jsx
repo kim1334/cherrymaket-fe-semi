@@ -21,8 +21,10 @@ const OrderProductItem = ({item}) => {
         </NameSpan>
         <QuantitySpan>{item.quantity}개</QuantitySpan>
         <PriceSpan>
-          <DiscountSpan> {(item?.discountedPrice * item.quantity).toLocaleString('ko-KR')}원</DiscountSpan>
-          <OriginalSpan>{item?.price?.toLocaleString('ko-KR')}원</OriginalSpan>
+          <DiscountSpan>{item?.discountRate !== null ? (item?.quantity * item?.discountedPrice).toLocaleString("ko-kr")+"원" : (item?.quantity * item?.price).toLocaleString("ko-kr")+"원"}</DiscountSpan>
+          {item?.discountRate !== null ? (
+          <OriginalSpan>{(item?.quantity * item?.price).toLocaleString("ko-kr")}</OriginalSpan>
+          ) : ( <div></div>)}
         </PriceSpan>
       </Container>
     </>

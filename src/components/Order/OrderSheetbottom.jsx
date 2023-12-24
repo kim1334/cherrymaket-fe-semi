@@ -21,7 +21,7 @@ const OrderSheetbottom = () => {
 
     useEffect(() => {
         if (cart && cart.itemsByType) {
-          const newCartData = Object.values(cart.itemsByType).flat();
+          const newCartData = Object.values(cart?.itemsByType).flat();
           setCartData(newCartData);
         } else {
           setCartData([]);
@@ -55,7 +55,7 @@ const OrderSheetbottom = () => {
                 <PaymentBtn finalPrice={finalPrice} cartData={cartData}/>
             </ItemSheet>
             <PaymentSheet>
-                <PaymentSheetDetail finalPrice={finalPrice}/>
+                <PaymentSheetDetail finalPrice={finalPrice} cartData={cartData}/>
             </PaymentSheet>
         </OrderSheetbottomContainer>
     );

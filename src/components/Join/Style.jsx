@@ -59,7 +59,7 @@ export const LabelWrapper1 = styled.div`
   width: 139px;
   padding-top: 12px;
   & label {
-    color: rgb(51, 51, 51);
+    color: rgb(149, 5, 38);
     font-size: 12px;
     line-height: 20px;
   }

@@ -16,6 +16,8 @@ import Footer from "../../common/Footer/Footer.jsx";
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -24,7 +26,6 @@ const MyOrder = () => {
     const access_token = sessionStorage.getItem("accessToken");
     const baseUrl = process.env.REACT_APP_API;
     const [orderData, setOrderData] = useState([]);
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,6 +52,8 @@ const MyOrder = () => {
         const imageUrl = `${imageUrlBase}${goodsId}/${goodsId}_0.png`;
         return imageUrl;
       }
+
+  
 
     return (
 <>

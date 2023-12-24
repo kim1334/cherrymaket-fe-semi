@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 
 
-const PaymentSheetDetail = (finalPrice) => {
+const PaymentSheetDetail = (finalPrice , {cartData}) => {
     const [price, setPrice] = useState(finalPrice);
     const deliveryFee = 2500;
     const [isSticky, setIsSticky] = useState(false);
+    const [totalDiscounted, setTotalDiscounted] = useState(0);
 
     const handleScroll = () => {
         const offset = window.scrollY;
@@ -16,6 +17,7 @@ const PaymentSheetDetail = (finalPrice) => {
         }
       };
     
+      console.log(finalPrice.cartData)
       useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => {
@@ -27,6 +29,29 @@ const PaymentSheetDetail = (finalPrice) => {
     useEffect(() => {
         setPrice(finalPrice.finalPrice)
       }, [finalPrice]);
+
+      useEffect(() => {
+ 
+  
+        // 디스카운트를 적용한 상품 가격을 계산하고 저장할 배열 초기화
+        const calculatedDiscountAmounts = finalPrice?.cartData?.map((item) => {
+          if (item.discountedPrice !== null) {
+            return (item.price - item.discountedPrice) * item.quantity;
+          } else {
+            return 0; // 할인이 적용되지 않은 경우 할인 금액은 0으로 처리
+          }
+        });
+        
+        const totalDiscountAmount = calculatedDiscountAmounts.reduce(
+          (accumulator, currentValue) => accumulator + currentValue,
+          0
+        );
+    
+    
+        setTotalDiscounted(totalDiscountAmount);
+    }, [finalPrice]); 
+
+    console.log(totalDiscounted)
   
 
     return (
@@ -37,7 +62,7 @@ const PaymentSheetDetail = (finalPrice) => {
           <DetailBoxContainer>
             <DetailContainer>
                 <div>주문금액</div>
-                <div><span>{new Intl.NumberFormat("ko-KR").format(price - (price * 0.25))}</span></div>
+                <div><span>{new Intl.NumberFormat("ko-KR").format(price - totalDiscounted)}</span></div>
             </DetailContainer>
             <DownTagContainer>
                 <div>상품금액</div>
@@ -45,7 +70,7 @@ const PaymentSheetDetail = (finalPrice) => {
             </DownTagContainer>
             <DownTagContainer>
                 <div>상품할인금액</div>
-                <div><span>- {new Intl.NumberFormat("ko-KR").format(price * 0.25)}</span></div>
+                <div><span>- {new Intl.NumberFormat("ko-KR").format(totalDiscounted)}</span></div>
             </DownTagContainer>
             <DetailContainer>
             <div>배송비</div>
@@ -65,7 +90,7 @@ const PaymentSheetDetail = (finalPrice) => {
             </DetailContainer>
             <DetailContainer>
                 <div>최종결제금액</div>
-                <div><span style={{fontSize: '26px'}}>{new Intl.NumberFormat("ko-KR").format(price - (price * 0.25) + deliveryFee)}</span></div>
+                <div><span style={{fontSize: '26px'}}>{new Intl.NumberFormat("ko-KR").format(price - totalDiscounted + deliveryFee)}</span></div>
             </DetailContainer>
             <BonusPoint>
                 컬리카드 결제시 최대 1,585원 추가 적립

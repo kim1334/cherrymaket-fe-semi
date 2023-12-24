@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { calcPrice, deleteCartAysnc, editCartAysnc } from "../../redux/modules/cartSlice";
 import axios from "axios";
@@ -14,6 +14,8 @@ const CartMap = ({ item, onCartUpdata }) => {
   const [count, setCount] = useState(item?.quantity);
   const cartItems = useSelector((state) => state.cart.cart); // 현재 카트 상태를 가져옵니다.
   const [cartQuantity, setCartQuantity] = useState(0);
+
+  console.log(item)
 
  
 
@@ -49,13 +51,16 @@ console.log(count);
     const imageUrlBase = "https://kr.object.ncloudstorage.com/cherry-product/";
     const imageUrl = `${imageUrlBase}${item?.goodsCode}/${item?.goodsCode}_0.png`;
     return imageUrl;
+    
   }
   
 
   return (
     <CartLine >
       <CheckButton />
-      <Img src={generateImageUrl()}></Img>
+      <Link to={`/detailitem/${item?.goodsCode}`}>
+        <Img src={generateImageUrl()} />
+      </Link>
       <Title>{item?.goodsName}</Title>
       <ButtonWrap>
           <Minus
@@ -73,9 +78,11 @@ console.log(count);
       </ButtonWrap>
       <CostWrap>
         <SaleCost>
-          {(count * item?.discountedPrice).toLocaleString("ko-kr")}
+          {item?.discountRate !== null ? (count * item?.discountedPrice).toLocaleString("ko-kr")+"원" : (count * item?.price).toLocaleString("ko-kr")+"원"}
         </SaleCost>
-        <PrimeCost>{(count * item?.price).toLocaleString("ko-kr")}</PrimeCost>
+        {item?.discountRate !== null ? (
+        <PrimeCost> {(count * item?.price).toLocaleString("ko-kr")} 원 </PrimeCost> ) : (
+        <div></div>)}
       </CostWrap>
       <DeleteButton onClick={handleDeleteCartItem}>
         <span></span>
@@ -94,8 +101,9 @@ const CartLine = styled.li`
   border-bottom: 1px solid rgba(51, 51, 51, 0.1);
 `;
 
-const CheckButton = styled.div`
+const CheckButton = styled.button`
   margin: 0 26px 0px 0;
+  cursor: pointer;
 `;
 
 const Img = styled.img`

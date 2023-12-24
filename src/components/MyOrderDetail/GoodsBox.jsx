@@ -6,10 +6,12 @@ import { useEffect, useState } from 'react';
 
 
 const  GoodsBox = (props) => {
-
   const access_token = sessionStorage.getItem("accessToken");
   const baseUrl = process.env.REACT_APP_API;
   const [goodsCode, setGoodsCode] = useState([]);
+  const received = "배송 완료";
+  
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +45,7 @@ const  GoodsBox = (props) => {
       <TitleDiv>
         <A>{props.item.goodsName}</A>
         <PriceDiv>
-          <PriceSpan>{props.item.price}원</PriceSpan>
+          <PriceSpan>{props.item.price.toLocaleString()}원</PriceSpan>
           <CountSpna>{props.item.quantity}개</CountSpna>
         </PriceDiv>
       </TitleDiv>

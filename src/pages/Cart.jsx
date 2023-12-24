@@ -20,6 +20,8 @@ const Cart = () => {
   const [userAddress, setUserAddress] = useState([]);
   const baseUrl = process.env.REACT_APP_API;
   const access_token = sessionStorage.getItem('accessToken');
+  const [totalDiscounted, setTotalDiscounted] = useState(0);
+
   const deliveryFee = 2500;
 
 const dispatch = useDispatch();
@@ -60,6 +62,35 @@ useEffect(() => {
   }
   fetchData();
 }, []);
+
+console.log(cartData)
+
+useEffect(() => {
+ 
+  
+    // 디스카운트를 적용한 상품 가격을 계산하고 저장할 배열 초기화
+    const calculatedDiscountAmounts = cartData.map((item) => {
+      if (item.discountedPrice !== null) {
+        return (item.price - item.discountedPrice) * item.quantity;
+      } else {
+        return 0; // 할인이 적용되지 않은 경우 할인 금액은 0으로 처리
+      }
+    });
+    
+    const totalDiscountAmount = calculatedDiscountAmounts.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+
+
+    setTotalDiscounted(totalDiscountAmount);
+}, [cartData]); 
+
+console.log(totalDiscounted)
+
+const filteredData = cartData?.filter((item) => item.discountedPrice !== null);
+
+console.log('디스카운트가 널 값이 아닌 항목들:', filteredData);
 
 
 
@@ -116,14 +147,14 @@ useEffect(() => {
                 <PriceWrap style={{ paddingTop: "12px" }}>
                   <span>상품할인 금액</span>
                   <span style={{ fontSize: "18px" }}>
-                    {(totalPrice * 0.25 || 0).toLocaleString("ko-kr")}
+                    {(totalDiscounted).toLocaleString("ko-kr")}
                     <span style={{ fontSize: "14px" }}> 원</span>
                   </span>
                 </PriceWrap>
                 <PriceWrap style={{ paddingTop: "12px" }}>
                   <span>배송비</span>
                   <span style={{ fontSize: "18px" }}>
-                    {(deliveryFee).toLocaleString("ko-kr")}
+                  {(cartData?.length > 0 ? deliveryFee : 0).toLocaleString("ko-kr")}
                     <span style={{ fontSize: "14px" }}> 원</span>
                   </span>
                 </PriceWrap>
@@ -137,7 +168,7 @@ useEffect(() => {
                 <PriceWrap style={{ paddingTop: "12px" }}>
                   <span>결제예정금액</span>
                   <span style={{ fontSize: "20px" }}>
-                    {(totalPrice - (totalPrice * 0.25)+deliveryFee).toLocaleString("ko-kr")}
+                    {(cartData?.length > 0 ? totalPrice - totalDiscounted + deliveryFee : 0).toLocaleString("ko-kr")}
                     <span style={{ fontSize: "14px" }}> 원</span>
                   </span>
                 </PriceWrap>

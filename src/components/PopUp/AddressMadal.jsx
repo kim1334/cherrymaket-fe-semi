@@ -5,10 +5,12 @@ import { StyledIcon } from "../Mypage/AddressBox.jsx";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
-const AddressMadal = ({ isOpen, onClose, itemAddrss, zipCode }) => {
+const AddressMadal = ({ isOpen, onClose, itemAddrss, zipCode, handleClick }) => {
   const accessToken = sessionStorage.getItem("accessToken");
   const baseUrl = process.env.REACT_APP_API;
+  const [defaultAddress, setDefaultAddress] = useState(false); // 기본 배송지 여부
 
   const serverSaveAddress = async (userAddress) => {
     try {
@@ -27,15 +29,20 @@ const AddressMadal = ({ isOpen, onClose, itemAddrss, zipCode }) => {
       throw error; // 오류 처리 및 전파
     }
   };
+  const handledefaultAddressChange = () => {
+    setDefaultAddress(!defaultAddress);
+  };
 
   
+  console.log(defaultAddress)
+  console.log(typeof defaultAddress)
 
   const [userAddress, setUserAddress] = useState({
     name: "",
     zipcode: "",
     address: "",
     addressDetail: "",
-    isDefault: false,
+    isDefault: defaultAddress,
   });
 
   const handleInput = (e) => {
@@ -78,6 +85,7 @@ const AddressMadal = ({ isOpen, onClose, itemAddrss, zipCode }) => {
                   placeholder="받으실 분"
                   name="name"
                   onChange={handleInput}
+                  autoComplete='off'
                 ></DetailInput>
               </div>
             </div>
@@ -85,7 +93,7 @@ const AddressMadal = ({ isOpen, onClose, itemAddrss, zipCode }) => {
               <InputValP name="address" onChange={handleInput}>
                 {itemAddrss}
               </InputValP>
-              <SeachBtn>
+              <SeachBtn onClick={handleClick}>
                 <span style={{ fontSize: "14px", fontWeight: "500" }}>
                   재검색
                 </span>
@@ -97,16 +105,21 @@ const AddressMadal = ({ isOpen, onClose, itemAddrss, zipCode }) => {
                   placeholder="나머지 주소를 입력해주세요"
                   name="addressDetail"
                   onChange={handleInput}
+                  autoComplete='off'
                 ></DetailInput>
               </div>
             </div>
             <div style={{ paddingBottom: "20px" }}>
               <DefaultAddressLabel>
-                <DefaultAddressInput type="checkbox"></DefaultAddressInput>
+                <DefaultAddressInput 
+                type="checkbox"
+                checked={defaultAddress}
+                onChange={handledefaultAddressChange}
+                ></DefaultAddressInput>
                 <div>
-                  <StyledIcon />
+                  <CheckIcon checked={defaultAddress}/>
                 </div>
-                <span>기본 배송지로 저장</span>
+                <span style={{marginLeft: "5px"}}>기본 배송지로 저장</span>
               </DefaultAddressLabel>
             </div>
             <div style={{ paddingBottom: "20px" }}>
@@ -125,6 +138,19 @@ const AddressMadal = ({ isOpen, onClose, itemAddrss, zipCode }) => {
 };
 
 export default AddressMadal;
+
+const CheckIcon = styled(IoIosCheckmarkCircleOutline)`
+  margin-top : 5px;
+  font-size: 24px;
+  color: ${props => (props.checked ? '#fff' : '#000')}; 
+  background-color: ${props => (props.checked ? 'rgb(149, 5, 38)' : 'transparent')}; 
+  border-radius: 50%; // 원형 아이콘 표현
+  transition: background-color 0.3s, color 0.3s, transform 0.3s; 
+
+  &:hover {
+    transform: scale(1.1); 
+  }
+`;
 
 const SaveBtn = styled.button`
   display: block;
@@ -222,6 +248,7 @@ const SeachBtn = styled.button`
   color: rgb(149, 5, 38);
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(149, 5, 38);
+  cursor: pointer;
 `;
 
 const DetailInput = styled.input`
