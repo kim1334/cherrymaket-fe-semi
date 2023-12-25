@@ -42,7 +42,6 @@ const NewestItemBoard = () => {
 
     const handleNext = () => {
     setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
-    
     };
 
     
@@ -145,6 +144,7 @@ const NewestItemBoard = () => {
                     item={item}
                   />
                   ))}
+
                 </ItemListWrapper>
                 <ButtonWrapper>
                     <div>

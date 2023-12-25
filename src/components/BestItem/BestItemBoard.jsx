@@ -41,7 +41,7 @@ const BestItemBoard = () => {
     };
 
     const handleNext = () => {
-    setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
+        setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
     };
 
     const handleItemClick = (items) => {
