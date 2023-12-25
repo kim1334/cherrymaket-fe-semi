@@ -4,7 +4,7 @@ import { getCartAysnc } from "../../redux/modules/cartSlice";
 import styled from "styled-components";
 import CartMap from "./CartMap";
 
-const CartItems = () => {
+const CartItems = ({handleGetTotalPrice}) => {
   
   const [cartData, setCartData] = useState([]);
   const cart = useSelector((state) => state.cart.cart);
@@ -26,7 +26,7 @@ const CartItems = () => {
   return (
     <ListWrap>
       {cartData?.map((item, index) => (
-        <CartMap key={index} item={item} />
+        <CartMap key={index} item={item} handleGetTotalPrice={handleGetTotalPrice}/>
       ))}
     </ListWrap>
   );

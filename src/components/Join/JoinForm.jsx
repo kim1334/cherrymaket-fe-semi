@@ -278,6 +278,7 @@ function JoinForm() {
     }
   };
 
+  //가입완료 후 배송지 추가
   const addAddressData = async () => {
     try {
       const transformedPayload = {
@@ -293,8 +294,7 @@ function JoinForm() {
       const addressAdd = await instance.post(`/customer/address/add-on-signup?accountEmail=${email}`, transformedPayload);
       console.log("추가 요청 성공:", addressAdd.data);
     } catch (error) {
-      
-      alert("배송지 추가 실패")
+      console.error("추가 요청 중 에러 발생:", error);
     }
   };
 

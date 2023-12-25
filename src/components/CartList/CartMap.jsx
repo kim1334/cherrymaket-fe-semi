@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { getCartAysnc } from "../../redux/modules/cartSlice";
 
 
-const CartMap = ({ item, onCartUpdata }) => {
+const CartMap = ({ item, onCartUpdata, handleGetTotalPrice }) => {
 
   const dispatch = useDispatch();
   const [count, setCount] = useState(item?.quantity);
@@ -23,25 +23,18 @@ const CartMap = ({ item, onCartUpdata }) => {
     if (item && item.cartId !== null) {
       dispatch(editCartAysnc({ cartId: item?.cartId, quantity: count }))
       .then(() => {
-        dispatch(calcPrice());
-
+        handleGetTotalPrice()
       })
       .catch((error) => {
         console.error(error);
       });
     }
-  }, [count, dispatch, item]);
-
-  useEffect(() => {
-    // cartQuantity가 변경될 때 실행되는 코드
-    console.log(cartQuantity);
-  }, [cartQuantity]);
+  }, [count]);
 
  const handleDeleteCartItem = () => {
   dispatch(deleteCartAysnc({ cartId: item?.cartId }))
     .then(() => {
       dispatch(getCartAysnc());
-
     });
 };
 
@@ -67,12 +60,17 @@ console.log(count);
             disabled={count === 1}
             onClick={() => {
               setCount(count - 1);
+            
+            
             }}
           ></Minus>
         <Number>{count}</Number>
         <Plus
   onClick={() => {
     setCount(count + 1);
+
+    
+   
   }}
         ></Plus>
       </ButtonWrap>

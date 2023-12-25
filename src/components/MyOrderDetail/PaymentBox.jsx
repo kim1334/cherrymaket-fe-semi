@@ -21,11 +21,11 @@ const PatmentBox = (props) => {
     <Ul>
         <Li>
             <TitleSapn>상품금액</TitleSapn>
-            <PriceSpan>{paymentDetail.totalAmount-paymentDetail.deliveryFee}원</PriceSpan>
+            <PriceSpan>{(paymentDetail.totalAmount-paymentDetail.deliveryFee)?.toLocaleString()}원</PriceSpan>
         </Li>
         <Li>
             <TitleSapn>배송비</TitleSapn>
-            <PriceSpan>{paymentDetail.deliveryFee}원</PriceSpan>
+            <PriceSpan>{(paymentDetail.deliveryFee)?.toLocaleString()}원</PriceSpan>
         </Li>
         <Li>
             <TitleSapn>적립금</TitleSapn>
@@ -33,12 +33,12 @@ const PatmentBox = (props) => {
         </Li>
         <Li>
             <TitleSapn>결제금액</TitleSapn>
-            <PriceSpan>{paymentDetail.totalAmount}원</PriceSpan>
+            <PriceSpan>{(paymentDetail.totalAmount)?.toLocaleString()}원</PriceSpan>
         </Li>
         <Li>
             <TitleSapn>적립금액</TitleSapn>
             <span style={{marginRight:'4px', color:'rgb(153, 153, 153)'}}>배송완료 7일후 적립</span>
-            <PriceSpan>{paymentDetail.rewordAmount}원</PriceSpan>
+            <PriceSpan>{/*paymentDetail.rewordAmount*/}0원</PriceSpan>
         </Li>
         <Li>
             <TitleSapn>결제방법</TitleSapn>

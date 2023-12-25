@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import Footer from "../common/Footer/Footer";
 import { calcPrice } from "../redux/modules/cartSlice";
 import { IoHomeOutline } from "react-icons/io5";
+import { getCartAysnc } from "../redux/modules/cartSlice";
 
 const Cart = () => {
   const [cartData, setCartData] = useState([]);
@@ -92,6 +93,10 @@ const filteredData = cartData?.filter((item) => item.discountedPrice !== null);
 
 console.log('디스카운트가 널 값이 아닌 항목들:', filteredData);
 
+const handleGetTotalPrice = () => {
+  dispatch(getCartAysnc());
+}
+
 
 
 
@@ -108,7 +113,7 @@ console.log('디스카운트가 널 값이 아닌 항목들:', filteredData);
           <LeftSide>
             <SelectNav></SelectNav>
             <CartContainer>
-              <CartItems ></CartItems>
+              <CartItems handleGetTotalPrice={handleGetTotalPrice}></CartItems>
             </CartContainer>
             <SelectNav></SelectNav>
           </LeftSide>
