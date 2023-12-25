@@ -17,19 +17,19 @@ import axios from 'axios';
 
 
 const OPTIONS = [
-    {value : "문의유형을 선택해주세요", name : "문의유형을 선택해주세요"},
-    {value : "CANCEL", name : "취소/교환/환불"},
-    {value : "MEMBER", name : "회원/이벤트/쿠폰"},
-    {value : "GOODS", name : "상품(식품/비식품/티켓"},
-    {value : "DELIVERY", name : "배송"},
-    {value : "ORDER", name : "주문/결제"},
-    {value : "SERVICE", name : "서비스/오류/기타"},
+    { value: "문의유형을 선택해주세요", name: "문의유형을 선택해주세요" },
+    { value: "CANCEL", name: "취소/교환/환불" },
+    { value: "MEMBER", name: "회원/이벤트/쿠폰" },
+    { value: "GOODS", name: "상품(식품/비식품/티켓" },
+    { value: "DELIVERY", name: "배송" },
+    { value: "ORDER", name: "주문/결제" },
+    { value: "SERVICE", name: "서비스/오류/기타" },
 
 ];
 
 
 const DETAIL_OPTIONS = {
-        
+
     "CANCEL": {
         "상세유형을 선택해주세요": "상세유형을 선택해주세요",
         "CANCEL": "취소",
@@ -50,54 +50,54 @@ const DETAIL_OPTIONS = {
         // 다른 상세 옵션들...
     },
     "DELIVERY": {
-        "DIFFERENT_PRODUCT_RECEIPT" :  "다른 상품 수령", 
-        "UNRECEIVED_PRODUCT" : "상품 미수령",
-        "DELIVERY_IMPROVEMENT" : "배송/포장개선요청",
-        "DELIVERY_SCHEDULE_INFO" : "배송일정/정보",
+        "DIFFERENT_PRODUCT_RECEIPT": "다른 상품 수령",
+        "UNRECEIVED_PRODUCT": "상품 미수령",
+        "DELIVERY_IMPROVEMENT": "배송/포장개선요청",
+        "DELIVERY_SCHEDULE_INFO": "배송일정/정보",
     },
     "ORDER": {
-        "INFO_CHANGE" : "정보변경(주소/출입방법)" ,
-        "ORDER_HISTORY_RECEIPT" : "주문내역/영수증 발급" ,
-        "ORDER_PAYMENT_METHOD" : "주문/결제방법", 
+        "INFO_CHANGE": "정보변경(주소/출입방법)",
+        "ORDER_HISTORY_RECEIPT": "주문내역/영수증 발급",
+        "ORDER_PAYMENT_METHOD": "주문/결제방법",
     },
     "SERVICE": {
-        "SYSTEM_ERROR" : "시스템 오류/장애",
-        "OTHER" : "기타(직접입력)",
-        "SERVICE_SUGGESTION" : "서비스 제안/개선", 
+        "SYSTEM_ERROR": "시스템 오류/장애",
+        "OTHER": "기타(직접입력)",
+        "SERVICE_SUGGESTION": "서비스 제안/개선",
     }
 };
 
 
 
-const SelectBox = ({options, selectedOption, setSelectedOption}) => {
-    
+const SelectBox = ({ options, selectedOption, setSelectedOption }) => {
+
 
     const handleSelectChange = (event) => {
         setSelectedOption(event.target.value);
     };
     return (
         <DropdownContainer>
-        <StyledSelect 
-            onChange={handleSelectChange}
-            value={selectedOption}
-        >
-          {options.map((option) => (
-            <option key={option.value} value={option.value} 
-            disabled={option.value === "문의유형을 선택해주세요" && selectedOption !== "" && selectedOption !== "문의유형을 선택해주세요"}>
-              {option.name} 
-            </option>
-          ))}
-        </StyledSelect>
-        <DropdownIcon />
-      </DropdownContainer>
+            <StyledSelect
+                onChange={handleSelectChange}
+                value={selectedOption}
+            >
+                {options.map((option) => (
+                    <option key={option.value} value={option.value}
+                        disabled={option.value === "문의유형을 선택해주세요" && selectedOption !== "" && selectedOption !== "문의유형을 선택해주세요"}>
+                        {option.name}
+                    </option>
+                ))}
+            </StyledSelect>
+            <DropdownIcon />
+        </DropdownContainer>
     );
-};  
+};
 
-const SelectDetailBox = ({selectedOption, setDetailType}) => {
+const SelectDetailBox = ({ selectedOption, setDetailType }) => {
     const [detailOptions, setDetailOptions] = useState([]);
 
     useEffect(() => {
-        if(selectedOption && DETAIL_OPTIONS[selectedOption]) {
+        if (selectedOption && DETAIL_OPTIONS[selectedOption]) {
             setDetailOptions(Object.entries(DETAIL_OPTIONS[selectedOption]));
         } else {
             setDetailOptions([]);
@@ -109,39 +109,39 @@ const SelectDetailBox = ({selectedOption, setDetailType}) => {
     };
     return (
         <DropdownContainer>
-        <StyledSelect disabled={!selectedOption || detailOptions.length === 0}
-        onChange={handleDetailChange}>
+            <StyledSelect disabled={!selectedOption || detailOptions.length === 0}
+                onChange={handleDetailChange}>
                 {detailOptions.length === 0 && <option>상세유형을 선택해주세요</option>}
                 {detailOptions.map(([value, name]) => (
                     <option key={value} value={value}>{name}</option>
                 ))}
-        </StyledSelect>
-        <DropdownIcon style={{
-            marginRight : "-1px",
-        }} />
-      </DropdownContainer>
+            </StyledSelect>
+            <DropdownIcon style={{
+                marginRight: "-1px",
+            }} />
+        </DropdownContainer>
     );
-};  
+};
 
 
-const QnaInsertBoard = () => {  
+const QnaInsertBoard = () => {
     const [clicked, setClicked] = useState(false);
     const [selectedOption, setSelectedOption] = useState("");
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [selectedDetailOption, setSelectedDetailOption] = 
-    useState(DETAIL_OPTIONS["문의유형을 선택해주세요"] || "[]");
+    const [selectedDetailOption, setSelectedDetailOption] =
+        useState(DETAIL_OPTIONS["문의유형을 선택해주세요"] || "[]");
     const [inquiryData, setInquiryData] = useState(null);
     const [detailOption, setDetailOption] = useState([]);
     const [detailType, setDetailType] = useState("");
-  
+
     const handleDetailOption = (event) => {
         setDetailOption(event.target.value);
     };
     // insert
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if(!isFormValid()) {
+        if (!isFormValid()) {
             alert("모든 항목을 입력해주세요");
             return;
         }
@@ -149,7 +149,7 @@ const QnaInsertBoard = () => {
         try {
             const token = sessionStorage.getItem("accessToken");
             const config = {
-                headers: { 
+                headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
@@ -163,8 +163,9 @@ const QnaInsertBoard = () => {
                 detailType: detailType, // 선택된 상세 문의 유형
                 subject: title, // 제목
                 content: content, // 내용
-               
+
             };
+            console.log("title", title);
             setInquiryData(inquiryData);
             await axios.post("https://server.marketcherry.store/api/inquiry/add", inquiryData, config);
             alert("문의가 등록되었습니다.");
@@ -174,7 +175,7 @@ const QnaInsertBoard = () => {
             console.log("inquiryData", inquiryData);
             alert("문의 등록에 실패했습니다.");
         }
-    
+
     }
 
     const handleSvgClick = () => {
@@ -206,13 +207,13 @@ const QnaInsertBoard = () => {
                         <form onSubmit={handleSubmit}>
                             <LineWrapper>
                                 <SubTitleWrapper>유형<Required>*</Required></SubTitleWrapper>
-                                <SelectBox 
-                                options = {OPTIONS} 
-                                selectedOption={selectedOption}
-                                setSelectedOption={handleSelectChange}></SelectBox>
-                                <SelectDetailBox  
-                                selectedOption={selectedOption}
-                                setDetailType={setDetailType}></SelectDetailBox>
+                                <SelectBox
+                                    options={OPTIONS}
+                                    selectedOption={selectedOption}
+                                    setSelectedOption={handleSelectChange}></SelectBox>
+                                <SelectDetailBox
+                                    selectedOption={selectedOption}
+                                    setDetailType={setDetailType}></SelectDetailBox>
                             </LineWrapper>
                             <LineWrapper>
                                 <SubTitleWrapper>제목<Required>*</Required></SubTitleWrapper>
@@ -221,7 +222,7 @@ const QnaInsertBoard = () => {
                                         type="text"
                                         name="subject"
                                         placeholder="제목을 입력해주세요"
-                                        value = {title}
+                                        value={title}
                                         onChange={(e) => setTitle(e.target.value)}
                                     />
                                 </InputWrapper>
@@ -230,55 +231,55 @@ const QnaInsertBoard = () => {
                                 <SubTitleWrapper>내용<Required>*</Required></SubTitleWrapper>
                                 <TextAreaWrapper>
                                     <TextArea
-                                        placeholder= ""  
+                                        placeholder=""
                                         value={content}
                                         onChange={(e) => setContent(e.target.value)}>
                                     </TextArea>
                                 </TextAreaWrapper>
                             </LineWrapper>
                             <LineWrapper>
-                                    <CameraWrapper>
-                                        <CameraButton>
-                                            <Camera />
-                                        </CameraButton>
-                                    </CameraWrapper>
-                                    
+                                <CameraWrapper>
+                                    <CameraButton>
+                                        <Camera />
+                                    </CameraButton>
+                                </CameraWrapper>
+
                             </LineWrapper>
                             <ContextWrapper>
-                                        <SpanWrapper>
-                                            <span><li>30MB 이하의 이미지만 업로드 가능합니다.</li></span>
-                                        </SpanWrapper>
-                                        <SpanWrapper>
-                                            <span><li>상품과 무관한 내용이거나 음란 및 불법적인 내용은 통보없이 삭제 될 수 있습니다.</li></span>
-                                        </SpanWrapper>
-                                        <SpanWrapper>
-                                            <span><li>사진은 최대 8장까지 등록가능합니다.</li></span>
-                                        </SpanWrapper>                                       
+                                <SpanWrapper>
+                                    <span><li>30MB 이하의 이미지만 업로드 가능합니다.</li></span>
+                                </SpanWrapper>
+                                <SpanWrapper>
+                                    <span><li>상품과 무관한 내용이거나 음란 및 불법적인 내용은 통보없이 삭제 될 수 있습니다.</li></span>
+                                </SpanWrapper>
+                                <SpanWrapper>
+                                    <span><li>사진은 최대 8장까지 등록가능합니다.</li></span>
+                                </SpanWrapper>
                             </ContextWrapper>
                             <QuestionWrapper>
                                 <LineWrapper>
                                     <SubTitleWrapper>답변수신</SubTitleWrapper>
                                     <MessageWrapper>
-                                    
+
                                         <PhoneNumber>
                                             <PhoneNumberInput
                                                 type="text"
-                                                disabled={true} 
-                                                value = "010"
+                                                disabled={true}
+                                                value="010"
                                             />
                                         </PhoneNumber>
-                                            
+
                                         <MessageChecked>
                                             <MessageCheckedLabel>
-                                                <MessageCheckedInput 
-                                                type="checkbox"
-                                                checked={clicked}
-                                                onChange={handleSvgClick}
+                                                <MessageCheckedInput
+                                                    type="checkbox"
+                                                    checked={clicked}
+                                                    onChange={handleSvgClick}
                                                 />
                                                 <MessageCheckedImageWrapper onClick={handleSvgClick}>
-                                                    {clicked ? 
-                                                    <FaCheckCircle/> : 
-                                                    <FaRegCheckCircle />
+                                                    {clicked ?
+                                                        <FaCheckCircle /> :
+                                                        <FaRegCheckCircle />
                                                     }
                                                 </MessageCheckedImageWrapper>
                                                 <MessageCheckedImageText>문자/알림톡 받기</MessageCheckedImageText>
@@ -563,7 +564,7 @@ justify-content: center;
 -webkit-box-align: center;
 align-items: center;
 padding-top: 40px;
-`;  
+`;
 
 const InsertButton = styled.button`
 width: 160px;

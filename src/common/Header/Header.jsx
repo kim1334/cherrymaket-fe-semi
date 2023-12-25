@@ -20,15 +20,12 @@ import {
   RatingIcon,
 } from "./styles";
 import Headercoupon from "./HeaderNav/Headercoupon";
-import logo from "./logo.svg";
+import ImgLogo from "./cherry.png"
 import HeaderNav from "./HeaderNav/HeaderNav";
 import FixedHeader from "./FixedHeader/FixedHeader";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartAysnc } from "../../redux/modules/cartSlice";
-import jwtDecode from "jwt-decode";
-import { instance } from "../../redux/modules/instance";
-import { IoPersonCircleOutline } from "react-icons/io5";
 import { initializeLogin } from '../../redux/modules/loginSlice.jsx';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
@@ -222,10 +219,10 @@ const Header = () => {
         </UserHead>
         <HeadMain>
           <HeadLeft to="/">
-            <img src={logo} alt="마켓체리 로고" style={{
+            <img src={ImgLogo} alt="마켓체리 로고" style={{
               width: '50px',
-              height: '80px',
-              marginBottom: '10px',
+              height: '30px',
+              marginRight: '10px',
             }} />
             <LogoButton>마켓체리</LogoButton>
           </HeadLeft>

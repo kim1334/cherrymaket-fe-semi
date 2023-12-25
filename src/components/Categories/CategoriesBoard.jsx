@@ -4,32 +4,36 @@ import { Link } from 'react-router-dom';
 import { Container, SubTitleWrapper, SubTitleItemWrapper, SubTitleItem, Title, TitleWraper, ItemWideWrapper, ItemBlank, ItemWrapper, ItemTopWrapper, ItemCount, ItemSortWrapper, ItemSortItem, ItemSort, ItemListWrapper, ButtonWrapper, NextButton, PrevButton } from './Style';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useParams, useLocation } from 'react-router-dom'; // useParams와 useLocation 훅 임포트
+
 import ItemList from './ItemList';
-import CartMadal from '../CartList/CartMadal';
-const NewestItemBoard = () => {
+const CategoriesBoard = () => {
     const [items, setItems] = useState([]);
+    const { categoryId } = useParams(); // categoryId 파라미터 사용
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const categoryName = searchParams.get('name'); // categoryName 쿼리 파라미터 사용
     // 페이징
     const [currentPage, setCurrentPage] = useState(1);
     const [noticePerPage] = useState(20);
     const indexOfLastNotice = currentPage * noticePerPage;
     const indexOfFirstNotice = indexOfLastNotice - noticePerPage;
     const currentItems = items.slice(indexOfFirstNotice, indexOfLastNotice);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
+
     const totalPages = Math.ceil(items.length / noticePerPage);
     useEffect(() => {
         const fetchItem = async () => {
             try {
                 const response = await axios.get(
-                    'https://server.marketcherry.store/api/goods/listA');
+                    `https://server.marketcherry.store/api/goods/category?categoryId=${categoryId}&size=50`);
                 console.log('Response data:', response.data);
-                setItems(response.data);
+                setItems(response.data.content);
             } catch (e) {
                 console.error(e);
             }
         };
         fetchItem();
-    }, []);
+    }, [categoryId, categoryName]);
 
     if (!Array.isArray(items)) {
         console.error('items is not array', items);
@@ -41,53 +45,71 @@ const NewestItemBoard = () => {
     };
 
     const handleNext = () => {
-    setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
-    
+        setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
     };
-
-    
-    const handleItemClick = (items) => {
-        setSelectedItem(items);
-        openModal();
-      };
-
-    const openModal = () => {
-        setIsModalOpen(true);
-      };
-    
-      // 모달 닫기 함수
-      const closeModal = () => {
-        setIsModalOpen(false);
-      };
     return (
         <>
             <Container>
-                <NewestBanner>
-                    <img
-                        src="https://img-cf.kurly.com/category/banner/pc/e8443748-7800-4e0a-a8bc-268d72f8e29c"
-                        alt="배너 이미지"
-                    />
-                </NewestBanner>
-                <NewestHeader>신상품</NewestHeader>
+
+                <NewestHeader>{categoryName}</NewestHeader>
 
                 <SubTitleWrapper>
                     <SubTitleItemWrapper>
-                        <SubTitleItem>TOP999</SubTitleItem>
+                        <Link to={`/category/1?name=채소`}>
+                            <SubTitleItem>채소</SubTitleItem>
+                        </Link>
                     </SubTitleItemWrapper>
                     <SubTitleItemWrapper>
-                        <SubTitleItem>인기급상승</SubTitleItem>
-                    </SubTitleItemWrapper>
-                    <SubTitleItemWrapper><SubTitleItem>찜이많은</SubTitleItem>
-                    </SubTitleItemWrapper>
-                    <SubTitleItemWrapper>
-                        <SubTitleItem>컬리에만있는</SubTitleItem>
+                        <Link to={`/category/2?name=과일•견과•쌀`}>
+                            <SubTitleItem>과일•견과•쌀</SubTitleItem>
+                        </Link>
                     </SubTitleItemWrapper>
                     <SubTitleItemWrapper>
-                        <SubTitleItem>제철신선</SubTitleItem>
+                        <Link to={`/category/3?name=수산•해산•건어물`}>
+                            <SubTitleItem>수산•해산•건어물</SubTitleItem>
+                        </Link>
                     </SubTitleItemWrapper>
                     <SubTitleItemWrapper>
-                        <SubTitleItem>직원추천상품</SubTitleItem>
+                        <Link to={`/category/4?name=정육•계란`}>
+                            <SubTitleItem>정육•계란</SubTitleItem>
+                        </Link>
                     </SubTitleItemWrapper>
+                    <SubTitleItemWrapper>
+                        <Link to={`/category/5?name=국•반찬•메인요리`}>
+                            <SubTitleItem>국•반찬•메인요리</SubTitleItem>
+                        </Link>
+                    </SubTitleItemWrapper>
+                    <SubTitleItemWrapper>
+                        <Link to={`/category/6?name=샐러드•간편식`}>
+                            <SubTitleItem>샐러드•간편식</SubTitleItem>
+                        </Link>
+                    </SubTitleItemWrapper>
+                    <SubTitleItemWrapper>
+                        <Link to={`/category/7?name=양념•오일`}>
+                            <SubTitleItem>양념•오일</SubTitleItem>
+                        </Link>
+                    </SubTitleItemWrapper>
+                    <SubTitleItemWrapper>
+                        <Link to={`/category/8?name=생수•음료•우유•커피`}>
+                            <SubTitleItem>생수•음료•우유•커피</SubTitleItem>
+                        </Link>
+                    </SubTitleItemWrapper>
+                    <SubTitleItemWrapper>
+                        <Link to={`/category/9?name=간식•과자•떡`}>
+                            <SubTitleItem>간식•과자•떡</SubTitleItem>
+                        </Link>
+                    </SubTitleItemWrapper>
+                    <SubTitleItemWrapper>
+                        <Link to={`/category/10?name=베이커리•치즈`}>
+                            <SubTitleItem>베이커리•치즈</SubTitleItem>
+                        </Link>
+                    </SubTitleItemWrapper>
+                    <SubTitleItemWrapper>
+                        <Link to={`/category/11?name=건강식품`}>
+                            <SubTitleItem>건강식품</SubTitleItem>
+                        </Link>
+                    </SubTitleItemWrapper>
+
                 </SubTitleWrapper>
 
                 <ItemWideWrapper>
@@ -132,19 +154,17 @@ const NewestItemBoard = () => {
                     </ItemBlank>
                 </ItemWideWrapper>
                 <ItemListWrapper>
-                  {Array.isArray(currentItems) && currentItems.map((item)=> (
-                    <ItemList
-                    id={item.goodsId}
-                    name={item.goodsName}
-                    goodsCode={item.goodsCode}
-                    description={item.description}
-                    originalPrice={item.price}
-                    discountedPrice = {item.discountedPrice}
-                    sale={item.discountRate}
-                    onItemClick={handleItemClick}
-                    item={item}
-                  />
-                  ))}
+                    {Array.isArray(currentItems) && currentItems.map((item) => (
+                        <ItemList
+                            id={item.goodsId}
+                            name={item.goodsName}
+                            goodsCode={item.goodsCode}
+                            description={item.description}
+                            originalPrice={item.price}
+                            discountedPrice={item.discountedPrice}
+                            sale={item.discountRate}
+                        />
+                    ))}
                 </ItemListWrapper>
                 <ButtonWrapper>
                     <div>
@@ -156,14 +176,13 @@ const NewestItemBoard = () => {
                         <NextButton onClick={handleNext} disabled={currentPage === totalPages}></NextButton>
                     </div>
                 </ButtonWrapper>
-                <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={selectedItem} />
             </Container>
 
         </>
     );
 };
 
-export default NewestItemBoard;
+export default CategoriesBoard;
 
 
 export const NewestBanner = styled.div`
@@ -186,8 +205,3 @@ export const NewestHeader = styled.h3`
   letter-spacing: -1px;
   text-align: center;
 `;
-
-
-
-
-

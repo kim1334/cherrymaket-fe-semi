@@ -1,5 +1,5 @@
 import {
-    Container, 
+    Container,
     ItemDetailWrapper,
     ItemDetail,
     ItemImageWrapper,
@@ -55,21 +55,23 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import CartMadal from '../CartList/CartMadal';
 function DetailItemBoard() {
-    
-
+    // 페이지 로드 시 최상단으로 스크롤
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const TYPE_MAPPINGS = {
-    
+
         'ROOM_TEMPERATURE': '상온',
         'REFRIGERATOR': '냉장',
         'FROZEN': '냉동',
-        'FREEZER' : '냉동',
+        'FREEZER': '냉동',
     }
 
     const [isLiked, setIsLiked] = useState(false);
     const [isBell, setIsBell] = useState(false);
     // 수량
     const [quantity, setQuantity] = useState(1);
-    const { goodsCode } = useParams();
+    const { goodsCode, goodsName } = useParams();
     const [productData, setProductData] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -133,159 +135,159 @@ function DetailItemBoard() {
 
     
 
-        return (
+    return (
         <>
             <Container>
                 <ItemDetailWrapper>
                     <ItemDetail>
                         <ItemImageWrapper>
-                            <img src = {`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_0.png`}></img>
+                            <img src={`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_0.png`}></img>
                         </ItemImageWrapper>
                         <ItemTextWrapper>
                             <ItemDeliveryText>
                                 샛별배송
                             </ItemDeliveryText>
-                        <ItemTitleWrapper>
-                            <ItemTitle>
-                                {productData ? productData.goodsName : "상품이름"}
-                            </ItemTitle>
-                            <ItemSubTitle>
-                            {productData ? productData.description : "상품설명"}
-                            </ItemSubTitle>
-                            <ItemPriceWrapper>
-                                <ItemDiscount>
-                                    {productData && productData.discountRate !== null ? (
-                                        `${productData.discountRate}%`
-                                    ) : (
-                                        null
-                                    )}
-                                </ItemDiscount>
-                                <ItemPrice>
-                                    {productData ? formatPrice(productData.discountedPrice) : "상품가격"}원
-                                </ItemPrice>
-                            </ItemPriceWrapper>
-                            <ItemOriginalPriceWrapper>
-                                <ItemOriginalPrice>
-                                {productData && productData.discountRate !== null ? (
-                                        `${formatPrice(productData.price)}원`
-                                    ) : (
-                                        null
-                                    )}
-                                </ItemOriginalPrice>
-                            </ItemOriginalPriceWrapper>
-                            <ItemOriginalPlace>
-                               원산지 : {productData ? productData.originPlace : "원산지"}
-                            </ItemOriginalPlace>
-                            <ItemBenefit>
-                                로그인 후, 적립혜택이 제공됩니다.
-                            </ItemBenefit>
-                            <ItemCuponWrapper>
-                                <ItemCuponText>
-                                    <strong>2000원</strong> 적립금+할인쿠폰 받고 구매하기
-                                </ItemCuponText>
-                            </ItemCuponWrapper>
-                            <ul style={{marginTop : "20px"}}>
-                                <ItemDetailList>
-                                    <ItemDetailListTitle>배송</ItemDetailListTitle>
-                                    <ItemDetailListTextWrapper>
-                                        <ItemDetailListText>
-                                            샛별배송
-                                        </ItemDetailListText>
-                                        <ItemDetailListTextContent>
-                                            23시 이전 주문 시 내일 아침 7시 전 도착
-                                        </ItemDetailListTextContent>
-                                    </ItemDetailListTextWrapper>
-                                </ItemDetailList>
-                                
-                                <ItemDetailList>
-                                    <ItemDetailListTitle>판매자</ItemDetailListTitle>
+                            <ItemTitleWrapper>
+                                <ItemTitle>
+                                    {productData ? productData.goodsName : "상품이름"}
+                                </ItemTitle>
+                                <ItemSubTitle>
+                                    {productData ? productData.description : "상품설명"}
+                                </ItemSubTitle>
+                                <ItemPriceWrapper>
+                                    <ItemDiscount>
+                                        {productData && productData.discountRate !== null ? (
+                                            `${productData.discountRate}%`
+                                        ) : (
+                                            null
+                                        )}
+                                    </ItemDiscount>
+                                    <ItemPrice>
+                                        {productData ? formatPrice(productData.discountedPrice) : "상품가격"}원
+                                    </ItemPrice>
+                                </ItemPriceWrapper>
+                                <ItemOriginalPriceWrapper>
+                                    <ItemOriginalPrice>
+                                        {productData && productData.discountRate !== null ? (
+                                            `${formatPrice(productData.price)}원`
+                                        ) : (
+                                            null
+                                        )}
+                                    </ItemOriginalPrice>
+                                </ItemOriginalPriceWrapper>
+                                <ItemOriginalPlace>
+                                    원산지 : {productData ? productData.originPlace : "원산지"}
+                                </ItemOriginalPlace>
+                                <ItemBenefit>
+                                    로그인 후, 적립혜택이 제공됩니다.
+                                </ItemBenefit>
+                                <ItemCuponWrapper>
+                                    <ItemCuponText>
+                                        <strong>2000원</strong> 적립금+할인쿠폰 받고 구매하기
+                                    </ItemCuponText>
+                                </ItemCuponWrapper>
+                                <ul style={{ marginTop: "20px" }}>
+                                    <ItemDetailList>
+                                        <ItemDetailListTitle>배송</ItemDetailListTitle>
+                                        <ItemDetailListTextWrapper>
+                                            <ItemDetailListText>
+                                                샛별배송
+                                            </ItemDetailListText>
+                                            <ItemDetailListTextContent>
+                                                23시 이전 주문 시 내일 아침 7시 전 도착
+                                            </ItemDetailListTextContent>
+                                        </ItemDetailListTextWrapper>
+                                    </ItemDetailList>
+
+                                    <ItemDetailList>
+                                        <ItemDetailListTitle>판매자</ItemDetailListTitle>
                                         <ItemDetailListTextWrapper>
                                             <ItemDetailListText>
                                                 {productData ? productData.makerName : "판매자"}
                                             </ItemDetailListText>
                                         </ItemDetailListTextWrapper>
-                                </ItemDetailList>
+                                    </ItemDetailList>
 
-                                <ItemDetailList>
-                                    <ItemDetailListTitle>포장타입</ItemDetailListTitle>
-                                    <ItemDetailListTextWrapper>
-                                        <ItemDetailListText>
-                                        {TYPE_MAPPINGS[productData?.storageType] || productData?.storageType}/종이포장
-                                        </ItemDetailListText>
-                                        <ItemDetailListTextContent>
-                                            택배는 에코포장이 스티로폼으로 대체됩니다.
-                                        </ItemDetailListTextContent>
-                                    </ItemDetailListTextWrapper>
-                                </ItemDetailList>
+                                    <ItemDetailList>
+                                        <ItemDetailListTitle>포장타입</ItemDetailListTitle>
+                                        <ItemDetailListTextWrapper>
+                                            <ItemDetailListText>
+                                                {TYPE_MAPPINGS[productData?.storageType] || productData?.storageType}/종이포장
+                                            </ItemDetailListText>
+                                            <ItemDetailListTextContent>
+                                                택배는 에코포장이 스티로폼으로 대체됩니다.
+                                            </ItemDetailListTextContent>
+                                        </ItemDetailListTextWrapper>
+                                    </ItemDetailList>
 
-                                <ItemDetailList>
-                                    <ItemDetailListTitle>판매단위</ItemDetailListTitle>
-                                    <ItemDetailListTextWrapper>
-                                        <ItemDetailListText>
-                                            {productData ? productData.capacity : "판매단위"}
-                                        </ItemDetailListText>
-                                    </ItemDetailListTextWrapper>
-                                </ItemDetailList>
+                                    <ItemDetailList>
+                                        <ItemDetailListTitle>판매단위</ItemDetailListTitle>
+                                        <ItemDetailListTextWrapper>
+                                            <ItemDetailListText>
+                                                {productData ? productData.capacity : "판매단위"}
+                                            </ItemDetailListText>
+                                        </ItemDetailListTextWrapper>
+                                    </ItemDetailList>
 
-                                <ItemDetailList>
-                                    <ItemDetailListTitle>중량/용량</ItemDetailListTitle>
-                                    <ItemDetailListTextWrapper>
-                                        <ItemDetailListText>
-                                            옵션별 상이
-                                        </ItemDetailListText>
-                                    </ItemDetailListTextWrapper>
-                                </ItemDetailList>
+                                    <ItemDetailList>
+                                        <ItemDetailListTitle>중량/용량</ItemDetailListTitle>
+                                        <ItemDetailListTextWrapper>
+                                            <ItemDetailListText>
+                                                옵션별 상이
+                                            </ItemDetailListText>
+                                        </ItemDetailListTextWrapper>
+                                    </ItemDetailList>
 
-                                <ItemDetailList>
-                                    <ItemDetailListTitle>알레르기 정보</ItemDetailListTitle>
-                                    <ItemDetailListTextWrapper>
-                                        <ItemDetailListText>
-                                            {productData ? productData.allergyInfo : "알레르기 정보"}
-                                        </ItemDetailListText>
-                                    </ItemDetailListTextWrapper>
-                                </ItemDetailList>
+                                    <ItemDetailList>
+                                        <ItemDetailListTitle>알레르기 정보</ItemDetailListTitle>
+                                        <ItemDetailListTextWrapper>
+                                            <ItemDetailListText>
+                                                {productData ? productData.allergyInfo : "알레르기 정보"}
+                                            </ItemDetailListText>
+                                        </ItemDetailListTextWrapper>
+                                    </ItemDetailList>
 
-                                <ItemDetailList>
-                                    <ItemDetailListTitle>유통기한(또는 소비기한)정보</ItemDetailListTitle>
-                                    <ItemDetailListTextWrapper>
-                                        <ItemDetailListText>
-                                            {productData ? productData.expDate : "유통기한(또는 소비기한)정보"}
-                                        </ItemDetailListText>
-                                    </ItemDetailListTextWrapper>
-                                </ItemDetailList>
+                                    <ItemDetailList>
+                                        <ItemDetailListTitle>유통기한(또는 소비기한)정보</ItemDetailListTitle>
+                                        <ItemDetailListTextWrapper>
+                                            <ItemDetailListText>
+                                                {productData ? productData.expDate : "유통기한(또는 소비기한)정보"}
+                                            </ItemDetailListText>
+                                        </ItemDetailListTextWrapper>
+                                    </ItemDetailList>
 
-                                <ItemDetailList>
-                                    <ItemDetailListTitle>수량 선택</ItemDetailListTitle>
-                                    <ItemDetailListTextWrapper>
-                                        <ItemDetailListText>
-                                            <ItemQuantityWrapper>
-                                                <ItemDetailListSmallTitleWrapper>
-                                                  
-                                                </ItemDetailListSmallTitleWrapper>
-                                                <ItemQuantity>
-                                                    <ItemQuantityButtonWrapper>
-                                                        <ItemQuantityMinusButton
-                                                            onClick = {handleDecreaseQuantity} 
-                                                            disabled={quantity === 1}
-                                                            style={{
-                                                                backgroundColor: quantity === 1 ? "#f1f3f5" : "white",
-                                                            }}                                            
-                                                        >
-                                                        </ItemQuantityMinusButton>
-                                                        <ItemQuantityNumber>
-                                                            {quantity}
-                                                        </ItemQuantityNumber>
-                                                        <ItemQuantityPlusButton
-                                                        onClick = {handleIncreaseQuantity}
-                                                        >
-                                                        </ItemQuantityPlusButton>
-                                                    </ItemQuantityButtonWrapper>
-                                                    <div style={{
+                                    <ItemDetailList>
+                                        <ItemDetailListTitle>수량 선택</ItemDetailListTitle>
+                                        <ItemDetailListTextWrapper>
+                                            <ItemDetailListText>
+                                                <ItemQuantityWrapper>
+                                                    <ItemDetailListSmallTitleWrapper>
+
+                                                    </ItemDetailListSmallTitleWrapper>
+                                                    <ItemQuantity>
+                                                        <ItemQuantityButtonWrapper>
+                                                            <ItemQuantityMinusButton
+                                                                onClick={handleDecreaseQuantity}
+                                                                disabled={quantity === 1}
+                                                                style={{
+                                                                    backgroundColor: quantity === 1 ? "#f1f3f5" : "white",
+                                                                }}
+                                                            >
+                                                            </ItemQuantityMinusButton>
+                                                            <ItemQuantityNumber>
+                                                                {quantity}
+                                                            </ItemQuantityNumber>
+                                                            <ItemQuantityPlusButton
+                                                                onClick={handleIncreaseQuantity}
+                                                            >
+                                                            </ItemQuantityPlusButton>
+                                                        </ItemQuantityButtonWrapper>
+                                                        <div style={{
                                                             paddingTop: "4px",
                                                         }}
                                                         >
                                                             <ItemQuantityPrice>
-                                                            {productData ? formatPrice(productData.discountedPrice) : "상품가격"}원
+                                                                {productData ? formatPrice(productData.discountedPrice) : "상품가격"}원
                                                             </ItemQuantityPrice>
                                                         </div>
                                                 </ItemQuantity>
@@ -341,48 +343,48 @@ function DetailItemBoard() {
                     </ItemDetail>
 
 
-                        {/* Nav */}
-                        <ItemDetailNavWrapper>
-                            <ItemDetailNavUl>
-                                <ItemDetailNavLi>
-                                    <ItemDetailNavA onClick={() => descriptionRef.current.scrollIntoView({ behavior: 'smooth' })}>
-                                        상품설명
-                                    </ItemDetailNavA>
-                                </ItemDetailNavLi>
-                                <ItemDetailNavLi>
-                                    <ItemDetailNavA onClick={() => detailsRef.current.scrollIntoView({ behavior: 'smooth' })}>
-                                        상세정보
-                                    </ItemDetailNavA>
-                                </ItemDetailNavLi>
-                                <ItemDetailNavLi>
-                                    <ItemDetailNavA onClick={() => reviewsRef.current.scrollIntoView({ behavior: 'smooth' })}>
-                                        후기
-                                    </ItemDetailNavA>
-                                </ItemDetailNavLi>
-                                <ItemDetailNavLi>
-                                    <ItemDetailNavA>
-                                        문의
-                                    </ItemDetailNavA>
-                                </ItemDetailNavLi>
-                            </ItemDetailNavUl>
-                        </ItemDetailNavWrapper>
+                    {/* Nav */}
+                    <ItemDetailNavWrapper>
+                        <ItemDetailNavUl>
+                            <ItemDetailNavLi>
+                                <ItemDetailNavA onClick={() => descriptionRef.current.scrollIntoView({ behavior: 'smooth' })}>
+                                    상품설명
+                                </ItemDetailNavA>
+                            </ItemDetailNavLi>
+                            <ItemDetailNavLi>
+                                <ItemDetailNavA onClick={() => detailsRef.current.scrollIntoView({ behavior: 'smooth' })}>
+                                    상세정보
+                                </ItemDetailNavA>
+                            </ItemDetailNavLi>
+                            <ItemDetailNavLi>
+                                <ItemDetailNavA onClick={() => reviewsRef.current.scrollIntoView({ behavior: 'smooth' })}>
+                                    후기
+                                </ItemDetailNavA>
+                            </ItemDetailNavLi>
+                            <ItemDetailNavLi>
+                                <ItemDetailNavA>
+                                    문의
+                                </ItemDetailNavA>
+                            </ItemDetailNavLi>
+                        </ItemDetailNavUl>
+                    </ItemDetailNavWrapper>
 
-                        {/* 상품설명 */}
-                        <div style = {{
-                            width: "100%",
-                        }}
-                        >
-                            <img style = {{ width: "100%",}} src = {`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_1.png`} ref={descriptionRef}></img>
-                            <img style = {{ width: "100%",}} src = {`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_2.png`} ref={detailsRef}></img>
-                        </div>            
-                    <div ref={reviewsRef}>
-                        <GoodsRevw/>
+                    {/* 상품설명 */}
+                    <div style={{
+                        width: "100%",
+                    }}
+                    >
+                        <img style={{ width: "100%", }} src={`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_1.png`} ref={descriptionRef}></img>
+                        <img style={{ width: "100%", }} src={`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_2.png`} ref={detailsRef}></img>
                     </div>
-                    </ItemDetailWrapper>    
+                    <div ref={reviewsRef}>
+                        <GoodsRevw />
+                    </div>
+                </ItemDetailWrapper>
 
                     <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={productData} />
             </Container>
-            
+
         </>
     );
 };

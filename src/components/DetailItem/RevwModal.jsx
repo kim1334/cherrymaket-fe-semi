@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
-
+import GoodsRevw from './GoodsRevw';
 // 모달 컴포넌트 스타일
 
 const ModalReviewLikeButton = styled.button`
@@ -207,9 +207,8 @@ padding-top: 14px;
   color: rgb(153, 153, 153);
 }
 `;
-
 // 모달 컴포넌트
-function RevwModal({ isOpen, onClose, children }) {
+function RevwModal({ isOpen, onClose, children, userId, reviewId, userName, subject, content, createDate }) {
   const [isLiked, setIsLiked] = useState(false);
 
   const handleLikeClick = () => {
@@ -217,15 +216,15 @@ function RevwModal({ isOpen, onClose, children }) {
   };
 
   useEffect(() => {
-      if(isOpen){
-          document.body.style.overflow = 'hidden';
-      } else {
-          document.body.style.overflow = '';
-      }
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
 
-      return () => {
-          document.body.style.overflow = '';
-      }
+    return () => {
+      document.body.style.overflow = '';
+    }
   }, [isOpen]);
   if (!isOpen) return null;
 
@@ -233,27 +232,27 @@ function RevwModal({ isOpen, onClose, children }) {
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
-            <span>사진 후기</span>
-            <CloseButton onClick={onClose}>X</CloseButton>
+          <span>사진 후기</span>
+          <CloseButton onClick={onClose}>X</CloseButton>
         </ModalHeader>
         <ModalBodyWrapper>
           <ModalBody>
             <ModalBodyLeft>
-              <span><ModalImg src="https://kr.object.ncloudstorage.com/cherry-product/0093774/0093774_0.png" alt="상품후기 이미지"/></span>
+              <span><ModalImg src={`https://kr.object.ncloudstorage.com/cherry-resource/goodReview/${userId}/${reviewId}/2.jpg`} alt="상품후기 이미지" /></span>
             </ModalBodyLeft>
             <ModalBodyRight>
-              <ModalRevwWriter><span>작성자</span></ModalRevwWriter>
-              <div style={{position: 'relative'}}>
-                <ModalRevwTitle><span>[KF365] 1+등급 무항생제 대란 20구</span></ModalRevwTitle>
+              <ModalRevwWriter><span>{userName}</span></ModalRevwWriter>
+              <div style={{ position: 'relative' }}>
+                <ModalRevwTitle><span>{subject}</span></ModalRevwTitle>
               </div>
               <ModalRevw>
-                <p>한개가 깨져서 그줄 4개가 다붙어서 떼내다 다깨졌어요 </p>
+                <p>{content}</p>
               </ModalRevw>
               <ModalRevwFooter>
-                <span>2023-12-15</span>
+                <span>{createDate}</span>
                 <ModalReviewLikeButton onClick={handleLikeClick}>
                   <ModalReviewLikeButtonIcon>
-                    {isLiked ?  <FaHeart /> : <FaRegHeart />}
+                    {isLiked ? <FaHeart /> : <FaRegHeart />}
                   </ModalReviewLikeButtonIcon>
                   <span>좋아요</span>
                 </ModalReviewLikeButton>

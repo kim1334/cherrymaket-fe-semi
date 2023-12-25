@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Container, SubTitleWrapper,SubTitleItemWrapper, SubTitleItem, Title, TitleWraper, ItemWideWrapper, ItemBlank, ItemWrapper, ItemTopWrapper, ItemCount, ItemSortWrapper, ItemSortItem, ItemSort, ItemListWrapper, ButtonWrapper, NextButton, PrevButton } from './Style';
+import { Container, SubTitleWrapper, SubTitleItemWrapper, SubTitleItem, Title, TitleWraper, ItemWideWrapper, ItemBlank, ItemWrapper, ItemTopWrapper, ItemCount, ItemSortWrapper, ItemSortItem, ItemSort, ItemListWrapper, ButtonWrapper, NextButton, PrevButton } from './Style';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ItemList from './ItemList';
 import CartMadal from '../CartList/CartMadal';
 const BestItemBoard = () => {
     const [items, setItems] = useState([]);
-    // 페이징
     const [currentPage, setCurrentPage] = useState(1);
-    const [noticePerPage] = useState(12);
+    const [noticePerPage] = useState(20);
     const indexOfLastNotice = currentPage * noticePerPage;
     const indexOfFirstNotice = indexOfLastNotice - noticePerPage;
     const currentItems = items.slice(indexOfFirstNotice, indexOfLastNotice);
@@ -19,28 +18,28 @@ const BestItemBoard = () => {
     const [selectedItem, setSelectedItem] = useState(null);
 
     useEffect(() => {
-            const fetchItem = async () => {
-                try {
+        const fetchItem = async () => {
+            try {
                 const response = await axios.get(
-                    'https://server.marketcherry.store/api/goods/listAll');
-                    console.log('Response data:', response.data);
-                setItems(response.data.content);
+                    'https://server.marketcherry.store/api/goods/listA?sortBy=priceDesc');
+                console.log('Response data:', response.data);
+                setItems(response.data);
             } catch (e) {
                 console.error(e);
             }
         };
-            fetchItem();
+        fetchItem();
     }, []);
-    
-    if(!Array.isArray(items)) {
+
+    if (!Array.isArray(items)) {
         console.error('items is not array', items);
         return null;
     }
 
     const handlePrev = () => {
         setCurrentPage(currentPage => Math.max(currentPage - 1, 1));
-      };
-    
+    };
+
     const handleNext = () => {
     setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
     };
@@ -64,17 +63,17 @@ const BestItemBoard = () => {
                 <TitleWraper>
                     <Title>베스트</Title>
                 </TitleWraper>
-                
+
                 <SubTitleWrapper>
                     <SubTitleItemWrapper>
                         <SubTitleItem>TOP999</SubTitleItem>
                     </SubTitleItemWrapper>
-                    <SubTitleItemWrapper>    
+                    <SubTitleItemWrapper>
                         <SubTitleItem>인기급상승</SubTitleItem>
                     </SubTitleItemWrapper>
                     <SubTitleItemWrapper><SubTitleItem>찜이많은</SubTitleItem>
                     </SubTitleItemWrapper>
-                    <SubTitleItemWrapper>  
+                    <SubTitleItemWrapper>
                         <SubTitleItem>컬리에만있는</SubTitleItem>
                     </SubTitleItemWrapper>
                     <SubTitleItemWrapper>
@@ -115,13 +114,13 @@ const BestItemBoard = () => {
                                         <ItemSort>
                                             낮은 가격순
                                         </ItemSort>
-                                    </ItemSortItem>   
+                                    </ItemSortItem>
                                     <ItemSortItem>
                                         <ItemSort>
                                             높은 가격순
                                         </ItemSort>
                                     </ItemSortItem>
-                                </ItemSortWrapper>      
+                                </ItemSortWrapper>
                             </ItemTopWrapper>
                         </ItemWrapper>
                     </ItemBlank>
@@ -142,18 +141,18 @@ const BestItemBoard = () => {
                   ))}
                 </ItemListWrapper>
                 <ButtonWrapper>
-                <div>
-                    <PrevButton
-                        onClick={handlePrev}
-                        disabled={currentPage === 1}
-                        currentPage={currentPage}
-                    ></PrevButton>
-                    <NextButton onClick={handleNext} disabled={currentPage === totalPages}></NextButton>
-                </div>
+                    <div>
+                        <PrevButton
+                            onClick={handlePrev}
+                            disabled={currentPage === 1}
+                            currentPage={currentPage}
+                        ></PrevButton>
+                        <NextButton onClick={handleNext} disabled={currentPage === totalPages}></NextButton>
+                    </div>
                 </ButtonWrapper>
                 <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={selectedItem} />
             </Container>
-            
+
         </>
     );
 };
