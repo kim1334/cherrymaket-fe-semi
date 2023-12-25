@@ -123,6 +123,7 @@ const MypageAddress = () => {
                     onClose={closeAddressModal}
                     itemAddrss={address}
                     zipCode={zipCode}
+                    handleClick={handleClick}
                   />
                 </div>
               </SecondDiv>

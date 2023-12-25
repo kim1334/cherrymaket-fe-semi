@@ -53,6 +53,7 @@ import GoodsRevw from './GoodsRevw';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import CartMadal from '../CartList/CartMadal';
 function DetailItemBoard() {
     // 페이지 로드 시 최상단으로 스크롤
     useEffect(() => {
@@ -72,8 +73,9 @@ function DetailItemBoard() {
     const [quantity, setQuantity] = useState(1);
     const { goodsCode, goodsName } = useParams();
     const [productData, setProductData] = useState(null);
-
-
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+  
     // nav 이동
     const descriptionRef = useRef(null);
     const detailsRef = useRef(null);
@@ -116,7 +118,20 @@ function DetailItemBoard() {
         setIsBell(!isBell);
     }
 
+    console.log(productData);
 
+    const handleItemClick = () => {
+        openModal();
+      };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      // 모달 닫기 함수
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
 
     return (
         <>
@@ -302,26 +317,27 @@ function DetailItemBoard() {
                                         </ItemAccrualWrapper>
                                     </div>
                                 </div>
-                                <ItemCartButtonWrapper>
-                                    <ItemCartLikeButton onClick={handleLikeClick}>
-                                        <ItemCartLikeImage>
-                                            {isLiked ? <FaHeart /> : <FaRegHeart />}
-                                        </ItemCartLikeImage>
-                                    </ItemCartLikeButton>
-                                    <ItemCartLikeButton onClick={
-                                        handleBellClick}>
-                                        <ItemCartLikeImage>
-                                            {isBell ? <FaBell /> : <FaRegBell />}
-
-                                        </ItemCartLikeImage>
-                                    </ItemCartLikeButton>
-                                    <ItemCartButton>
-                                        <ItemCartButtonSpan>
-                                            장바구니 담기
-                                        </ItemCartButtonSpan>
-                                    </ItemCartButton>
-                                </ItemCartButtonWrapper>
-                            </ItemTitleWrapper>
+                            </div>
+                            <ItemCartButtonWrapper>
+                                <ItemCartLikeButton onClick={handleLikeClick}>
+                                    <ItemCartLikeImage>
+                                        {isLiked ?  <FaHeart /> : <FaRegHeart />}
+                                    </ItemCartLikeImage>
+                                </ItemCartLikeButton>
+                                <ItemCartLikeButton onClick = {
+                                    handleBellClick}>
+                                    <ItemCartLikeImage>
+                                        {isBell ?  <FaBell /> : <FaRegBell />}
+                                        
+                                    </ItemCartLikeImage>
+                                </ItemCartLikeButton>    
+                                <ItemCartButton onClick={handleItemClick}>
+                                    <ItemCartButtonSpan>
+                                        장바구니 담기
+                                    </ItemCartButtonSpan>
+                                </ItemCartButton>
+                            </ItemCartButtonWrapper>
+                        </ItemTitleWrapper>
                         </ItemTextWrapper>
                     </ItemDetail>
 
@@ -365,6 +381,7 @@ function DetailItemBoard() {
                     </div>
                 </ItemDetailWrapper>
 
+                    <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={productData} />
 
             </Container>
 

@@ -3,25 +3,29 @@ import styled from 'styled-components';
 import { TiShoppingCart } from "react-icons/ti";
 import { FaRegCommentDots } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discountedPrice}) => {
+const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discountedPrice,
+onItemClick, item}) => {
   
   const formatPrice = (price) => {
     return new Intl.NumberFormat({ style: 'currency', currency: 'KRW' }).format(price);
   };
   return (
     <>
-     <Link key = {id} to = {`/detailitem/${goodsCode}`}>
+    
       <ItemListWrapper>
+      <Link to = {`/detailitem/${goodsCode}`}>
         <ItemImageWrapper>
           <ItemImageSpan>
-            <ItemImage key = {id} src = {`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_0.png`}/>
+            <ItemImage src = {`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_0.png`}/>
           </ItemImageSpan>
         </ItemImageWrapper>
+        </Link>
         <ItemButtonWrapper>
-          <ItemButton>
+          <ItemButton onClick={() => onItemClick(item)}>
             <ItemButtonSvg><TiShoppingCart /></ItemButtonSvg>담기
           </ItemButton>
         </ItemButtonWrapper>
+        <Link to = {`/detailitem/${goodsCode}`}>
         <ItemTextWrapper>
           <ItemTextDeliveryWrapper>
             <ItemTextDelivery>샛별배송</ItemTextDelivery>
@@ -51,8 +55,9 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discou
           </CommentImageSpan>
           <Comment>9999+</Comment>
         </CommentWrapper>
+        </Link>
       </ItemListWrapper>
-      </Link>
+
     </>
   );
 };

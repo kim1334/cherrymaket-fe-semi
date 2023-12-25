@@ -32,6 +32,7 @@ import QnaUpdate from "../pages/QnaUpdate";
 import ProductPage from "../pages/Admin/ProductPage";
 import PaymentPage from "../pages/Admin/PaymentPage";
 import NoticePage from "../pages/Admin/NoticePage";
+import CompletePayment from '../pages/CompletePayment';
 import Categories from "../pages/Categories";
 const Router = () => {
   return (
@@ -71,6 +72,7 @@ const Router = () => {
           <Route path="/admin/product" element={<ProductPage />} />
           <Route path="/admin/payment" element={<PaymentPage />} />
           <Route path="/admin/Notice" element={<NoticePage />} />
+          <Route path="/order/completepayment/:orderCode" element={<CompletePayment />} />
           <Route path="/category/:categoryId" element={<Categories />} />
         </Routes>
       </BrowserRouter>

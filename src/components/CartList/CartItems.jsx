@@ -4,19 +4,30 @@ import { getCartAysnc } from "../../redux/modules/cartSlice";
 import styled from "styled-components";
 import CartMap from "./CartMap";
 
-const CartItems = () => {
-  const cartData = useSelector((state) => state.cart.cart?.cart);
-
+const CartItems = ({handleGetTotalPrice}) => {
+  
+  const [cartData, setCartData] = useState([]);
+  const cart = useSelector((state) => state.cart.cart);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (cart && cart.itemsByType) {
+      const newCartData = Object.values(cart.itemsByType).flat();
+      setCartData(newCartData);
+    } else {
+      setCartData([]);
+    }
+  }, [cart]);
+
   useEffect(() => {
     dispatch(getCartAysnc());
-  }, []);
-  
+  }, [dispatch]);
+
   return (
     <ListWrap>
-      {cartData?.map((list) => {
-        return <CartMap key={list.productId} list={list}></CartMap>;
-      })}
+      {cartData?.map((item, index) => (
+        <CartMap key={index} item={item} handleGetTotalPrice={handleGetTotalPrice}/>
+      ))}
     </ListWrap>
   );
 };
@@ -25,3 +36,4 @@ export default CartItems;
 const ListWrap = styled.ul`
   border-top: 1px solid black;
 `;
+

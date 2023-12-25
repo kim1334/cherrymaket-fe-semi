@@ -15,11 +15,11 @@ const PaymentGuide = () => {
             <TermsContainer>
                 <TermsItemDiv>
                     <span>개인정보 수집∙이용 및 처리 동의</span>
-                    <TermsBtn>보기</TermsBtn>
+                    {/* <TermsBtn>보기</TermsBtn> */}
                 </TermsItemDiv>
                 <TermsItemDiv style={{marginTop: '15px'}}>
                     <span>전자지급 결제대행 서비스 이용약관 동의</span>
-                    <TermsBtn>보기</TermsBtn>
+                    {/* <TermsBtn>보기</TermsBtn> */}
                 </TermsItemDiv>
                 <TermsStrong>위 내용을 확인하였으며 결제에 동의합니다</TermsStrong>
             </TermsContainer>

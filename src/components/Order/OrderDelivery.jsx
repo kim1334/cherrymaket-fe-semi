@@ -1,30 +1,50 @@
 
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { instance } from "../../redux/modules/instance";
 
 const OrderDelivery = () => {
+    const [addresses, setAddresses] = useState([]);
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const access_token = sessionStorage.getItem('accessToken');
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`,
+                    },
+                };
+                const response = await instance.get("/customer/address/my-list", config);
+                setAddresses(response.data);
+            } catch (error) {
+            }
+        };
+
+        fetchUserData(); // 컴포넌트가 마운트될 때 한 번 데이터 가져오기
+    }, []);
 
     return (
         <div>
             <TitleContainer>
                 <Title>배송정보</Title>
-                <DeliveryChangeGuideContainer>
+                {/* <DeliveryChangeGuideContainer>
                     <DeliveryChangeGuide>배송지 변경 안내 
                         <DeliveryChangeGuideIcon></DeliveryChangeGuideIcon>
                     </DeliveryChangeGuide>
-                </DeliveryChangeGuideContainer>
+                </DeliveryChangeGuideContainer> */}
             </TitleContainer>
             <Deliveryaddress>
                 <DeliveryaddressBox>
                     <DeliveryaddressBoxTitle>배송지</DeliveryaddressBoxTitle>
                     <DeliveryaddressdDetailContainer>
-                    <BasicIcon>기본 배송지</BasicIcon>
-                    <p>서울 관악구 신림동 441-72</p>
-                    <p>go 빌라 502호</p>
+                    <BasicIcon>배송지</BasicIcon>
+                    <p>{addresses[0]?.address}</p>
+                    <p style={{marginTop: "5px"}}>{addresses[0]?.addressDetail}</p>
                     <BtnContainer>
-                        <OrderDeliveryBtn>
+                        {/* <OrderDeliveryBtn>
                             <span3>변경</span3>
-                        </OrderDeliveryBtn>
+                        </OrderDeliveryBtn> */}
                     </BtnContainer>
                     </DeliveryaddressdDetailContainer>
 
@@ -37,13 +57,13 @@ const OrderDelivery = () => {
                     <DeliveryaddressdDetailContainer>
                     <span>문앞</span>
                     <SpanIcon></SpanIcon>
-                    <span>공동현관 비밀번호 (1234)</span>
-                    <p>김주영, 010-4288-1828</p>
-                    <BtnContainer>
+                    <span>안전하게 배송 부탁드립니다</span>
+                    {/* <p style={{marginTop: "5px"}}>김주영, 010-4288-1828</p> */}
+                    {/* <BtnContainer>
                         <OrderDeliveryBtn>
                             <span3>수정</span3>
                         </OrderDeliveryBtn>
-                    </BtnContainer>
+                    </BtnContainer> */}
                     </DeliveryaddressdDetailContainer>
 
                 </DeliveryaddressBox>
@@ -129,17 +149,20 @@ flex: 1 1 0%;
 `;
 
 const BasicIcon = styled.span`
-display: inline-block;
-height: 22px;
-padding: 0px 8px;
-margin-bottom: 8px;
-border-radius: 11px;
-font-weight: 500;
-font-size: 12px;
-line-height: 22px;
-color: rgb(102, 102, 102);
-background-color: rgb(247, 247, 247);
-vertical-align: top;`;
+  display: block;
+  width: 74px;
+  height: 22px;
+  margin-bottom: 7px;
+  border-radius: 11px;
+  background-color: rgb(247, 247, 247);
+  font-weight: 700;
+  font-size: 12px;
+  color: rgb(102, 102, 102);
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: center;
+  box-shadow: 0px 0px 5px rgba(149, 5, 38, 0.5);
+`;
 
 const OrderDeliveryBtn = styled.button`
     display: block;

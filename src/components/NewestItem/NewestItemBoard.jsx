@@ -5,6 +5,7 @@ import { Container, SubTitleWrapper, SubTitleItemWrapper, SubTitleItem, Title, T
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ItemList from './ItemList';
+import CartMadal from '../CartList/CartMadal';
 const NewestItemBoard = () => {
     const [items, setItems] = useState([]);
     // 페이징
@@ -13,7 +14,8 @@ const NewestItemBoard = () => {
     const indexOfLastNotice = currentPage * noticePerPage;
     const indexOfFirstNotice = indexOfLastNotice - noticePerPage;
     const currentItems = items.slice(indexOfFirstNotice, indexOfLastNotice);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
     const totalPages = Math.ceil(items.length / noticePerPage);
     useEffect(() => {
         const fetchItem = async () => {
@@ -39,8 +41,23 @@ const NewestItemBoard = () => {
     };
 
     const handleNext = () => {
-        setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
+    setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
     };
+
+    
+    const handleItemClick = (items) => {
+        setSelectedItem(items);
+        openModal();
+      };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      // 모달 닫기 함수
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
     return (
         <>
             <Container>
@@ -114,17 +131,20 @@ const NewestItemBoard = () => {
                     </ItemBlank>
                 </ItemWideWrapper>
                 <ItemListWrapper>
-                    {Array.isArray(currentItems) && currentItems.map((item) => (
-                        <ItemList
-                            id={item.goodsId}
-                            name={item.goodsName}
-                            goodsCode={item.goodsCode}
-                            description={item.description}
-                            originalPrice={item.price}
-                            discountedPrice={item.discountedPrice}
-                            sale={item.discountRate}
-                        />
-                    ))}
+                  {Array.isArray(currentItems) && currentItems.map((item)=> (
+                    <ItemList
+                    id={item.goodsId}
+                    name={item.goodsName}
+                    goodsCode={item.goodsCode}
+                    description={item.description}
+                    originalPrice={item.price}
+                    discountedPrice = {item.discountedPrice}
+                    sale={item.discountRate}
+                    onItemClick={handleItemClick}
+                    item={item}
+                  />
+                  ))}
+
                 </ItemListWrapper>
                 <ButtonWrapper>
                     <div>
@@ -136,6 +156,7 @@ const NewestItemBoard = () => {
                         <NextButton onClick={handleNext} disabled={currentPage === totalPages}></NextButton>
                     </div>
                 </ButtonWrapper>
+                <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={selectedItem} />
             </Container>
 
         </>

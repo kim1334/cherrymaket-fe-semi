@@ -18,7 +18,7 @@ export const loginThunk = createAsyncThunk(
       sessionStorage.setItem("accessToken", response.data.accessToken); // 토큰을 세션 스토리지에 저장
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      alert(error.response.data.errorMessage); // 에러 발생시 메시지 출력
+      alert("아이디와 비밀번호를 확인해주세요"); // 에러 발생시 메시지 출력
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }

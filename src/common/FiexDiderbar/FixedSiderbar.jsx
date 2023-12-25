@@ -39,12 +39,16 @@ const FixedSiderbar = () => {
             </A>
           </ImgDiv>
           <BtnDiv>
-            <BtnA>
-              <BtnItem>등급별 혜택</BtnItem>
-            </BtnA>
-            <BtnA>
-              <BtnItem>레시피</BtnItem>
-            </BtnA>
+            <Link to="/cart">
+              <BtnA>
+                <BtnItem>장바구니</BtnItem>
+              </BtnA>
+            </Link>
+            <Link to="/newest">
+              <BtnA>
+                <BtnItem>베스트</BtnItem>
+              </BtnA>
+            </Link>
           </BtnDiv>
           <ProcudtDiv>
             <button type="button" style={{ width: "100%" }}></button>

@@ -28,7 +28,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCartAysnc } from "../../redux/modules/cartSlice";
 import { initializeLogin } from '../../redux/modules/loginSlice.jsx';
 import axios from 'axios';
-
+import { useHistory } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [showFixedHeader, setShowFixedHeader] = useState(false);
@@ -36,9 +37,26 @@ const Header = () => {
   const userData = useSelector((state) => state.login.user);
   const dispatch = useDispatch();
   const [userName, setUserName] = useState('');
-
   const access_token = sessionStorage.getItem('accessToken');
   const baseUrl = process.env.REACT_APP_API;
+  const CartList = useSelector((state) => state.cart?.cart);
+  const [cartLength, setCartLength] = useState(0);
+
+  useEffect(() => {
+    if (CartList && CartList.itemsByType) {
+      const newCartData = Object.values(CartList.itemsByType).flat();
+      setCartLength(newCartData);
+    } else {
+      setCartLength([]);
+    }
+  }, [CartList]);
+
+  useEffect(() => {
+ 
+    if (isLoggedIn && access_token) {
+      dispatch(getCartAysnc()); 
+    }
+  }, [isLoggedIn, access_token]);
 
 
   // async 함수 정의 
@@ -69,7 +87,6 @@ const Header = () => {
     }
   }, [dispatch]);
 
-  const CartList = useSelector((state) => state?.cart?.cart?.cart);
 
 
   useEffect(() => {
@@ -93,9 +110,11 @@ const Header = () => {
 
 
 
+  const navigate = useNavigate();
   const onLogOut = useCallback(() => {
     sessionStorage.clear(); // 로그아웃 시 세션 스토리지의 모든 데이터를 삭제합니다.
     window.location.reload(); // 페이지를 새로고침합니다.
+    navigate('/'); // 홈으로 이동합니다.
   }, [dispatch]);
 
 
@@ -112,6 +131,7 @@ const Header = () => {
 
   return (
     <>
+  
       <Headercoupon />
       <HeadTop>
         <UserHead>
@@ -221,7 +241,7 @@ const Header = () => {
               <CartIconWrap>
                 <Link to="/cart">
                   <button>
-                    {CartList?.length > 0 && <span>{CartList?.length}</span>}
+                    {cartLength?.length > 0 && <span>{cartLength?.length}</span>}
                   </button>
                 </Link>
               </CartIconWrap>
@@ -230,7 +250,9 @@ const Header = () => {
         </HeadMain>
       </HeadTop>
       <HeaderNav />
+      
       {showFixedHeader && <FixedHeader CartList={CartList} />}
+      
     </>
   );
 };

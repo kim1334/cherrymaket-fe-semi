@@ -29,8 +29,8 @@ const StBtn = styled.button`
   height: ${(p) => p.height || "44px"};
 
   border-radius: 4px;
-  border: ${(p) => p.border || "1px solid #5f0080"};
-  color: ${(p) => p.color || "#5f0080"};
+  border: ${(p) => p.border || "1px solid rgb(149, 5, 38)"};
+  color: ${(p) => p.color || "rgb(149, 5, 38)"};
   background-color: ${(p) => p.backgroundColor || "white"};
 
   font-size: ${(p) => p.fontSize || "14px"};
