@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { TiShoppingCart } from "react-icons/ti";
 import { FaRegCommentDots } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-const ItemList = ({ id, name, originalPrice, sale, description, goodsCode, discountedPrice }) => {
+const ItemList = ({ id, name, originalPrice, sale, description, goodsCode, discountedPrice,
+  onItemClick, item }) => {
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat({ style: 'currency', currency: 'KRW' }).format(price);
@@ -11,15 +12,17 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode, disco
 
   return (
     <>
-      <Link key={id} to={`/detailitem/${goodsCode}`}>
+      
         <ItemListWrapper>
+        <Link key={id} to={`/detailitem/${goodsCode}`}>
           <ItemImageWrapper>
             <ItemImageSpan>
               <ItemImage key={id} src={`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_0.png`} />
             </ItemImageSpan>
           </ItemImageWrapper>
+          </Link>
           <ItemButtonWrapper>
-            <ItemButton>
+            <ItemButton onClick={() => onItemClick(item)}>
               <ItemButtonSvg><TiShoppingCart /></ItemButtonSvg>담기
             </ItemButton>
           </ItemButtonWrapper>
@@ -53,7 +56,7 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode, disco
             <Comment>9999+</Comment>
           </CommentWrapper>
         </ItemListWrapper>
-      </Link>
+
     </>
   );
 };
@@ -61,12 +64,11 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode, disco
 
 export default ItemList;
 
-const ItemListWrapper = styled.a`
+const ItemListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 573px;
   color: rgb(51, 51, 51);
-  cursor: pointer;
 `;
 
 const ItemImageWrapper = styled.div`
@@ -84,6 +86,7 @@ const ItemImageSpan = styled.span`
   justify-content: center;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 `;
 
 const ItemImage = styled.img`
@@ -93,6 +96,10 @@ object-fit: contain; // 이미지 비율을 유지하면서 부모 컨테이너�
 border: 0;
 padding: 0;
 margin: auto; // 이미지를 중앙에 위치시킴
+transition: all 0.5s ease-in-out 0s;
+ &:hover {
+    transform: scale(1.05); 
+  }
 `;
 
 const ItemButtonWrapper = styled.div`

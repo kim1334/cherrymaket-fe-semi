@@ -5,18 +5,27 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 
-const  GoodsBox = (props) => {
+const  GoodsBox = ({item, onItemClick, orderStatus}) => {
   const access_token = sessionStorage.getItem("accessToken");
   const baseUrl = process.env.REACT_APP_API;
   const [goodsCode, setGoodsCode] = useState([]);
   const received = "배송 완료";
   
+  console.log(item);
+
+  const statusMessages = {
+    ORDER_RECEIVED: "주문 접수됨",
+    PREPARING_FOR_SHIPMENT: "배송 준비 중",
+    IN_TRANSIT: "배송 중",
+    DELIVERED: "배송 완료",
+    CANCELED: "배송 취소됨"
+  };
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/goods/detail?goodsId=${props.item.goodsId}`, {
+        const response = await axios.get(`${baseUrl}/goods/detail?goodsId=${item.goodsId}`, {
           headers: {
             'Authorization': `Bearer ${access_token}`,
           }
@@ -43,21 +52,21 @@ const  GoodsBox = (props) => {
     <Container>
       <Img src={generateImageUrl()}></Img>
       <TitleDiv>
-        <A>{props.item.goodsName}</A>
+        <A>{item.goodsName}</A>
         <PriceDiv>
-          <PriceSpan>{props.item.price.toLocaleString()}원</PriceSpan>
-          <CountSpna>{props.item.quantity}개</CountSpna>
+          <PriceSpan>{item.price.toLocaleString()}원</PriceSpan>
+          <CountSpna>{item.quantity}개</CountSpna>
         </PriceDiv>
       </TitleDiv>
-      <StatusSpan>{props.orderStatus}</StatusSpan>
+      <StatusSpan>{statusMessages[orderStatus]}</StatusSpan>
       <BtnWapr>
       <Link to="/mypage/review">
         <ReviewBtn>
           <BtnSpan>후기작성</BtnSpan>
         </ReviewBtn>
         </Link>
-        <CartBtn>
-          <BtnSpan>장바구니 담기</BtnSpan>
+        <CartBtn onClick={() => onItemClick(item)}>
+          <BtnSpan >장바구니 담기</BtnSpan>
         </CartBtn>
       </BtnWapr>
     </Container>
@@ -82,9 +91,9 @@ display: block;
     width: 96px;
     height: 36px;
     border-radius: 3px;
-    color: rgb(95, 0, 128);
+    color: rgb(149, 5, 38);
     background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(95, 0, 128);
+    border: 1px solid rgb(149, 5, 38);
     cursor: pointer;
 `;
 
@@ -97,7 +106,7 @@ const ReviewBtn = styled.button`
     height: 36px;
     border-radius: 3px;
     color: rgb(255, 255, 255);
-    background-color: rgb(95, 0, 128);
+    background-color: rgb(149, 5, 38);
     border: 0px none;
     cursor: pointer;
 `;

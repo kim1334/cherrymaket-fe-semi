@@ -64,7 +64,6 @@ useEffect(() => {
   fetchData();
 }, []);
 
-console.log(cartData)
 
 useEffect(() => {
  
@@ -87,27 +86,20 @@ useEffect(() => {
     setTotalDiscounted(totalDiscountAmount);
 }, [cartData]); 
 
-console.log(totalDiscounted)
-
 const filteredData = cartData?.filter((item) => item.discountedPrice !== null);
-
-console.log('디스카운트가 널 값이 아닌 항목들:', filteredData);
 
 const handleGetTotalPrice = () => {
   dispatch(getCartAysnc());
 }
 
 
-
-
-
-
   return (
+    <>
+    <Header cartList = {cart}/>
     < >
-      <Header cartList = {cart}/>
       <Layouts>
         <JustCart>
-          <h2 style={{marginRight:"30px"}}>장바구니</h2>
+          <h2 style={{marginRight:"30px", marginTop: "10px"}}>장바구니</h2>
         </JustCart>
         <CartWrap >
           <LeftSide>
@@ -119,6 +111,7 @@ const handleGetTotalPrice = () => {
           </LeftSide>
           <RightSide>
             <CartStatusWrap>
+            <SelectNav></SelectNav>
               <SearchLocation>
                 <h3>배송지</h3>
                 <div>
@@ -191,7 +184,8 @@ const handleGetTotalPrice = () => {
           </RightSide>
         </CartWrap>
       </Layouts>
-      <Footer />
+    </>
+    <Footer />
     </>
   );
 };
@@ -231,8 +225,8 @@ const CartContainer = styled.div`
 `;
 
 const SelectNav = styled.div`
-  padding: 18px 10px 16px 2px;
-  height: 60px;
+padding: 5px 10px 16px 2px;
+
 `;
 
 const ButtonWrap = styled.div`

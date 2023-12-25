@@ -29,7 +29,6 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discou
             <ItemButtonSvg><TiShoppingCart /></ItemButtonSvg>담기
           </ItemButton>
         </ItemButtonWrapper>
-        <Link to = {`/detailitem/${goodsCode}`}>
         <ItemTextWrapper>
           <ItemTextDeliveryWrapper>
             <ItemTextDelivery>샛별배송</ItemTextDelivery>
@@ -59,7 +58,6 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discou
           </CommentImageSpan>
           <Comment>9999+</Comment>
         </CommentWrapper>
-        </Link>
       </ItemListWrapper>
      
     </>
@@ -74,7 +72,6 @@ const ItemListWrapper = styled.div`
   flex-direction: column;
   height: 573px;
   color: rgb(51, 51, 51);
-  cursor: pointer;
 `;
 
 const ItemImageWrapper = styled.div`
@@ -84,6 +81,8 @@ const ItemImageWrapper = styled.div`
   background-color: rgb(245, 245, 245);
   width: 249px;
   height: 320px;
+  cursor: pointer;
+
 `;
 
 const ItemImageSpan = styled.span`
@@ -101,6 +100,10 @@ object-fit: contain; // 이미지 비율을 유지하면서 부모 컨테이너�
 border: 0;
 padding: 0;
 margin: auto; // 이미지를 중앙에 위치시킴
+transition: all 0.5s ease-in-out 0s;
+ &:hover {
+    transform: scale(1.05); 
+  }
 `;
 
 const ItemButtonWrapper = styled.div`
