@@ -85,6 +85,7 @@ function DetailItemBoard() {
             .then(response => {
                 setProductData(response.data);
                 console.log("response.data", response.data);
+                console.log("goodsId", response.data.goodsId);
             })
             .catch(error => {
                 console.error('Error fetching product data', error);
@@ -360,7 +361,7 @@ function DetailItemBoard() {
                         <img style={{ width: "100%", }} src={`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_2.png`} ref={detailsRef}></img>
                     </div>
                     <div ref={reviewsRef}>
-                        <GoodsRevw />
+                        <GoodsRevw goodsId={productData?.goodsId} />
                     </div>
                 </ItemDetailWrapper>
 

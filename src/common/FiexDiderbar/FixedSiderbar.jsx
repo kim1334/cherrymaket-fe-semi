@@ -1,9 +1,33 @@
+import win from "global";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+
+
+
 const FixedSiderbar = () => {
+  const [isFixed, setIsFixed] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const triggerPosition = 400; // 고정 시작 위치
+      const bottomStopPosition = 2500; // 고정 멈추는 위치
+
+      if (scrollY > triggerPosition && scrollY < bottomStopPosition) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <>
-      <Container>
+      <Container isFixed={isFixed}>
         <Warpper>
           <ImgDiv>
             <A>
@@ -203,23 +227,24 @@ const ImgDiv = styled.div`
 `;
 
 const Container = styled.div`
-  position: absolute;
-  top: 70px;
-  right: 20px;
-  bottom: -236px;
-  z-index: 1;
-  margin-top: 236px;
-  overflow: hidden;
+position: fixed;
+top: 600px; /* Adjust this value based on your design */
+right: 20px;
+bottom: 0; /* Keep this as 0 to make it stretch till the bottom */
+z-index: 1;
+overflow: hidden;
+
+${(props) => props.isFixed && `
+    position: fixed;
+    top: 100px; /* 고정시킬 위치 조절 */
+`}
 `;
 
 const Warpper = styled.div`
-position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 80px;
-  font-size: 12px;
-  line-height: 16px;
-  color: rgb(51, 51, 51);
-  letter-spacing: -0.3px;
-  right: 20px;
+width: 80px;
+font - size: 12px;
+line - height: 16px;
+color: rgb(51, 51, 51);
+letter - spacing: -0.3px;
+/* Add other styles as needed */
 `;
