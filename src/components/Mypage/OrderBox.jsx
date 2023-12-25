@@ -31,7 +31,7 @@ function OrderBox(props) {
             </Dl>
             <Dl>
               <Dt>결제금액</Dt>
-              <Dd>{props.item.amount}</Dd>
+              <Dd>{props.item.amount.toLocaleString()}원</Dd>
             </Dl>
             </div>
           </Div3>

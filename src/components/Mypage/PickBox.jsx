@@ -132,9 +132,9 @@ display: block;
     width: 104px;
     height: 36px;
     border-radius: 4px;
-    color: rgb(95, 0, 128);
+    color: rgb(149, 5, 38);
     background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(95, 0, 128);
+    border: 1px solid rgb(149, 5, 38);
 `;
 
 export const Img = styled.img`

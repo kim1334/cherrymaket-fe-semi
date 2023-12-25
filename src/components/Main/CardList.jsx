@@ -24,6 +24,8 @@ const FixedImg = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  console.log(FiexdItemPrice)
+
 
   useEffect(() => {
     const fetchData = async () => {

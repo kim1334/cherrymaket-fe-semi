@@ -15,7 +15,9 @@ export const joinThunk = createAsyncThunk(
     try {
       console.log("페이로드 데이터:", payload);
       const response = await instance.post("/account/sign-up", payload);
+      console.log("회원가입 요청 성공:", response);
       console.log(instance.post);
+
       return thunkAPI.fulfillWithValue(response.data); //thunkAPI를 이용해 통신 성공할 시 값 반환
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response); //통신 실패시 에러값 반환
@@ -103,15 +105,15 @@ const joinSlice = createSlice({
     },
     [idCheckThunk.rejected]: (state, action) => {
       state.isIdUsable = false;
-      alert(action.payload.errorMessage); // 중복된 아이디 입니다.
+      alert("중복된 이메일 입니다."); // 중복된 아이디 입니다.
     },
     [emailCheckThunk.fulfilled]: (state, action) => {
       state.isEmailUsable = true;
-      alert(action.payload.Message); // 사용 가능한 이메일 입니다.
+      alert("사용 가능한 email 입니다."); // 사용 가능한 이메일 입니다.
     },
     [emailCheckThunk.rejected]: (state, action) => {
       state.isEmailUsable = false;
-      alert(action.payload.errorMessage); // 중복된 이메일 입니다.
+      alert("중복된 이메일 입니다."); // 중복된 이메일 입니다.
     },
     // [emailAuthThunk.fulfilled]: (state, action) => {
     //   console.log(action.payload);

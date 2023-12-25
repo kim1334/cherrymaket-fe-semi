@@ -7,7 +7,14 @@ export const getCartAysnc = createAsyncThunk(
   "get/CartList",
   async (data, thunkAPI) => {
     try {
-      const res = await instance.get("/cart/refresh-available");
+      const access_token = sessionStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      };
+      const res = await instance.get("/cart/refresh-available", config);
+      console.log(res.data);
       return res.data;
     } catch (error) {
       console.error(error);
@@ -18,20 +25,17 @@ export const getCartAysnc = createAsyncThunk(
 export const deleteCartAysnc = createAsyncThunk(
   "delete/CartList",
   async (data, thunkAPI) => {
-    try {
-      const res = await instance.delete(`/cart/${data}`);
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-);
+    
 
-export const editCartAysnc = createAsyncThunk(
-  "edit/CartList",
-  async (data, thunkAPI) => {
+    const access_token = sessionStorage.getItem("accessToken");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    };
     try {
-      const res = await instance.put(`/cart/${data.productId}`, data.quantity);
+      const res = await instance.delete(`/cart/delete?cartId=${data.cartId}`, config);
+      console.log("cartId", data.cartId);
       return res.data;
     } catch (error) {
       console.error(error);
@@ -53,6 +57,34 @@ export const addCartAysnc = createAsyncThunk(
   }
 );
 
+
+export const editCartAysnc = createAsyncThunk(
+  "edit/CartList",
+  async (data, thunkAPI) => {
+    try {
+
+      const access_token = sessionStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      };
+
+      const res = await instance.patch(`/cart/update`, {
+        cartId: data.cartId,
+        quantity: data.quantity,
+      },
+      config
+      );
+      return res.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
+
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -60,11 +92,10 @@ export const cartSlice = createSlice({
     calcPrice: (state, action) => {
       let totalPrice = 0;
       const list = action.payload;
-      // console.log(list);
       list.map((item) => {
-        return (totalPrice += item.price);
+        return (totalPrice += item.price * item.quantity);
       });
-      // console.log(totalPrice);
+      console.log(totalPrice);
       return { ...state, totalPrice: totalPrice };
     },
   },
@@ -82,9 +113,9 @@ export const cartSlice = createSlice({
         ...state,
         message: action.payload,
       }))
-      .addCase(editCartAysnc.fulfilled, (state, aciont) => ({
+      .addCase(editCartAysnc.fulfilled, (state, action) => ({
         ...state,
-        message: aciont.payload,
+        message: action.payload,
       }));
   },
 });

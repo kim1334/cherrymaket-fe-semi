@@ -1,5 +1,6 @@
 import  React from "react";
 import styled from "styled-components";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 
 const Coupon = () => {
@@ -15,13 +16,13 @@ return (
                 <BtnC>
                     <CouponBtn1>
                     사용가능 쿠폰 0장 / 전체 0
-                    <CouponListBtn></CouponListBtn>
+                    <CouponListBtn style={{marginTop : "3px", fontSize: "20px"}}><IoMdArrowDropdown /></CouponListBtn>
                     </CouponBtn1>
                 </BtnC>
             </BtnDiv>
-            <CouponBtn type="button">
+            {/* <CouponBtn type="button">
                 <TextSapn>쿠폰 사용 문의(카카오톡)</TextSapn>
-            </CouponBtn>
+            </CouponBtn> */}
         </CouponContainer2>
     </div>
 
@@ -63,7 +64,7 @@ flex: 1 1 0%;
 `;
 
 const CouponBtn = styled.button`
-color: rgb(95, 0, 128);
+color: rgb(149, 5, 38);
     font-size: 12px;
 
 `;
