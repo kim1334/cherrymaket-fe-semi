@@ -19,6 +19,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const MyOrderDetail = () => {
+  
+  
   const { orderCode } = useParams();
   const [details, setDetails] = useState([]);
   const [deliveryInfo, setDeliveryInfo] = useState([]);

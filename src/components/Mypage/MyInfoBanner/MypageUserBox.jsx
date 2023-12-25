@@ -1,13 +1,15 @@
 import styled from "styled-components";
 
 
-const MypageUserBox = () => {
+const MypageUserBox = ({userData}) => {
+
+
     return (
         <MyPageUser>
         <UserItem1>
             <UserLevel>일반</UserLevel>
             <UserContainer>
-                <strong>김주영 님</strong>
+                <strong>{userData?.name} 님</strong>
                 <RatingContainer>
                     <RatingBtn>다음달 등급 확인</RatingBtn>
                     <Unber></Unber>
@@ -19,7 +21,7 @@ const MypageUserBox = () => {
             <MembersLink>
                 <SpanContainer>
                     <NewSpan>new</NewSpan>
-                    <span>컬리멤버스 <small>월 1,900원으로 10배 쿠폰받기 &nbsp;&nbsp;></small></span>
+                    <span>컬리 MyPage <small>나의 정보를 확인해보세요 &nbsp;&nbsp;</small></span>
                 </SpanContainer>
             </MembersLink>
         </UserItemContainer2>
@@ -95,6 +97,7 @@ const RatingBtn = styled.button`
     font-size: 12px;
     line-height: 20px;
     color: rgb(153, 153, 153);
+    background-color: transparent;
 `;
 
 const MembersLink = styled.a`
@@ -119,4 +122,8 @@ const NewSpan = styled.span`
     text-align: center;
 `;
 
-const SpanContainer = styled.span``;
+const SpanContainer = styled.span`
+display: flex;
+    font-size: 12px;
+    line-height: 18px;
+`;

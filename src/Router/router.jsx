@@ -34,6 +34,9 @@ import PaymentPage from "../pages/Admin/PaymentPage";
 import NoticePage from "../pages/Admin/NoticePage";
 import CompletePayment from '../pages/CompletePayment';
 import Categories from "../pages/Categories";
+import SearchPage from '../pages/SearchPage';
+import {KAKAO_AUTH_URL} from "../components/OAuth/OAuth";
+import OAuth2RedirectHandler from "../components/OAuth/OAuth2RedirectHandeler";
 const Router = () => {
   return (
     <>
@@ -74,6 +77,9 @@ const Router = () => {
           <Route path="/admin/Notice" element={<NoticePage />} />
           <Route path="/order/completepayment/:orderCode" element={<CompletePayment />} />
           <Route path="/category/:categoryId" element={<Categories />} />
+          <Route path="/search/:name" element={<SearchPage />} />
+          <Route path="/oauth" element={<KAKAO_AUTH_URL/>} />
+          <Route path="/oauth/callback/kakao" element={<OAuth2RedirectHandler/>} />
         </Routes>
       </BrowserRouter>
     </>

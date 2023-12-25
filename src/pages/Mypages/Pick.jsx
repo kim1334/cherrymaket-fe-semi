@@ -13,6 +13,8 @@ import { UlWrapper } from "../../components/CustomerService/FaqBoard.jsx";
 import PickBox from "../../components/Mypage/PickBox.jsx";
 import FixedSiderbar from "../../common/FiexDiderbar/FixedSiderbar.jsx";
 import Footer from "../../common/Footer/Footer.jsx";
+import styled from 'styled-components';
+import Picknone from '../../components/Mypage/Picknone.jsx';
 
 
 const Pick = () => {
@@ -34,8 +36,8 @@ const Pick = () => {
             </Title>
         </TitleWraper>
         <UlWrapper style={{borderTop: '2px solid rgb(51, 51, 51)'}}>
-        <PickBox />
-        <PickBox />
+            <Picknone />
+        {/* <PickBox /> */}
         </UlWrapper>
         </Container>
         </FlexWrapper>
@@ -46,3 +48,4 @@ const Pick = () => {
 }
 
 export default Pick;
+

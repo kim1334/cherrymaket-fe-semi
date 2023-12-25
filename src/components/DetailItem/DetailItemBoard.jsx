@@ -76,6 +76,7 @@ function DetailItemBoard() {
     const [selectedItem, setSelectedItem] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
   
+
     // nav 이동
     const descriptionRef = useRef(null);
     const detailsRef = useRef(null);
@@ -131,6 +132,8 @@ function DetailItemBoard() {
       const closeModal = () => {
         setIsModalOpen(false);
       };
+
+    
 
     return (
         <>
@@ -287,34 +290,33 @@ function DetailItemBoard() {
                                                                 {productData ? formatPrice(productData.discountedPrice) : "상품가격"}원
                                                             </ItemQuantityPrice>
                                                         </div>
-                                                    </ItemQuantity>
-                                                </ItemQuantityWrapper>
-                                            </ItemDetailListText>
-                                        </ItemDetailListTextWrapper>
-                                    </ItemDetailList>
-                                </ul>
-                                <div style={{
-                                    paddingTop: "30px",
-                                }}
-                                >
-                                    <div style={{
-                                        letterSpacing: "-0.5px",
-                                    }}>
-                                        <TotalPriceWrapper>
-                                            <TotalPriceText>
-                                                총 상품금액 :
-                                            </TotalPriceText>
-                                            <TotalPrice>{productData ? formatPrice(productData.discountedPrice * quantity) : "상품가격"}원</TotalPrice>
-                                        </TotalPriceWrapper>
-                                        <ItemAccrualWrapper>
-                                            <ItemAccrualBorder>
-                                                적립
-                                            </ItemAccrualBorder>
-                                            <ItemAccrualText>
-                                                로그인 후, 적립혜택 제공
-                                            </ItemAccrualText>
-                                        </ItemAccrualWrapper>
-                                    </div>
+                                                </ItemQuantity>
+                                            </ItemQuantityWrapper>
+                                        </ItemDetailListText>
+                                    </ItemDetailListTextWrapper>
+                                </ItemDetailList>
+                            </ul>
+                            <div style={{
+                                            paddingTop: "30px",
+                            }}   
+                            >
+                                <div style = {{
+                                    letterSpacing: "-0.5px",
+                                }}>
+                                    <TotalPriceWrapper>
+                                        <TotalPriceText>
+                                            총 상품금액 :
+                                        </TotalPriceText>
+                                        <TotalPrice>{productData ? formatPrice(productData.discountedPrice * quantity) : "상품가격"}원</TotalPrice>
+                                    </TotalPriceWrapper>
+                                    <ItemAccrualWrapper>
+                                        <ItemAccrualBorder>
+                                            적립
+                                        </ItemAccrualBorder>
+                                        <ItemAccrualText>
+                                            로그인 후, 적립혜택 제공
+                                        </ItemAccrualText>
+                                    </ItemAccrualWrapper>
                                 </div>
                             </div>
                             <ItemCartButtonWrapper>
@@ -381,7 +383,6 @@ function DetailItemBoard() {
                 </ItemDetailWrapper>
 
                     <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={productData} />
-
             </Container>
 
         </>
@@ -389,4 +390,3 @@ function DetailItemBoard() {
 };
 
 export default DetailItemBoard;
-

@@ -62,33 +62,17 @@ const NewestItemBoard = () => {
         <>
             <Container>
                 <NewestBanner>
-                    <img
+                <img
                         src="https://img-cf.kurly.com/category/banner/pc/e8443748-7800-4e0a-a8bc-268d72f8e29c"
                         alt="배너 이미지"
+                        style={{
+                            width: '100%', // 이미지의 너비를 100%로 설정
+                            cursor: 'pointer', // 커서를 포인터로 변경
+                            maxWidth: '1050px', // 이미지의 최대 너비를 100%로 설정
+                          }}
                     />
                 </NewestBanner>
                 <NewestHeader>신상품</NewestHeader>
-
-                <SubTitleWrapper>
-                    <SubTitleItemWrapper>
-                        <SubTitleItem>TOP999</SubTitleItem>
-                    </SubTitleItemWrapper>
-                    <SubTitleItemWrapper>
-                        <SubTitleItem>인기급상승</SubTitleItem>
-                    </SubTitleItemWrapper>
-                    <SubTitleItemWrapper><SubTitleItem>찜이많은</SubTitleItem>
-                    </SubTitleItemWrapper>
-                    <SubTitleItemWrapper>
-                        <SubTitleItem>컬리에만있는</SubTitleItem>
-                    </SubTitleItemWrapper>
-                    <SubTitleItemWrapper>
-                        <SubTitleItem>제철신선</SubTitleItem>
-                    </SubTitleItemWrapper>
-                    <SubTitleItemWrapper>
-                        <SubTitleItem>직원추천상품</SubTitleItem>
-                    </SubTitleItemWrapper>
-                </SubTitleWrapper>
-
                 <ItemWideWrapper>
                     <ItemBlank>
                         <ItemWrapper>

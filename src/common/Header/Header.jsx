@@ -31,6 +31,7 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
+
 const Header = () => {
   const [showFixedHeader, setShowFixedHeader] = useState(false);
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
@@ -41,6 +42,7 @@ const Header = () => {
   const baseUrl = process.env.REACT_APP_API;
   const CartList = useSelector((state) => state.cart?.cart);
   const [cartLength, setCartLength] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (CartList && CartList.itemsByType) {
@@ -73,7 +75,6 @@ const Header = () => {
       setUserName(name);
 
     } catch (error) {
-      console.error('Error:', error);
     }
   }
   fetchData();
@@ -128,6 +129,30 @@ const Header = () => {
     }
     // 로그인이 되어 있다면, 추가적인 조치는 필요하지 않습니다.
   };
+
+
+
+  // 검색 버튼 클릭 시 호출되는 함수
+  const handleSearchButtonClick = () => {
+    if (searchQuery.trim() !== "") {
+      // 검색어가 비어 있지 않으면 검색 실행
+      performSearch(searchQuery);
+    } else {
+      alert("검색어를 입력해주세요."); // 검색어가 비어 있을 때 경고 메시지 표시
+    }
+  };
+  
+
+  // 검색을 수행하는 함수 (파라미터로 검색어를 받음)
+  const performSearch = (searchQuery) => {
+    // 여기에서 검색어를 사용하여 원하는 동작을 수행할 수 있습니다.
+    console.log("검색어:", searchQuery);
+    navigate(`/search/${searchQuery}`);
+
+  };
+
+
+
 
   return (
     <>
@@ -228,8 +253,21 @@ const Header = () => {
           </HeadLeft>
           <HeadCenter>
             <SearchForm>
-              <input placeholder="검색어를 입력해주세요" required />
-              <button></button>
+            <input
+                placeholder="검색어를 입력해주세요."
+                required
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                 // 검색어 입력 시 상태 업데이트
+                 onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    // 엔터 키가 눌렸을 때 검색 기능 실행
+                    handleSearchButtonClick();
+                  }
+                }}
+                 
+              />
+              <button onClick={handleSearchButtonClick}></button>
             </SearchForm>
           </HeadCenter>
           <HeadRight>
@@ -251,8 +289,7 @@ const Header = () => {
       </HeadTop>
       <HeaderNav />
       
-      {showFixedHeader && <FixedHeader CartList={CartList} />}
-      
+      {showFixedHeader && <FixedHeader CartList={CartList} cartLength={cartLength} />}
     </>
   );
 };

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCartAysnc } from "../../redux/modules/cartSlice";
 import styled from "styled-components";
 import CartMap from "./CartMap";
+import { BsCartX } from "react-icons/bs";
 
 const CartItems = ({ handleGetTotalPrice }) => {
   const [cartData, setCartData] = useState([]);
@@ -55,7 +56,7 @@ const CartItems = ({ handleGetTotalPrice }) => {
 
   return (
     <>
-      {cartData?.length === 0 && <CartX><CartXP>장바구니에 담긴 상품이 없습니다.</CartXP></CartX>}
+      {cartData?.length === 0 && <CartX><CartXP><SearchIcon></SearchIcon>   장바구니에 담긴 상품이 없습니다.</CartXP></CartX>}
       {refrigeratorData?.length > 0 && <ListWrap>
           <H4 style={{borderBottom: '1px solid rgba(94, 196, 158, 0.5)'}}>
             <TypeSpan>
@@ -83,7 +84,7 @@ const CartItems = ({ handleGetTotalPrice }) => {
         ))}
         </ListWrap>}
         {roomTemperatureData?.length > 0 && <ListWrap>
-          <H4 style={{borderBottom: '1px solid rgba(111, 175, 243, 0.5)'}}>
+          <H4 style={{borderBottom: '1px solid rgba(255, 155, 92, 0.5)'}}>
             <TypeSpan>
                 <TypeSpan1>
                   <RoomTemperatureSpan></RoomTemperatureSpan>
@@ -99,6 +100,12 @@ const CartItems = ({ handleGetTotalPrice }) => {
   );
 };
 export default CartItems;
+
+const SearchIcon = styled(BsCartX )`
+font-size: 30px;
+color: rgb(181, 181, 181);
+
+`;
 
 const RoomTemperatureSpan = styled.span`
 width: 30px;
