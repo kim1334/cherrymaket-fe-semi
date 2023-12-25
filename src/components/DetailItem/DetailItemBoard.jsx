@@ -378,7 +378,7 @@ function DetailItemBoard() {
                         <img style={{ width: "100%", }} src={`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_2.png`} ref={detailsRef}></img>
                     </div>
                     <div ref={reviewsRef}>
-                        <GoodsRevw />
+                        <GoodsRevw goodsId={productData?.goodsId} />
                     </div>
                 </ItemDetailWrapper>
 

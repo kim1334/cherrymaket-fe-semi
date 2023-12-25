@@ -60,7 +60,7 @@ const MyOrderDetail = () => {
             </Title>
           </TitleWraper>
           <ProductDetail goodsDetails={details} orderCode={orderCode}/>
-          <DeliveryBox />
+          {/* <DeliveryBox /> */}
           <PaymentBox paymentDetail={details}/>
              <OrderSender sender={sender} orderCode={orderCode}/> 
           <DelivertInfoBox deliveryInfo={deliveryInfo}/> 
