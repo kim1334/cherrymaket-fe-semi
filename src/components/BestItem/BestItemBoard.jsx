@@ -47,16 +47,16 @@ const BestItemBoard = () => {
     const handleItemClick = (items) => {
         setSelectedItem(items);
         openModal();
-      };
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
-      };
-    
-      // 모달 닫기 함수
-      const closeModal = () => {
+    };
+
+    // 모달 닫기 함수
+    const closeModal = () => {
         setIsModalOpen(false);
-      };
+    };
     return (
         <>
             <Container>
@@ -64,7 +64,7 @@ const BestItemBoard = () => {
                     <Title>베스트</Title>
                 </TitleWraper>
 
-                <SubTitleWrapper>
+                {/* <SubTitleWrapper>
                     <SubTitleItemWrapper>
                         <SubTitleItem>TOP999</SubTitleItem>
                     </SubTitleItemWrapper>
@@ -82,9 +82,9 @@ const BestItemBoard = () => {
                     <SubTitleItemWrapper>
                         <SubTitleItem>직원추천상품</SubTitleItem>
                     </SubTitleItemWrapper>
-                </SubTitleWrapper>
+                </SubTitleWrapper> */}
 
-                <ItemWideWrapper>
+                {/* <ItemWideWrapper>
                     <ItemBlank>
                         <ItemWrapper>
                             <ItemTopWrapper>
@@ -124,21 +124,24 @@ const BestItemBoard = () => {
                             </ItemTopWrapper>
                         </ItemWrapper>
                     </ItemBlank>
+                </ItemWideWrapper> */}
+                <ItemWideWrapper>
+                    <ItemCount>총{items.length}건</ItemCount>
                 </ItemWideWrapper>
                 <ItemListWrapper>
-                  {Array.isArray(currentItems) && currentItems.map((item)=> (
-                    <ItemList
-                    id={item.goodsId}
-                    name={item.goodsName}
-                    goodsCode={item.goodsCode}
-                    description={item.description}
-                    originalPrice={item.price}
-                    discountedPrice = {item.discountedPrice}
-                    sale={item.discountRate}
-                    onItemClick={handleItemClick}
-                    item={item}
-                  />
-                  ))}
+                    {Array.isArray(currentItems) && currentItems.map((item) => (
+                        <ItemList
+                            id={item.goodsId}
+                            name={item.goodsName}
+                            goodsCode={item.goodsCode}
+                            description={item.description}
+                            originalPrice={item.price}
+                            discountedPrice={item.discountedPrice}
+                            sale={item.discountRate}
+                            onItemClick={handleItemClick}
+                            item={item}
+                        />
+                    ))}
                 </ItemListWrapper>
                 <ButtonWrapper>
                     <div>

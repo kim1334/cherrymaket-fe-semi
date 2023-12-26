@@ -26,8 +26,8 @@ function GoodsRevw({ goodsId, goodsName }) {
     };
 
     // URL에서 상품 코드를 가져옵니다.
-    const openModal = ({ userId, reviewId, userName, subject, content, createDate }) => {
-        setSelectedReview({ userId, reviewId, userName, subject, content, createDate });
+    const openModal = ({ userId, reviewId, userName, subject, content, createDate, goodsId }) => {
+        setSelectedReview({ userId, reviewId, userName, subject, content, createDate, goodsId });
         setIsModalOpen(true);
     };
 

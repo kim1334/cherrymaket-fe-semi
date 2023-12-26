@@ -75,7 +75,7 @@ function DetailItemBoard() {
     const [productData, setProductData] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
 
     // nav 이동
     const descriptionRef = useRef(null);
@@ -122,18 +122,18 @@ function DetailItemBoard() {
 
     const handleItemClick = () => {
         openModal();
-      };
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
-      };
-    
-      // 모달 닫기 함수
-      const closeModal = () => {
-        setIsModalOpen(false);
-      };
+    };
 
-    
+    // 모달 닫기 함수
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+
 
     return (
         <>

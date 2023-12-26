@@ -14,6 +14,7 @@ export const TitleWraper = styled.div`
 
 export const Title = styled.h3`
     margin-top: 50px;
+    margin-bottom: 30px;
     font-weight: 500;
     font-size: 28px;
     color: rgb(51, 51, 51);
@@ -82,6 +83,7 @@ export const ItemCount = styled.div`
     font-size: 14px;
     font-weight: 500;
     color: rgb(51, 51, 51);
+    margin-bottom: 10px;
 `;
 
 export const ItemSortWrapper = styled.ul` 

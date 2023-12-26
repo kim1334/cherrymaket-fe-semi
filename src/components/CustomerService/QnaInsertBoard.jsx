@@ -237,7 +237,7 @@ const QnaInsertBoard = () => {
                                     </TextArea>
                                 </TextAreaWrapper>
                             </LineWrapper>
-                            <LineWrapper>
+                            {/* <LineWrapper>
                                 <CameraWrapper>
                                     <CameraButton>
                                         <Camera />
@@ -293,7 +293,7 @@ const QnaInsertBoard = () => {
                                 <MessageText>
                                     <MessageTextSpan>※ 야간에도 답변 완료 알림톡이 발송 되는 점 참고 부탁드립니다.</MessageTextSpan>
                                 </MessageText>
-                            </QuestionWrapper>
+                            </QuestionWrapper> */}
                             <InsertButtonWrapper>
                                 <Link to="/qna">
                                     <InsertButton disabled={!isFormValid()} onClick={handleSubmit}>등록</InsertButton>
