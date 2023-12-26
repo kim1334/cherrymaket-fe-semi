@@ -195,7 +195,7 @@ export function SuccessPage() {
             <div className="flex justify-between">
               <span className="response-label">결제 금액</span>
               <span id="amount" className="response-text">
-                {amount}
+                {(amount).toLocaleString("ko-kr")}원
               </span>
             </div>
             <div className="flex justify-between">
@@ -204,12 +204,12 @@ export function SuccessPage() {
                 {orderId}
               </span>
             </div>
-            <div className="flex justify-between">
+            {/* <div className="flex justify-between">
               <span className="response-label">paymentKey</span>
               <span id="paymentKey" className="response-text">
                 {paymentKey}
               </span>
-            </div>
+            </div> */}
           </div>
 
           <div className="w-100 button-group">
@@ -238,8 +238,8 @@ export function SuccessPage() {
               width="120"
               height="120"
             />
-            <h2 className="title text-center">결제 진행 중</h2>
-            <h4 className="text-center description">잠시만 기달려 주세요</h4>
+            <h2 className="title text-center">최종 승인요청 대기중입니다.</h2>
+            <h4 className="text-center description">결제 승인하기 버튼을 눌러주세요</h4>
           </div>
           <div className="w-100">
             <button className="btn primary w-100" onClick={confirmPayment}>

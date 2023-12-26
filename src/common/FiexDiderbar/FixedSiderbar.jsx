@@ -161,6 +161,7 @@ const BtnItem = styled.div`
   padding-top: 5px;
   text-align: center;
   border-bottom: 1px solid rgb(221, 221, 221);
+  color: black;
 `;
 
 const BtnA = styled.a`

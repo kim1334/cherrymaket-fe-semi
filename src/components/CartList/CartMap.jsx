@@ -8,16 +8,13 @@ import { useSelector } from "react-redux";
 import { getCartAysnc } from "../../redux/modules/cartSlice";
 
 
-const CartMap = ({ item, onCartUpdata, handleGetTotalPrice }) => {
+const CartMap = ({ item, onCartUpdata, handleGetTotalPrice, handelDeleteGetCart }) => {
 
   const dispatch = useDispatch();
   const [count, setCount] = useState(item?.quantity);
   const cartItems = useSelector((state) => state.cart.cart); // 현재 카트 상태를 가져옵니다.
   const [cartQuantity, setCartQuantity] = useState(0);
 
-  console.log(item)
-
- 
 
   useEffect(() => {
     if (item && item.cartId !== null) {

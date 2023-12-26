@@ -95,7 +95,6 @@ export const cartSlice = createSlice({
       list.map((item) => {
         return (totalPrice += item.price * item.quantity);
       });
-      console.log(totalPrice);
       return { ...state, totalPrice: totalPrice };
     },
   },

@@ -68,6 +68,7 @@ const ItemListWrapper = styled.a`
   flex-direction: column;
   height: 573px;
   color: rgb(51, 51, 51);
+  
 `;
 
 const ItemImageWrapper = styled.div`

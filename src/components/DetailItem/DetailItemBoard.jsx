@@ -290,55 +290,55 @@ function DetailItemBoard() {
                                                                 {productData ? formatPrice(productData.discountedPrice) : "상품가격"}원
                                                             </ItemQuantityPrice>
                                                         </div>
-                                                    </ItemQuantity>
-                                                </ItemQuantityWrapper>
-                                            </ItemDetailListText>
-                                        </ItemDetailListTextWrapper>
-                                    </ItemDetailList>
-                                </ul>
-                                <div style={{
-                                    paddingTop: "30px",
-                                }}
-                                >
-                                    <div style={{
-                                        letterSpacing: "-0.5px",
-                                    }}>
-                                        <TotalPriceWrapper>
-                                            <TotalPriceText>
-                                                총 상품금액 :
-                                            </TotalPriceText>
-                                            <TotalPrice>{productData ? formatPrice(productData.discountedPrice * quantity) : "상품가격"}원</TotalPrice>
-                                        </TotalPriceWrapper>
-                                        <ItemAccrualWrapper>
-                                            <ItemAccrualBorder>
-                                                적립
-                                            </ItemAccrualBorder>
-                                            <ItemAccrualText>
-                                                로그인 후, 적립혜택 제공
-                                            </ItemAccrualText>
-                                        </ItemAccrualWrapper>
-                                    </div>
+                                                </ItemQuantity>
+                                            </ItemQuantityWrapper>
+                                        </ItemDetailListText>
+                                    </ItemDetailListTextWrapper>
+                                </ItemDetailList>
+                            </ul>
+                            <div style={{
+                                            paddingTop: "30px",
+                            }}   
+                            >
+                                <div style = {{
+                                    letterSpacing: "-0.5px",
+                                }}>
+                                    <TotalPriceWrapper>
+                                        <TotalPriceText>
+                                            총 상품금액 :
+                                        </TotalPriceText>
+                                        <TotalPrice>{productData ? formatPrice(productData.discountedPrice * quantity) : "상품가격"}원</TotalPrice>
+                                    </TotalPriceWrapper>
+                                    <ItemAccrualWrapper>
+                                        <ItemAccrualBorder>
+                                            적립
+                                        </ItemAccrualBorder>
+                                        <ItemAccrualText>
+                                            로그인 후, 적립혜택 제공
+                                        </ItemAccrualText>
+                                    </ItemAccrualWrapper>
                                 </div>
-                                <ItemCartButtonWrapper>
-                                    <ItemCartLikeButton onClick={handleLikeClick}>
-                                        <ItemCartLikeImage>
-                                            {isLiked ? <FaHeart /> : <FaRegHeart />}
-                                        </ItemCartLikeImage>
-                                    </ItemCartLikeButton>
-                                    <ItemCartLikeButton onClick={
-                                        handleBellClick}>
-                                        <ItemCartLikeImage>
-                                            {isBell ? <FaBell /> : <FaRegBell />}
-
-                                        </ItemCartLikeImage>
-                                    </ItemCartLikeButton>
-                                    <ItemCartButton onClick={handleItemClick}>
-                                        <ItemCartButtonSpan>
-                                            장바구니 담기
-                                        </ItemCartButtonSpan>
-                                    </ItemCartButton>
-                                </ItemCartButtonWrapper>
-                            </ItemTitleWrapper>
+                            </div>
+                            <ItemCartButtonWrapper>
+                                <ItemCartLikeButton onClick={handleLikeClick}>
+                                    <ItemCartLikeImage>
+                                        {isLiked ?  <FaHeart /> : <FaRegHeart />}
+                                    </ItemCartLikeImage>
+                                </ItemCartLikeButton>
+                                <ItemCartLikeButton onClick = {
+                                    handleBellClick}>
+                                    <ItemCartLikeImage>
+                                        {isBell ?  <FaBell /> : <FaRegBell />}
+                                        
+                                    </ItemCartLikeImage>
+                                </ItemCartLikeButton>    
+                                <ItemCartButton onClick={handleItemClick}>
+                                    <ItemCartButtonSpan>
+                                        장바구니 담기
+                                    </ItemCartButtonSpan>
+                                </ItemCartButton>
+                            </ItemCartButtonWrapper>
+                        </ItemTitleWrapper>
                         </ItemTextWrapper>
                     </ItemDetail>
 
@@ -382,7 +382,7 @@ function DetailItemBoard() {
                     </div>
                 </ItemDetailWrapper>
 
-                <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={productData} />
+                    <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={productData} />
             </Container>
 
         </>

@@ -101,6 +101,17 @@ const FixedCard = ({ item, openModal, closeModal, onItemClick }) => {
   );
 };
 
+const ItemImage = styled.img`
+
+transition: all 0.5s ease-in-out 0s;
+ &:hover {
+    transform: scale(1.05); 
+  }
+`;
+
+
+
+
 const DivSt = styled.div`
   width: 68%;
   margin: auto;
@@ -126,6 +137,7 @@ const ImageSt = styled.div`
   width: 100%;
   height: 305px;
   margin: auto;
+  
 `;
 
 const ButtonSt = styled.button`

@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom'; // useParams와 useLocation 훅 임포트
 
 import ItemList from './ItemList';
+import CartMadal from '../CartList/CartMadal';
 const CategoriesBoard = () => {
     const [items, setItems] = useState([]);
     const { categoryId } = useParams(); // categoryId 파라미터 사용
@@ -19,6 +20,8 @@ const CategoriesBoard = () => {
     const indexOfLastNotice = currentPage * noticePerPage;
     const indexOfFirstNotice = indexOfLastNotice - noticePerPage;
     const currentItems = items.slice(indexOfFirstNotice, indexOfLastNotice);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const totalPages = Math.ceil(items.length / noticePerPage);
     useEffect(() => {
@@ -47,6 +50,20 @@ const CategoriesBoard = () => {
     const handleNext = () => {
         setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
     };
+
+    const handleItemClick = (items) => {
+        setSelectedItem(items);
+        openModal();
+      };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      // 모달 닫기 함수
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
     return (
         <>
             <Container>
@@ -163,6 +180,8 @@ const CategoriesBoard = () => {
                             originalPrice={item.price}
                             discountedPrice={item.discountedPrice}
                             sale={item.discountRate}
+                            onItemClick={handleItemClick}
+                            item={item}
                         />
                     ))}
                 </ItemListWrapper>
@@ -176,6 +195,7 @@ const CategoriesBoard = () => {
                         <NextButton onClick={handleNext} disabled={currentPage === totalPages}></NextButton>
                     </div>
                 </ButtonWrapper>
+                <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={selectedItem} />
             </Container>
 
         </>

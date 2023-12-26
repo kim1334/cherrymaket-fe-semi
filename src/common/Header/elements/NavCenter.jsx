@@ -12,10 +12,10 @@ const HeadNavCenter = () => {
         <NavLink to="/bestitem">베스트</NavLink>
       </li>
       <li>
-        <span>알뜰쇼핑</span>
+        {/* <span>알뜰쇼핑</span> */}
       </li>
       <li>
-        <span>특가/혜택</span>
+        {/* <span>특가/혜택</span> */}
       </li>
     </NavCenter>
   );
