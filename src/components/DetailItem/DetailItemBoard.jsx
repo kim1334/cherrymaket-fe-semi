@@ -75,7 +75,8 @@ function DetailItemBoard() {
     const [productData, setProductData] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
+
     // nav 이동
     const descriptionRef = useRef(null);
     const detailsRef = useRef(null);
@@ -87,7 +88,6 @@ function DetailItemBoard() {
             .then(response => {
                 setProductData(response.data);
                 console.log("response.data", response.data);
-                console.log("goodsId", response.data.goodsId);
             })
             .catch(error => {
                 console.error('Error fetching product data', error);
@@ -122,16 +122,18 @@ function DetailItemBoard() {
 
     const handleItemClick = () => {
         openModal();
-      };
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
-      };
-    
-      // 모달 닫기 함수
-      const closeModal = () => {
+    };
+
+    // 모달 닫기 함수
+    const closeModal = () => {
         setIsModalOpen(false);
-      };
+    };
+
+
 
     return (
         <>
@@ -317,27 +319,26 @@ function DetailItemBoard() {
                                         </ItemAccrualWrapper>
                                     </div>
                                 </div>
-                            </div>
-                            <ItemCartButtonWrapper>
-                                <ItemCartLikeButton onClick={handleLikeClick}>
-                                    <ItemCartLikeImage>
-                                        {isLiked ?  <FaHeart /> : <FaRegHeart />}
-                                    </ItemCartLikeImage>
-                                </ItemCartLikeButton>
-                                <ItemCartLikeButton onClick = {
-                                    handleBellClick}>
-                                    <ItemCartLikeImage>
-                                        {isBell ?  <FaBell /> : <FaRegBell />}
-                                        
-                                    </ItemCartLikeImage>
-                                </ItemCartLikeButton>    
-                                <ItemCartButton onClick={handleItemClick}>
-                                    <ItemCartButtonSpan>
-                                        장바구니 담기
-                                    </ItemCartButtonSpan>
-                                </ItemCartButton>
-                            </ItemCartButtonWrapper>
-                        </ItemTitleWrapper>
+                                <ItemCartButtonWrapper>
+                                    <ItemCartLikeButton onClick={handleLikeClick}>
+                                        <ItemCartLikeImage>
+                                            {isLiked ? <FaHeart /> : <FaRegHeart />}
+                                        </ItemCartLikeImage>
+                                    </ItemCartLikeButton>
+                                    <ItemCartLikeButton onClick={
+                                        handleBellClick}>
+                                        <ItemCartLikeImage>
+                                            {isBell ? <FaBell /> : <FaRegBell />}
+
+                                        </ItemCartLikeImage>
+                                    </ItemCartLikeButton>
+                                    <ItemCartButton onClick={handleItemClick}>
+                                        <ItemCartButtonSpan>
+                                            장바구니 담기
+                                        </ItemCartButtonSpan>
+                                    </ItemCartButton>
+                                </ItemCartButtonWrapper>
+                            </ItemTitleWrapper>
                         </ItemTextWrapper>
                     </ItemDetail>
 
@@ -381,8 +382,7 @@ function DetailItemBoard() {
                     </div>
                 </ItemDetailWrapper>
 
-                    <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={productData} />
-
+                <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={productData} />
             </Container>
 
         </>
@@ -390,4 +390,3 @@ function DetailItemBoard() {
 };
 
 export default DetailItemBoard;
-

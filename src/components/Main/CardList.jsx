@@ -23,7 +23,7 @@ const FixedImg = () => {
   const brseUrl = process.env.REACT_APP_API;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const [items, setItems] = useState([]);
   console.log(FiexdItemPrice)
 
 
@@ -41,6 +41,22 @@ const FixedImg = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        const response = await axios.get(
+          'https://server.marketcherry.store/api/goods/listA?sortBy=priceDesc');
+        console.log('Response data:', response.data);
+        setItems(response.data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchItem();
+  }, []);
+
+
 
   console.log(setFiexdItemPirce)
 
@@ -67,7 +83,7 @@ const FixedImg = () => {
 
       {/* 여기서부터 고정값 */}
       <Div>✨놓치면 후회할 가격🏅
-        <P>최대82%! 올해 마지막 뷰티 음식 혜택</P>
+        <P>최대25%! 올해 마지막 음식 혜택</P>
       </Div>
 
       <Swiper
@@ -94,8 +110,7 @@ const FixedImg = () => {
         </DivSt>
       </Swiper>
 
-      <Div>놓치면 후회할 가격🧐
-        <P>최대82%! 올해 마지막 뷰티 음식 혜택</P>
+      <Div>MD 추천 상품🧐
       </Div>
       <Swiper
         slidesPerView={4}
@@ -115,7 +130,7 @@ const FixedImg = () => {
       >
         <DivSt>
           {/* 지금 현재는 mainImg 안에 있는 정보들을 map 돌려 붙여넣기 */}
-          {FiexdItemPrice.map((item) => (
+          {items.slice(0, 12).map((item) => (
             <SwiperSlide key={item.id}><FixedCard key={item.id} item={item} openModal={openModal} closeModal={closeModal} onItemClick={handleItemClick} /></SwiperSlide>
           ))}
         </DivSt>
