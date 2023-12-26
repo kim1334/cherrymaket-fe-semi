@@ -16,7 +16,17 @@ import { useState } from 'react';
 import CartModal from '../CartList/CartMadal.jsx';
 
 
-const FixedCard = ({item, openModal, closeModal, onItemClick }) => {
+
+export const saveToLocalStorage = (key, data) => {
+  localStorage.setItem(key, JSON.stringify(data));
+};
+
+export const getFromLocalStorage = (key) => {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : null;
+};
+
+const FixedCard = ({ item, openModal, closeModal, onItemClick }) => {
   if (!item || !item.goodsCode) {
     // item이나 item.goodsCode가 정의되지 않았을 경우 처리
     return null; // 또는 에러 처리를 수행하거나 다른 대안을 고려할 수 있음
@@ -24,8 +34,25 @@ const FixedCard = ({item, openModal, closeModal, onItemClick }) => {
 
 
 
+  const clickedItems = () => {
+    const clickedItem = item.goodsCode;
+    let savedItems = getFromLocalStorage('clickedItem') || [];
 
-  
+    // 이미 저장된 상품 중에서 클릭한 상품을 찾음
+    const existingIndex = savedItems.indexOf(clickedItem);
+
+    if (existingIndex !== -1) {
+      // 이미 저장된 상품이면 해당 상품을 배열에서 제거
+      savedItems = savedItems.filter((_, index) => index !== existingIndex);
+    }
+
+    // 배열 맨 앞에 클릭한 상품 추가
+    savedItems = [clickedItem, ...savedItems.slice(0, 9)]; // 맨 앞에 추가하고, 배열 길이를 10으로 제한
+
+    // 최근 본 상품 목록을 로컬 스토리지에 저장
+    saveToLocalStorage('clickedItem', savedItems);
+  };
+
 
   function generateImageUrl() { //오더코드로 이미지 url 생성
     const imageUrlBase = "https://kr.object.ncloudstorage.com/cherry-product/";
@@ -33,7 +60,7 @@ const FixedCard = ({item, openModal, closeModal, onItemClick }) => {
     return imageUrl;
   }
   const formatPrice = (price) => { //숫자 3자리마다 콤마 찍어주는 함수
-    return price.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' }).replace('₩', ''); 
+    return price.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' }).replace('₩', '');
   };
 
 
@@ -41,32 +68,33 @@ const FixedCard = ({item, openModal, closeModal, onItemClick }) => {
     <>
       <DivSt>
         <CardSt>
-        <Link key = {item.goodsId} to = {`/detailitem/${item.goodsCode}`}>
-          <ImageSt>
-            <img
-              style={{ width: "250px", height: "300px" }}
-              src={generateImageUrl()}
-            />
-          </ImageSt>
-        </Link>
+          <Link key={item.goodsId} to={`/detailitem/${item.goodsCode}`}>
+            <ImageSt onClick={clickedItems}>
+              <img
+                style={{ width: "250px", height: "300px" }}
+                src={generateImageUrl()}
+              />
+            </ImageSt>
+          </Link>
           <ButtonSt
-           onClick={() => onItemClick(item)}
+            onClick={() => onItemClick(item)}
           >
             <BsCart /> 담기
           </ButtonSt>
-          <h3 style={{ marginLeft: "4px", fontSize: "14px" , paddingTop: "10px"}}>
+          <h3 style={{ marginLeft: "4px", fontSize: "14px", paddingTop: "10px" }}>
             {item.goodsName}
           </h3>
           <ItemTextPriceWrapper>
-          <ItemOriginalPrice>
-          {formatPrice(item.price)}원
+            <ItemOriginalPrice>
+              {formatPrice(item.price)}원
             </ItemOriginalPrice>
-        <ItemPriceWrapper>
-          <ItemSale>
-            {`${item.discountRate}%`}</ItemSale>
-          <ItemPrice>{formatPrice(item.discountedPrice)}원</ItemPrice>
-        </ItemPriceWrapper>
-        </ItemTextPriceWrapper>
+            <ItemPriceWrapper>
+              <ItemSale>
+                {item.discountRate !== null ? `${item.discountRate}%` : null}
+              </ItemSale>
+              <ItemPrice>{formatPrice(item.discountedPrice)}원</ItemPrice>
+            </ItemPriceWrapper>
+          </ItemTextPriceWrapper>
         </CardSt>
       </DivSt>
     </>

@@ -41,35 +41,37 @@ const NewestItemBoard = () => {
     };
 
     const handleNext = () => {
-    setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
+        setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
     };
 
-    
+
     const handleItemClick = (items) => {
         setSelectedItem(items);
         openModal();
-      };
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
-      };
-    
-      // 모달 닫기 함수
-      const closeModal = () => {
+    };
+
+    // 모달 닫기 함수
+    const closeModal = () => {
         setIsModalOpen(false);
-      };
+    };
+
+
     return (
         <>
             <Container>
-                <NewestBanner>
+                {/* <NewestBanner>
                     <img
                         src="https://img-cf.kurly.com/category/banner/pc/e8443748-7800-4e0a-a8bc-268d72f8e29c"
                         alt="배너 이미지"
                     />
-                </NewestBanner>
+                </NewestBanner> */}
                 <NewestHeader>신상품</NewestHeader>
 
-                <SubTitleWrapper>
+                {/* <SubTitleWrapper>
                     <SubTitleItemWrapper>
                         <SubTitleItem>TOP999</SubTitleItem>
                     </SubTitleItemWrapper>
@@ -129,21 +131,25 @@ const NewestItemBoard = () => {
                             </ItemTopWrapper>
                         </ItemWrapper>
                     </ItemBlank>
+                </ItemWideWrapper> */}
+                <ItemWideWrapper>
+                    <ItemCount>총{items.length}건</ItemCount>
                 </ItemWideWrapper>
                 <ItemListWrapper>
-                  {Array.isArray(currentItems) && currentItems.map((item)=> (
-                    <ItemList
-                    id={item.goodsId}
-                    name={item.goodsName}
-                    goodsCode={item.goodsCode}
-                    description={item.description}
-                    originalPrice={item.price}
-                    discountedPrice = {item.discountedPrice}
-                    sale={item.discountRate}
-                    onItemClick={handleItemClick}
-                    item={item}
-                  />
-                  ))}
+
+                    {Array.isArray(currentItems) && currentItems.map((item) => (
+                        <ItemList
+                            id={item.goodsId}
+                            name={item.goodsName}
+                            goodsCode={item.goodsCode}
+                            description={item.description}
+                            originalPrice={item.price}
+                            discountedPrice={item.discountedPrice}
+                            sale={item.discountRate}
+                            onItemClick={handleItemClick}
+                            item={item}
+                        />
+                    ))}
 
                 </ItemListWrapper>
                 <ButtonWrapper>
@@ -178,6 +184,7 @@ export const NewestBanner = styled.div`
   }
 `;
 export const NewestHeader = styled.h3`
+margin-top : 30px;
   padding: 23px 0px 20px;
   font-weight: 500;
   font-size: 28px;

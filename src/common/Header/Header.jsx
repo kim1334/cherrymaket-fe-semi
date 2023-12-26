@@ -52,9 +52,9 @@ const Header = () => {
   }, [CartList]);
 
   useEffect(() => {
- 
+
     if (isLoggedIn && access_token) {
-      dispatch(getCartAysnc()); 
+      dispatch(getCartAysnc());
     }
   }, [isLoggedIn, access_token]);
 
@@ -131,7 +131,7 @@ const Header = () => {
 
   return (
     <>
-  
+
       <Headercoupon />
       <HeadTop>
         <UserHead>
@@ -250,9 +250,9 @@ const Header = () => {
         </HeadMain>
       </HeadTop>
       <HeaderNav />
-      
+
       {showFixedHeader && <FixedHeader CartList={CartList} />}
-      
+
     </>
   );
 };
