@@ -176,12 +176,13 @@ const handleGetTotalPrice = () => {
                 </Text>
               </TotalPrice>
               <Done>
-                <Link to="/order">
+                {cartData?.length === 0 && (<button disabled style={{backgroundColor: "rgb(221, 221, 221)", fontSize:"16px"}}>상품을 담아주세요</button>)}
+                {cartData?.length !== 0 && (<Link to="/order">
                 <button>주문하기</button>
-                </Link>
+                </Link>)}
               </Done>
             </CartStatusWrap>
-          </RightSide>
+          </RightSide> 
         </CartWrap>
       </Layouts>
     </>

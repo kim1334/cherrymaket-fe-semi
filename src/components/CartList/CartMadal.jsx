@@ -190,8 +190,8 @@ const GoodsName = styled.span`
 
 const NotificationWrapper = styled.div`
   position: fixed;
-  top: 45px; // 브라우저 상단에서부터 60px 아래에 위치
-  right: 320px; // 브라우저 우측에서부터 20px 안쪽에 위치
+  top: 30%;
+  left: 50%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
@@ -284,7 +284,7 @@ const ABtn = styled.button`
   height: 56px;
   border-radius: 3px;
   color: rgb(255, 255, 255);
-  background-color: rgb(95, 0, 128);
+  background-color: rgb(149, 5, 38);
   border: 0px none;
   width: 50%;
   margin: 0px 4px;
