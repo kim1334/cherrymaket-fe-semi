@@ -30,7 +30,7 @@ import { initializeLogin } from '../../redux/modules/loginSlice.jsx';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-
+import jwtDecode from "jwt-decode";
 
 const Header = () => {
   const [showFixedHeader, setShowFixedHeader] = useState(false);
@@ -59,6 +59,8 @@ const Header = () => {
       dispatch(getCartAysnc());
     }
   }, [isLoggedIn, access_token]);
+
+  
 
 
   // async 함수 정의 

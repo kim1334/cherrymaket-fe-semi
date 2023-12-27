@@ -119,8 +119,8 @@ function LoginForm() {
                     </BtnWrapper>
                     <SocialLoginButtonContainer>
                         <SocialButton>
-                            <IconImage src={naverIcon} alt="네이버 로그인"/>
-                            <ButtonText>네이버 로그인</ButtonText>
+                            {/* <IconImage src={naverIcon} alt="네이버 로그인"/>
+                            <ButtonText>네이버 로그인</ButtonText> */}
                         </SocialButton>
                         <SocialButton>
                             <a href={KAKAO_AUTH_URL}>
@@ -129,8 +129,8 @@ function LoginForm() {
                             <ButtonText>카카오 로그인</ButtonText>
                         </SocialButton>
                         <SocialButton>
-                            <IconImage src={googleIcon} alt="구글 로그인"/>
-                            <ButtonText>구글 로그인</ButtonText>
+                           {/* <IconImage src={googleIcon} alt="구글 로그인"/>
+                            <ButtonText>구글 로그인</ButtonText>  */}
                         </SocialButton>
                     </SocialLoginButtonContainer>
                 </form>

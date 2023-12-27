@@ -60,6 +60,7 @@ const PaymentBtn = (finalPrice, {cartData}) => {
         (accumulator, currentValue) => accumulator + currentValue,
         0
       );
+      
 
       console.log(totalDiscountAmount);
   

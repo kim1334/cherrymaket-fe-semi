@@ -1,6 +1,7 @@
 // user.jsx
 
 import axios from 'axios';
+import { instance } from './instance';
 
 // Action Types
 const KAKAO_LOGIN_START = 'KAKAO_LOGIN_START';
@@ -19,7 +20,7 @@ export const kakaoLogin = (code) => {
             dispatch(kakaoLoginStart());
 
             // Modify the request to use POST method
-            const response = await axios.post("http://localhost:8080/api/oauth/kakao/sign-in", {
+            const response = await instance.post("/oauth/kakao/sign-in", {
                 authCode: code,
                 provider: "KAKAO",
                 status: getState
@@ -28,7 +29,7 @@ export const kakaoLogin = (code) => {
             console.log("토큰 받아오기 시작");
             const accessToken = response.data.accessToken;
             console.log("토큰 받아오기 성공:"+ accessToken);
-            localStorage.setItem('token', accessToken);
+            sessionStorage.setItem('accessToken', accessToken);
 
             dispatch(kakaoLoginSuccess(accessToken));
             window.location.replace("/"); // 토큰 받았고 로그인됐으니 화면 전환시켜줌(메인으로)

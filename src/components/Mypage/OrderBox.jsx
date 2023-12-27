@@ -5,10 +5,12 @@ import styled from 'styled-components';
 function OrderBox(props) {
 
 
+
+
   return (
       <ItemContainer>
         <Div1>
-          <ItemSpan>{props.item.createdAt}</ItemSpan>
+          <ItemSpan>{(props.item.createdAt)}</ItemSpan>
           <Link to={`/mypage/myorderdetail/${props.item.orderCode}`}>
           <ItemA>주문내역상세보기</ItemA>
           </Link>

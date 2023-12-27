@@ -1,37 +1,21 @@
-import MypageMenu from "../../components/Mypage/MypageMenu.jsx";
-import Header from "../../common/Header/Header.jsx";
-import Mypage from "./Mypage.jsx";
 import {
     Title,
     TitleHead,
-    TitleSpan,
     TitleWraper,
-    FlexWrapper,
-    Container,
 } from "../../components/CustomerService/Style.jsx";
 import { UlWrapper } from "../../components/CustomerService/FaqBoard.jsx";
 import styled from 'styled-components';
 import CouponBox from '../../components/Mypage/CouponBox.jsx';
-import Footer from '../../common/Footer/Footer.jsx';
-import FixedSiderbar from "../../common/FiexDiderbar/FixedSiderbar.jsx";
-import { useEffect } from "react";
-import React, { useState } from 'react';
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import MyPageLayout from "../../components/Mypage/MyPageLayout.jsx";
+
+
 
 const Coupon = () => {
 
    
     return (
         <>
-            <Header />
-            <Mypage />
-            <FlexWrapper>
-
-                <MypageMenu />
-                <Container>
-
+                <MyPageLayout>
                     <TitleWraper >
                         <Title>
                             <TitleHead>쿠폰</TitleHead>
@@ -65,12 +49,8 @@ const Coupon = () => {
                         <CouponBox />
                     </Table>
                     <UlWrapper>
-
                     </UlWrapper>
-                </Container>
-            </FlexWrapper>
-            <FixedSiderbar />
-            <Footer />
+            </MyPageLayout>
         </>
     )
 }

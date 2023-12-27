@@ -1,6 +1,7 @@
 
 import styled from 'styled-components';
 import { BsCart2 } from "react-icons/bs";
+import MyPageLayout from './MyPageLayout';
 
 function PickBox() {
   return (

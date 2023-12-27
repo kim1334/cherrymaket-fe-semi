@@ -1,14 +1,9 @@
-import Header from "../../common/Header/Header";
-import Mypage from "./Mypage";
+
 import {
   Title,
   TitleHead,
   TitleWraper,
-  FlexWrapper,
-  Container,
 } from "../../components/CustomerService/Style.jsx";
-import MypageMenu from "../../components/Mypage/MypageMenu";
-import DeliveryBox from "../../components/MyOrderDetail/DeliveryBox";
 import PaymentBox from "../../components/MyOrderDetail/PaymentBox";
 import OrderSender from "../../components/MyOrderDetail/OrderSender";
 import DelivertInfoBox from "../../components/MyOrderDetail/DeliveryInfoBox";
@@ -17,6 +12,7 @@ import ProductDetail from "../../components/MyOrderDetail/ProductDetail.jsx";
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import MyPageLayout from "../../components/Mypage/MyPageLayout.jsx";
 
 const MyOrderDetail = () => {
   
@@ -51,11 +47,7 @@ const MyOrderDetail = () => {
 
   return (
     <>
-      <Header />
-      <Mypage />
-      <FlexWrapper>
-        <MypageMenu />
-        <Container>
+          <MyPageLayout>
           <TitleWraper>
             <Title>
               <TitleHead>주문 내역 상세</TitleHead>
@@ -67,8 +59,8 @@ const MyOrderDetail = () => {
              <OrderSender sender={sender} orderCode={orderCode}/> 
           <DelivertInfoBox deliveryInfo={deliveryInfo}/> 
           <AddInfo />
-        </Container>
-      </FlexWrapper>
+          </MyPageLayout>
+
     </>
   );
 };
