@@ -176,6 +176,7 @@ const AgreementSection = styled.div`
     flex: 1 1 0%;
   }
 `;
+
 const AgreeAll = styled.div`
   display: flex;
   align-items: flex-start;
@@ -200,6 +201,7 @@ const AgreeAll = styled.div`
     padding-left: 36px;
   }
 `;
+
 const CheckboxInput = styled.input`
   overflow: hidden;
   position: absolute;
@@ -211,11 +213,13 @@ const CheckboxInput = styled.input`
   //   background-color: rgb(149, 5, 38);
   // }
 `;
+
 const ImageWrapper = styled.div`
   display: inline-block;
   margin-right: 12px;
   vertical-align: top;
 `;
+
 const AgreeOneItem = styled.div`
   display: flex;
   padding: 8px 0px;
@@ -240,6 +244,7 @@ const AgreeOneItem = styled.div`
     color: rgb(153, 153, 153);
   }
 `;
+
 const Term = styled.p`
   padding-right: 22px;
   color: rgb(149, 5, 38); // 변경된 색상
