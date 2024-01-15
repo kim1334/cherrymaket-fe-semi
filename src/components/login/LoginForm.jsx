@@ -1,132 +1,142 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { loginThunk } from "../../redux/modules/loginSlice";
+import React, {useEffect} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {loginThunk} from "../../redux/modules/loginSlice";
 import useInput from "../../hooks/useInput";
 import styled from "styled-components";
-import { Input } from "../../elements/Input";
-import { Btn } from "../../elements/Btn";
+import {Input} from "../../elements/Input";
+import {Btn} from "../../elements/Btn";
 import naverIcon from "../../assets/naverIcon.png";
 import kakaoIcon from "../../assets/kakaoIcon.png";
 import googleIcon from "../../assets/googleIcon.png";
+import {KAKAO_AUTH_URL} from "../OAuth/OAuth";
 
 
 function LoginForm() {
 
-const nav = useNavigate();
-const dispatch = useDispatch();
+    const nav = useNavigate();
+    const dispatch = useDispatch();
 
-const [email, onIdHandler] = useInput("");
-const [password, onPasswordHandler] = useInput("");
+    const [email, onIdHandler] = useInput("");
+    const [password, onPasswordHandler] = useInput("");
 
-const isLoggedIn = useSelector((state => state.login.isLoggedIn));
+    const isLoggedIn = useSelector((state => state.login.isLoggedIn));
 
-const submitHandler = (e) => {
-  e.preventDefault();
-  if (email === "" || password === "") {
-    alert("아이디 혹은 비밀번호를 입력해주세요");
-    return;
-  }
 
-  // loginThunk 액션을 디스패치합니다.
-  dispatch(loginThunk({ email, password }));
-};
+    const CLIENT_ID = "d076fe1f6ef395a74777a7f125ce215e";
+    const REDIRECT_URI = `http://localhost:3000/oauth/callback/kakao`;
+
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        if (email === "" || password === "") {
+            alert("아이디 혹은 비밀번호를 입력해주세요");
+            return;
+        }
+
+        // loginThunk 액션을 디스패치합니다.
+        dispatch(loginThunk({email, password}));
+    };
 
 // 로그인 상태(isLoggedIn)가 업데이트 되면, 메인 페이지로 리디렉트 합니다.
-useEffect(() => {
-  if (isLoggedIn) {
-    nav("/");
-  }
-}, [isLoggedIn, nav]);
+    useEffect(() => {
+        if (isLoggedIn) {
+            nav("/");
+        }
+    }, [isLoggedIn, nav]);
 
 // 로컬 스토리지에 토큰이 있으면 메인 페이지로 이동합니다.
-useEffect(() => {
-  const loginCheck = localStorage.getItem("token");
-  if (loginCheck) {
-    nav("/");
-  }
-}, [nav]);
+    useEffect(() => {
+        const loginCheck = localStorage.getItem("token");
+        if (loginCheck) {
+            nav("/");
+        }
+    }, [nav]);
 
-  return (
-    <Container>
-      <Title>로그인</Title>
-      <Body>
-        <form>
-          <InputArea>
-            <InputWrapper>
-              <Input
-                height="54px"
-                fontSize="14px"
-                placeholder="아이디를 입력해주세요"
-                type="text"
-                name="email"
-                value={email}
-                name="email"
-                value={email}
-                onChange={onIdHandler}
-              />
-            </InputWrapper>
-            <InputWrapper>
-              <Input
-                height="54px"
-                fontSize="14px"
-                placeholder="비밀번호를 입력해주세요"
-                type="password"
-                name="password"
-                value={password}
-                onChange={onPasswordHandler}
-              />
-            </InputWrapper>
-          </InputArea>
-          <FindUserInfoArea>
-            <p>아이디 찾기</p>
-            <span></span>
-            <p>비밀번호 찾기</p>
-          </FindUserInfoArea>
-          <BtnWrapper>
-            <Btn
-              type="submit"
-              width="100%"
-              height="54px"
-              border="0px none"
-              backgroundColor="rgb(149, 5, 38);"
-              color="white"
-              fontSize="16px"
-              onClick={submitHandler}
-            >
-              로그인
-            </Btn>
-            <div style={{ height: "10px" }}></div>
-            <Btn
-              type="button"
-              width="100%"
-              height="54px"
-              fontSize="16px"
-              color = "rgb(149, 5, 38);"
-              border = "1px solid rgb(149, 5, 38);"
-              onClick={() => nav("/join")}
-            >
-              회원가입
-            </Btn>
-          </BtnWrapper>
-          <SocialLoginButtonContainer>
-            <SocialButton>
-            <IconImage src={naverIcon} alt="네이버 로그인" />
-            <ButtonText>네이버 로그인</ButtonText>
-            </SocialButton>
-            <SocialButton>
-            <IconImage src={kakaoIcon} alt="카카오 로그인" />
-            <ButtonText>카카오 로그인</ButtonText>
-            </SocialButton>
-            <SocialButton>
-            <IconImage src={googleIcon} alt="구글 로그인" />
-            <ButtonText>구글 로그인</ButtonText>
-            </SocialButton>
-          </SocialLoginButtonContainer>
-        </form>
-      </Body>
-    </Container>
-  );
+    return (
+        <Container>
+            <Title>로그인asd</Title>
+            <Body>
+                <form>
+                    <InputArea>
+                        <InputWrapper>
+                            <Input
+                                height="54px"
+                                fontSize="14px"
+                                placeholder="아이디를 입력해주세요"
+                                type="text"
+                                name="email"
+                                value={email}
+                                name="email"
+                                value={email}
+                                onChange={onIdHandler}
+                            />
+                        </InputWrapper>
+                        <InputWrapper>
+                            <Input
+                                height="54px"
+                                fontSize="14px"
+                                placeholder="비밀번호를 입력해주세요"
+                                type="password"
+                                name="password"
+                                value={password}
+                                onChange={onPasswordHandler}
+                            />
+                        </InputWrapper>
+                    </InputArea>
+                    <FindUserInfoArea>
+                        <p>아이디 찾기</p>
+                        <span></span>
+                        <p>비밀번호 찾기</p>
+                    </FindUserInfoArea>
+                    <BtnWrapper>
+                        <Btn
+                            type="submit"
+                            width="100%"
+                            height="54px"
+                            border="0px none"
+                            backgroundColor="rgb(149, 5, 38);"
+                            color="white"
+                            fontSize="16px"
+                            onClick={submitHandler}
+                        >
+                            로그인
+                        </Btn>
+                        <div style={{height: "10px"}}></div>
+                        <Btn
+                            type="button"
+                            width="100%"
+                            height="54px"
+                            fontSize="16px"
+                            color="rgb(149, 5, 38);"
+                            border="1px solid rgb(149, 5, 38);"
+                            onClick={() => nav("/join")}
+                        >
+                            회원가입
+                        </Btn>
+                    </BtnWrapper>
+                    <SocialLoginButtonContainer>
+                        <SocialButton>
+                            {/* <IconImage src={naverIcon} alt="네이버 로그인"/>
+                            <ButtonText>네이버 로그인</ButtonText> */}
+                        </SocialButton>
+                        <SocialButton>
+                            <a href={KAKAO_AUTH_URL}>
+                                <IconImage src={kakaoIcon} alt="카카오 로그인"/>
+                            </a>
+                            <ButtonText>카카오 로그인</ButtonText>
+                        </SocialButton>
+                        <SocialButton>
+                           {/* <IconImage src={googleIcon} alt="구글 로그인"/>
+                            <ButtonText>구글 로그인</ButtonText>  */}
+                        </SocialButton>
+                    </SocialLoginButtonContainer>
+                </form>
+            </Body>
+        </Container>
+    );
 }
 
 export default LoginForm;
@@ -159,6 +169,7 @@ const FindUserInfoArea = styled.div`
   justify-content: flex-end;
   margin-top: 10px;
   font-size: 13px;
+
   & p {
     color: rgb(51, 51, 51);
     font-size: 13px;
@@ -180,19 +191,19 @@ const BtnWrapper = styled.div`
 
 const SocialLoginButtonContainer = styled.div`
   display: flex;
-  justify-content: space-around; 
+  justify-content: space-around;
   align-items: center;
-  height: 170px; 
+  height: 170px;
   margin-top: 28px;
   margin-left: 6px;
 `;
 
 const SocialButton = styled.div`
   display: flex;
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
-  width: calc(100% / 3); 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% / 3);
   cursor: pointer;
   text-align: center;
   padding: 10px;

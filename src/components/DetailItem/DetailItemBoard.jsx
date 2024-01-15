@@ -53,6 +53,7 @@ import GoodsRevw from './GoodsRevw';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import CartMadal from '../CartList/CartMadal';
 function DetailItemBoard() {
     // 페이지 로드 시 최상단으로 스크롤
     useEffect(() => {
@@ -72,6 +73,8 @@ function DetailItemBoard() {
     const [quantity, setQuantity] = useState(1);
     const { goodsCode, goodsName } = useParams();
     const [productData, setProductData] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     // nav 이동
@@ -114,6 +117,21 @@ function DetailItemBoard() {
     const handleBellClick = () => {
         setIsBell(!isBell);
     }
+
+    console.log(productData);
+
+    const handleItemClick = () => {
+        openModal();
+    };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    // 모달 닫기 함수
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
 
 
@@ -272,55 +290,55 @@ function DetailItemBoard() {
                                                                 {productData ? formatPrice(productData.discountedPrice) : "상품가격"}원
                                                             </ItemQuantityPrice>
                                                         </div>
-                                                    </ItemQuantity>
-                                                </ItemQuantityWrapper>
-                                            </ItemDetailListText>
-                                        </ItemDetailListTextWrapper>
-                                    </ItemDetailList>
-                                </ul>
-                                <div style={{
-                                    paddingTop: "30px",
-                                }}
-                                >
-                                    <div style={{
-                                        letterSpacing: "-0.5px",
-                                    }}>
-                                        <TotalPriceWrapper>
-                                            <TotalPriceText>
-                                                총 상품금액 :
-                                            </TotalPriceText>
-                                            <TotalPrice>{productData ? formatPrice(productData.discountedPrice * quantity) : "상품가격"}원</TotalPrice>
-                                        </TotalPriceWrapper>
-                                        <ItemAccrualWrapper>
-                                            <ItemAccrualBorder>
-                                                적립
-                                            </ItemAccrualBorder>
-                                            <ItemAccrualText>
-                                                로그인 후, 적립혜택 제공
-                                            </ItemAccrualText>
-                                        </ItemAccrualWrapper>
-                                    </div>
+                                                </ItemQuantity>
+                                            </ItemQuantityWrapper>
+                                        </ItemDetailListText>
+                                    </ItemDetailListTextWrapper>
+                                </ItemDetailList>
+                            </ul>
+                            <div style={{
+                                            paddingTop: "30px",
+                            }}   
+                            >
+                                <div style = {{
+                                    letterSpacing: "-0.5px",
+                                }}>
+                                    <TotalPriceWrapper>
+                                        <TotalPriceText>
+                                            총 상품금액 :
+                                        </TotalPriceText>
+                                        <TotalPrice>{productData ? formatPrice(productData.discountedPrice * quantity) : "상품가격"}원</TotalPrice>
+                                    </TotalPriceWrapper>
+                                    <ItemAccrualWrapper>
+                                        <ItemAccrualBorder>
+                                            적립
+                                        </ItemAccrualBorder>
+                                        <ItemAccrualText>
+                                            로그인 후, 적립혜택 제공
+                                        </ItemAccrualText>
+                                    </ItemAccrualWrapper>
                                 </div>
-                                <ItemCartButtonWrapper>
-                                    <ItemCartLikeButton onClick={handleLikeClick}>
-                                        <ItemCartLikeImage>
-                                            {isLiked ? <FaHeart /> : <FaRegHeart />}
-                                        </ItemCartLikeImage>
-                                    </ItemCartLikeButton>
-                                    <ItemCartLikeButton onClick={
-                                        handleBellClick}>
-                                        <ItemCartLikeImage>
-                                            {isBell ? <FaBell /> : <FaRegBell />}
-
-                                        </ItemCartLikeImage>
-                                    </ItemCartLikeButton>
-                                    <ItemCartButton>
-                                        <ItemCartButtonSpan>
-                                            장바구니 담기
-                                        </ItemCartButtonSpan>
-                                    </ItemCartButton>
-                                </ItemCartButtonWrapper>
-                            </ItemTitleWrapper>
+                            </div>
+                            <ItemCartButtonWrapper>
+                                <ItemCartLikeButton onClick={handleLikeClick}>
+                                    <ItemCartLikeImage>
+                                        {isLiked ?  <FaHeart /> : <FaRegHeart />}
+                                    </ItemCartLikeImage>
+                                </ItemCartLikeButton>
+                                <ItemCartLikeButton onClick = {
+                                    handleBellClick}>
+                                    <ItemCartLikeImage>
+                                        {isBell ?  <FaBell /> : <FaRegBell />}
+                                        
+                                    </ItemCartLikeImage>
+                                </ItemCartLikeButton>    
+                                <ItemCartButton onClick={handleItemClick}>
+                                    <ItemCartButtonSpan>
+                                        장바구니 담기
+                                    </ItemCartButtonSpan>
+                                </ItemCartButton>
+                            </ItemCartButtonWrapper>
+                        </ItemTitleWrapper>
                         </ItemTextWrapper>
                     </ItemDetail>
 
@@ -360,11 +378,11 @@ function DetailItemBoard() {
                         <img style={{ width: "100%", }} src={`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_2.png`} ref={detailsRef}></img>
                     </div>
                     <div ref={reviewsRef}>
-                        <GoodsRevw />
+                        <GoodsRevw goodsId={productData?.goodsId} />
                     </div>
                 </ItemDetailWrapper>
 
-
+                    <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={productData} />
             </Container>
 
         </>
@@ -372,4 +390,3 @@ function DetailItemBoard() {
 };
 
 export default DetailItemBoard;
-

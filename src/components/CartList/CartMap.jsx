@@ -1,88 +1,85 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { calcPrice, deleteCartAysnc } from "../../redux/modules/cartSlice";
+import { calcPrice, deleteCartAysnc, editCartAysnc } from "../../redux/modules/cartSlice";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { getCartAysnc } from "../../redux/modules/cartSlice";
 
-const CartMap = ({ list }) => {
-  const cartItem = JSON.parse(localStorage.getItem("cartItems")) || [];
-  const ItemCount = cartItem.find(
-    (item) => list.productId === item.productId
-  )?.quantity;
 
-  const [count, setCount] = useState(ItemCount || list.quantity);
+const CartMap = ({ item, onCartUpdata, handleGetTotalPrice, handelDeleteGetCart }) => {
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const addItem = {
-    productId: list.productId,
-    quantity: list.quantity,
-    price: list.price * count,
-  };
+  const [count, setCount] = useState(item?.quantity);
+  const cartItems = useSelector((state) => state.cart.cart); // 현재 카트 상태를 가져옵니다.
+  const [cartQuantity, setCartQuantity] = useState(0);
+
 
   useEffect(() => {
-    let isExists = false;
-    cartItem.forEach((item) => {
-      if (item.productId === list.productId) {
-        // 로컬 스토리지 아이디 중복이면 내용만 수정
-        item.quantity = count || list.quantity;
-        item.price = list.price * count;
-        isExists = true;
-      }
-    });
-    if (!isExists) {
-      // 중복이 아니면 푸쉬
-      cartItem.push(addItem);
+    if (item && item.cartId !== null) {
+      dispatch(editCartAysnc({ cartId: item?.cartId, quantity: count }))
+      .then(() => {
+        handleGetTotalPrice()
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     }
-    localStorage.setItem("cartItems", JSON.stringify(cartItem));
-    dispatch(calcPrice(cartItem));
   }, [count]);
 
-  const deleteCart = () => {
-    const cartFilter = cartItem?.filter((item) => {
-      return item.productId !== list.productId;
+ const handleDeleteCartItem = () => {
+  dispatch(deleteCartAysnc({ cartId: item?.cartId }))
+    .then(() => {
+      dispatch(getCartAysnc());
     });
-    // console.log(cartFilter);
-    localStorage.setItem("cartItems", JSON.stringify(cartFilter));
-    dispatch(deleteCartAysnc(list.productId));
-    navigate("/cart");
-    window.location.reload();
-  };
+};
+
+console.log(count);
+
+  function generateImageUrl() {
+    const imageUrlBase = "https://kr.object.ncloudstorage.com/cherry-product/";
+    const imageUrl = `${imageUrlBase}${item?.goodsCode}/${item?.goodsCode}_0.png`;
+    return imageUrl;
+    
+  }
+  
 
   return (
-    <CartLine>
+    <CartLine >
       <CheckButton />
-      <Img src={list.productImage}></Img>
-      <Title>{list.productName}</Title>
+      <Link to={`/detailitem/${item?.goodsCode}`}>
+        <Img src={generateImageUrl()} />
+      </Link>
+      <Title>{item?.goodsName}</Title>
       <ButtonWrap>
-        {count > 0 ? (
           <Minus
+            disabled={count === 1}
             onClick={() => {
               setCount(count - 1);
+            
+            
             }}
           ></Minus>
-        ) : (
-          <Minus
-            disabled={true}
-            onClick={() => {
-              setCount(count - 1);
-            }}
-          ></Minus>
-        )}
-
         <Number>{count}</Number>
         <Plus
-          onClick={() => {
-            setCount(count + 1);
-          }}
+  onClick={() => {
+    setCount(count + 1);
+
+    
+   
+  }}
         ></Plus>
       </ButtonWrap>
       <CostWrap>
         <SaleCost>
-          {(count * list.price * 0.95).toLocaleString("ko-kr")}
+          {item?.discountRate !== null ? (count * item?.discountedPrice).toLocaleString("ko-kr")+"원" : (count * item?.price).toLocaleString("ko-kr")+"원"}
         </SaleCost>
-        <PrimeCost>{(count * list.price).toLocaleString("ko-kr")}</PrimeCost>
+        {item?.discountRate !== null ? (
+        <PrimeCost> {(count * item?.price).toLocaleString("ko-kr")} 원 </PrimeCost> ) : (
+        <div></div>)}
       </CostWrap>
-      <DeleteButton onClick={deleteCart}>
+      <DeleteButton onClick={handleDeleteCartItem}>
         <span></span>
       </DeleteButton>
     </CartLine>
@@ -99,8 +96,9 @@ const CartLine = styled.li`
   border-bottom: 1px solid rgba(51, 51, 51, 0.1);
 `;
 
-const CheckButton = styled.div`
+const CheckButton = styled.button`
   margin: 0 26px 0px 0;
+  cursor: pointer;
 `;
 
 const Img = styled.img`

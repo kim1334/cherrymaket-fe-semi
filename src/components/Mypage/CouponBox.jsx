@@ -49,7 +49,7 @@ const LastTd = styled.td`
   padding: 16px 0px;
   border-bottom: 1px solid rgb(244, 244, 244);
   text-align: center;
-  color: rgb(95, 0, 128);
+  color: rgb(149, 5, 38);
 `;
 
 const P = styled.p`
@@ -63,7 +63,7 @@ const Btn = styled.button`
   font-size: 12px;
   font-weight: 500;
   text-decoration: underline;
-  color: rgb(95, 0, 128);
+  color: rgb(149, 5, 38);
   padding: 16px;
   background-color: transparent;
 `;

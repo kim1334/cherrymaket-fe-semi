@@ -5,6 +5,7 @@ import { Container, SubTitleWrapper, SubTitleItemWrapper, SubTitleItem, Title, T
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ItemList from './ItemList';
+import CartMadal from '../CartList/CartMadal';
 const NewestItemBoard = () => {
     const [items, setItems] = useState([]);
     // 페이징
@@ -13,7 +14,8 @@ const NewestItemBoard = () => {
     const indexOfLastNotice = currentPage * noticePerPage;
     const indexOfFirstNotice = indexOfLastNotice - noticePerPage;
     const currentItems = items.slice(indexOfFirstNotice, indexOfLastNotice);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
     const totalPages = Math.ceil(items.length / noticePerPage);
     useEffect(() => {
         const fetchItem = async () => {
@@ -41,18 +43,40 @@ const NewestItemBoard = () => {
     const handleNext = () => {
         setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
     };
+
+
+    const handleItemClick = (items) => {
+        setSelectedItem(items);
+        openModal();
+    };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    // 모달 닫기 함수
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+
     return (
         <>
             <Container>
-                <NewestBanner>
+                {/* <NewestBanner>
                     <img
                         src="https://img-cf.kurly.com/category/banner/pc/e8443748-7800-4e0a-a8bc-268d72f8e29c"
                         alt="배너 이미지"
+                        style={{
+                            width: '100%', // 이미지의 너비를 100%로 설정
+                            cursor: 'pointer', // 커서를 포인터로 변경
+                            maxWidth: '1050px', // 이미지의 최대 너비를 100%로 설정
+                          }}
                     />
-                </NewestBanner>
+                </NewestBanner> */}
                 <NewestHeader>신상품</NewestHeader>
 
-                <SubTitleWrapper>
+                {/* <SubTitleWrapper>
                     <SubTitleItemWrapper>
                         <SubTitleItem>TOP999</SubTitleItem>
                     </SubTitleItemWrapper>
@@ -112,8 +136,12 @@ const NewestItemBoard = () => {
                             </ItemTopWrapper>
                         </ItemWrapper>
                     </ItemBlank>
+                </ItemWideWrapper> */}
+                <ItemWideWrapper>
+                    <ItemCount>총{items.length}건</ItemCount>
                 </ItemWideWrapper>
                 <ItemListWrapper>
+
                     {Array.isArray(currentItems) && currentItems.map((item) => (
                         <ItemList
                             id={item.goodsId}
@@ -123,8 +151,11 @@ const NewestItemBoard = () => {
                             originalPrice={item.price}
                             discountedPrice={item.discountedPrice}
                             sale={item.discountRate}
+                            onItemClick={handleItemClick}
+                            item={item}
                         />
                     ))}
+
                 </ItemListWrapper>
                 <ButtonWrapper>
                     <div>
@@ -136,6 +167,7 @@ const NewestItemBoard = () => {
                         <NextButton onClick={handleNext} disabled={currentPage === totalPages}></NextButton>
                     </div>
                 </ButtonWrapper>
+                <CartMadal isOpen={isModalOpen} closeModal={closeModal} item={selectedItem} />
             </Container>
 
         </>
@@ -157,6 +189,7 @@ export const NewestBanner = styled.div`
   }
 `;
 export const NewestHeader = styled.h3`
+margin-top : 30px;
   padding: 23px 0px 20px;
   font-weight: 500;
   font-size: 28px;

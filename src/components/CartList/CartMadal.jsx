@@ -2,6 +2,8 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { getCartAysnc } from '../../redux/modules/cartSlice';
 
 
 const CartMadal = ({ isOpen, closeModal, item }) => {
@@ -9,18 +11,21 @@ const CartMadal = ({ isOpen, closeModal, item }) => {
   const access_token = sessionStorage.getItem("accessToken");
   const baseUrl = process.env.REACT_APP_API;
   const [cartAdd, setCartAdd] = useState([]);
+  const dispatch = useDispatch();
+  const [showNotification, setShowNotification] = useState(false);
+  
 
   if (!item) {
     return null; // item이 정의된 경우에만 출력
   }
-
-  console.log(item);
 
   function generateImageUrl() {
     const imageUrlBase = "https://kr.object.ncloudstorage.com/cherry-product/";
     const imageUrl = `${imageUrlBase}${item.goodsCode}/${item.goodsCode}_0.png`;
     return imageUrl;
   }
+
+  console.log(item);
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -42,6 +47,8 @@ const CartMadal = ({ isOpen, closeModal, item }) => {
     return new Intl.NumberFormat({ style: 'currency', currency: 'KRW' }).format(price);
 };
 
+
+
 const handleAddToCart = async () => {
   try {
     const goodsId = item.goodsId;
@@ -60,16 +67,28 @@ const handleAddToCart = async () => {
       }
     );
 
-    console.log(response.data);
-    setQuantity(1);
+    console.log(response);
+    dispatch(getCartAysnc()); 
+    handleCancel();
+
+
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 1500);
   } catch (error) {
-    console.error('Error:', error);
+    if (error.response && error.response.status === 409) {
+      alert("이미 장바구니에 있는 상품입니다."); // 409 에러 시 표시할 메시지
+      handleCancel()
+    } else {
+      console.error('Error:', error);
+    }
   }
 };
 
-
-
   return (
+    <>
+
     <ModalWrapper isOpen={isOpen}>
       <div style={{ padding: "0px 30px" }}>
         <div style={{ letterSpacing: "-0.5px", marginTop: "50px" }}>
@@ -125,11 +144,75 @@ const handleAddToCart = async () => {
         </div>
       </div>
     </ModalWrapper >
-  )
+    {showNotification && (
+        <NotificationWrapper style={{opacity: showNotification ? 1 : 0 }}>
+          <div style ={{width:"300px"}}>
+          <Div1>
+            <Div1Img style={{marginTop:"10px"}}>
+              <Div1ImgSpan>
+                <Img src={generateImageUrl()} alt='상품 이미지'></Img>
+              </Div1ImgSpan>
+            </Div1Img>
+            <Div2>
+            <Div2Wrapper>
+              <Div2Title>
+                <GoodsName>{item.goodsName}</GoodsName>
+              </Div2Title>
+              <Div2PriceWrapper>
+                <div>
+                  <SlaePrice>해당 상품을 담았습니다</SlaePrice>
+                </div>
+              </Div2PriceWrapper>
+            </Div2Wrapper>
+          </Div2>
+          </Div1>
+          </div>
+        </NotificationWrapper>
+         )}
 
+    </>
+  )
 }
 
 export default CartMadal;
+
+const GoodsName = styled.span`
+  margin-left: 4px;
+  font-weight: normal;
+  font-size: 12px;
+  color: rgb(181, 181, 181);
+  line-height: 16px;
+  letter-spacing: -0.5px;
+
+`
+
+
+
+const NotificationWrapper = styled.div`
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 4px;
+  z-index: 1050; // 모달보다 높게 설정
+  margin-top: 10px; // 장바구니 아이콘과의 간격
+  width: 345px;
+  height: 100px;
+  opacity: 0.9; // 초기에는 투명하게 설정
+  transition: opacity 0.3s ease-in-out transform 0.3s; ;
+`;
+
+const NotificationMessage = styled.p`
+  color: #333;
+  font-size: 16px;
+  // ... 추가 스타일 ...
+`;
+
 
 const RewordSpan2 = styled.span`
 font-size: 12px;
@@ -157,6 +240,7 @@ display: flex;
     justify-content: flex-end;
     padding-top: 11px;
 `;
+
 const SaveBtn = styled.button`
   display: block;
   padding: 0px 10px;
@@ -182,191 +266,8 @@ const ModalWrapper = styled.div`
   z-index: 1000;
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  
 `;
-
-const Strong = styled.div`
-  display: block;
-  padding: 40px 0px 34px;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 30px;
-  color: rgb(51, 51, 51);
-  text-align: center;
-`;
-
-const P = styled.p`
-  display: block;
-  padding-top: 8px;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 18px;
-  color: rgb(102, 102, 102);
-`;
-
-const InputDiv = styled.div`
-  display: flex;
-  -webkit-box-pack: justify;
-  justify-content: space-between;
-  padding-bottom: 10px;
-`;
-
-const addressInput = styled.input`
-  display: inline-flex;
-  overflow: hidden;
-  flex: 1 1 0%;
-  margin-right: 10px;
-  padding: 0px 12px;
-  border: 1px solid rgb(221, 221, 221);
-  border-radius: 3px;
-  background-color: rgb(250, 250, 250);
-  font-size: 14px;
-  line-height: 42px;
-  color: rgb(153, 153, 153);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
-const InputValP = styled.p`
-  display: inline-flex;
-  overflow: hidden;
-  flex: 1 1 0%;
-  margin-right: 10px;
-  padding: 0px 12px;
-  border: 1px solid rgb(221, 221, 221);
-  border-radius: 3px;
-  background-color: rgb(250, 250, 250);
-  font-size: 14px;
-  line-height: 42px;
-  color: rgb(153, 153, 153);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
-const SeachBtn = styled.button`
-  display: block;
-  padding: 0px 10px;
-  text-align: center;
-  overflow: hidden;
-  width: 120px;
-  height: 44px;
-  border-radius: 3px;
-  color: rgb(149, 5, 38);
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(149, 5, 38);
-`;
-
-const DetailInput = styled.input`
-  width: 100%;
-  height: 44px;
-  padding: 0px 11px 1px 15px;
-  border-radius: 4px;
-  border: 1px solid rgb(221, 221, 221);
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 42px;
-  color: rgb(51, 51, 51);
-  outline: none;
-  box-sizing: border-box;
-`;
-
-const DefaultAddressLabel = styled.label`
-  position: relative;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  vertical-align: top;
-  line-height: normal;
-  color: rgb(51, 51, 51);
-  padding: 8px 0px 0px;
-  font-size: 14px;
-`;
-
-const DefaultAddressInput = styled.input`
-  box-sizing: border-box;
-  padding: 0;
-  overflow: hidden;
-  position: absolute;
-  clip: rect(0px, 0px, 0px, 0px);
-  clip-path: inset(50%);
-  width: 1px;
-  height: 1px;
-`;
-
-
-// const CartModal = ({props, isOpen}) => {
-
-//   return (
-//     <>
-
-//     <Container isOpen={isOpen}>
-//       <Wrapper>
-//           <Div1>
-//             <Div1Img>
-//               <Div1ImgSpan>
-//                     <Img></Img>
-//               </Div1ImgSpan>
-//             </Div1Img>
-//             <Div1Title>
-//               <TitleSpan>여기제목</TitleSpan>
-//             </Div1Title>
-//           </Div1>
-//           <Div2>
-//             <Div2Wrapper>
-//               <Div2Title>
-//                 <Div2Span>여기도 제목</Div2Span>
-//               </Div2Title>
-//               <Div2PriceWrapper>
-//                 <div style={{paddingTop:'3px'}}>
-//                   <SlaePrice>판매가</SlaePrice>
-//                   <OriginalPrice>세일전 가격</OriginalPrice>
-//                 </div>
-//                 <QtyDiv>
-//                 <MinusBtn></MinusBtn>
-//                 <QtyDiv2>1</QtyDiv2>
-//                 <PlusBtn></PlusBtn>
-//                 </QtyDiv>
-//               </Div2PriceWrapper>
-//             </Div2Wrapper>
-//           </Div2>
-//           <Div3>
-//             <div style={{display:"flex", flexDirection:"column"}}>
-//             <TotalDiv>
-//               <TotlaP></TotlaP>
-//               <div style={{margin: '0px', padding: '0px'}}>
-//                   <PriceSpan>10000</PriceSpan>
-//                   <WonSpan>원</WonSpan>
-//               </div>
-//             </TotalDiv>
-//             </div>
-//           </Div3>
-//           <Div4>
-//             <CBtn><BtnSpan>취소</BtnSpan></CBtn>
-//             <ABtn><BtnSpan>장바구니 담기</BtnSpan></ABtn>
-//           </Div4>
-//       </Wrapper>
-//     </Container>
-
-//   </>
-
-//   )
-
-//   }
-
-//   export default CartModal;
-
-//   const ModalWrapper = styled.div`
-//   display: ${(props) => (props.isOpen ? "block" : "none")};
-//   position: fixed;
-//   top: 50%; /* 화면 상단에서 절반만큼 내려간 위치에 모달을 배치 */
-//   left: 50%; /* 화면 왼쪽에서 절반만큼 오른쪽으로 이동한 위치에 모달을 배치 */
-//   transform: translate(-50%, -50%); /* 화면 중앙에 모달을 정확히 배치 */
-//   width: 400px; /* 모달의 가로 크기를 설정 */
-//   height: 500px; /* 모달의 세로 크기를 설정 */
-//   background: white;
-//   z-index: 1000;
-//   border-radius: 20px;
-//   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-// `;
 
 const BtnSpan = styled.span`
   display: inline-block;
@@ -383,7 +284,7 @@ const ABtn = styled.button`
   height: 56px;
   border-radius: 3px;
   color: rgb(255, 255, 255);
-  background-color: rgb(95, 0, 128);
+  background-color: rgb(149, 5, 38);
   border: 0px none;
   width: 50%;
   margin: 0px 4px;
@@ -644,29 +545,4 @@ const Div1 = styled.div`
   font-weight: 600;
   border-bottom: 1px solid rgb(244, 244, 244);
 
-  `;
-
-const Wrapper = styled.div`
-
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 440px;
-  max-width: 90%; /* 모달이 너무 커질 경우 최대 너비 제한 */
-  background: white;
-  z-index: 1000;
-  border-radius: 12px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  `;
-
-const Container = styled.div`
-  display: ${(props) => (props.isOpen ? "block" : "none")};
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* 모달 이외의 배경은 반투명하게 처리 */
-  z-index: 1000;
   `;

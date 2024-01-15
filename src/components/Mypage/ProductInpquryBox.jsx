@@ -27,6 +27,7 @@ const ProductInquiryBox = () => {
 
 export default ProductInquiryBox;
 
+
 const Li = styled.li`
   display: list-item;
   text-align: -webkit-match-parent;

@@ -1,9 +1,62 @@
+import win from "global";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { getFromLocalStorage } from "../../components/Main/FixedCard";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 const FixedSiderbar = () => {
+  const [isFixed, setIsFixed] = useState(false);
+  const [savedItems, setSavedItems] = useState([]);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [isScrollUpDisabled, setIsScrollUpDisabled] = useState(true);
+  const [isScrollDownDisabled, setIsScrollDownDisabled] = useState(true);
+
+  useEffect(() => {
+    const items = getFromLocalStorage('clickedItem') || [];
+    setSavedItems(items);
+  }, []);
+
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const triggerPosition = 300; // 고정 시작 위치
+
+      if (scrollY > triggerPosition) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  const handleScrollUp = () => {
+    const productDiv = document.getElementById("productDiv");
+    if (productDiv) {
+      productDiv.scrollTop -= 50; // 조절 가능한 값
+      setScrollPosition(productDiv.scrollTop);
+
+
+    }
+  };
+
+  const handleScrollDown = () => {
+    const productDiv = document.getElementById("productDiv");
+    if (productDiv) {
+      productDiv.scrollTop += 50; // 조절 가능한 값
+      setScrollPosition(productDiv.scrollTop);
+
+    }
+  };
   return (
     <>
-      <Container>
+      <Container isFixed={isFixed}>
         <Warpper>
           <ImgDiv>
             <A>
@@ -16,48 +69,58 @@ const FixedSiderbar = () => {
           </ImgDiv>
           <BtnDiv>
             <BtnA>
-              <BtnItem>등급별 혜택</BtnItem>
+              <Link to="/cart">
+                <BtnItem>장바구니</BtnItem>
+              </Link>
             </BtnA>
             <BtnA>
-              <BtnItem>레시피</BtnItem>
+              <Link to="/newest">
+                <BtnItem>베스트</BtnItem>
+              </Link>
             </BtnA>
           </BtnDiv>
-          <ProcudtDiv>
-            <button type="button" style={{ width: "100%" }}></button>
-            최근 본 상품
-            <ProductItme>
-              <Ul>
-                <Li>
-                  <ProductA>
-                    <Span1>
-                      <Span2>
-                        <Img1 src="https://product-image.kurly.com/cdn-cgi/image/width=120,height=156,fit=crop,quality=85/product/image/0b18df9b-7f8f-4381-9109-c599af7ef33d.jpg"></Img1>
-                      </Span2>
-                    </Span1>
-                  </ProductA>
-                </Li>
-                <Li>
-                  <ProductA>
-                    <Span1>
-                      <Span2>
-                        <Img1 src="https://product-image.kurly.com/cdn-cgi/image/width=120,height=156,fit=crop,quality=85/product/image/3b9d5614-a213-4d02-b625-72ff7064f73c.jpeg"></Img1>
-                      </Span2>
-                    </Span1>
-                  </ProductA>
-                </Li>
-                <Li>
-                  <ProductA>
-                    <Span1>
-                      <Span2>
-                        <Img1 src="https://img-cf.kurly.com/cdn-cgi/image/width=120,height=156,fit=crop,quality=85/shop/data/goods/1653036594968l0.jpeg"></Img1>
-                      </Span2>
-                    </Span1>
-                  </ProductA>
-                </Li>
-              </Ul>
-            </ProductItme>
-            <button type="button"></button>
-          </ProcudtDiv>
+          {savedItems.length > 0 && (
+            <>
+              <ScrollButton
+                onClick={handleScrollUp}
+
+              >
+                <FaArrowUp />
+              </ScrollButton>
+              <ProcudtDiv id="productDiv">
+                <div style={{ paddingTop: "10px" }}>최근 본 상품</div>
+                {savedItems.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <ProductItem key={index}>
+                      <Ul>
+                        <Li>
+                          <ProductA>
+                            <Span1>
+                              <Span2>
+                                <Link to={`/detailitem/${item}`}>
+                                  <Img
+                                    src={`https://kr.object.ncloudstorage.com/cherry-product/${item}/${item}_0.png`}
+                                    key={index}
+                                  />
+                                </Link>
+                              </Span2>
+                            </Span1>
+                          </ProductA>
+                        </Li>
+                      </Ul>
+                    </ProductItem>
+                  </React.Fragment>
+                ))}
+              </ProcudtDiv>
+              <ScrollButton
+                onClick={handleScrollDown}
+
+              >
+                <FaArrowDown />
+              </ScrollButton>
+            </>
+          )}
+
         </Warpper>
       </Container>
     </>
@@ -88,8 +151,7 @@ const Ul = styled.ul`
   transition: top 0.2s ease 0s;
 `;
 
-const ProductItme = styled.div`
-  max-height: 209px;
+const ProductItem = styled.div`
   overflow: hidden;
   margin-top: 6px;
 `;
@@ -99,6 +161,7 @@ const BtnItem = styled.div`
   padding-top: 5px;
   text-align: center;
   border-bottom: 1px solid rgb(221, 221, 221);
+  color: black;
 `;
 
 const BtnA = styled.a`
@@ -179,6 +242,22 @@ const ProcudtDiv = styled.div`
   background-color: rgb(255, 255, 255);
   text-align: center;
   font-weight: 500;
+  overflow: hidden;
+  position: relative;
+  max-height: 300px;
+`;
+
+
+const ScrollButton = styled.button`
+color: black;
+border: none;
+padding: 3px 5px;
+margin-top: 5px;
+cursor: pointer;
+color: #CDCDCD;
+position: relative;
+left: 50%;
+transform: translateX(-50%);
 `;
 
 const BtnDiv = styled.div`
@@ -203,23 +282,23 @@ const ImgDiv = styled.div`
 `;
 
 const Container = styled.div`
-  position: absolute;
-  top: 70px;
-  right: 20px;
-  bottom: -236px;
-  z-index: 1;
-  margin-top: 236px;
-  overflow: hidden;
+position: fixed;
+top: 600px; /* Adjust this value based on your design */
+right: 20px;
+bottom: 0; /* Keep this as 0 to make it stretch till the bottom */
+z-index: 1;
+height : 600px;
+${(props) => props.isFixed && `
+    position: fixed;
+    top: 100px; /* 고정시킬 위치 조절 */
+`}
 `;
 
 const Warpper = styled.div`
-position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 80px;
-  font-size: 12px;
-  line-height: 16px;
-  color: rgb(51, 51, 51);
-  letter-spacing: -0.3px;
-  right: 20px;
+width: 80px;
+font - size: 12px;
+line - height: 16px;
+color: rgb(51, 51, 51);
+letter - spacing: -0.3px;
+/* Add other styles as needed */
 `;

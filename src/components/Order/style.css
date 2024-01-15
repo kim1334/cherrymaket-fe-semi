@@ -1,5 +1,6 @@
 .w-100 {
     width: 100%;
+    
     }
     
     .h-100 {
@@ -17,10 +18,14 @@
     align-items: center;
     padding: 24px;
     overflow: auto;
+    box-shadow: 0px 0px 10px rgba(149, 5, 38, 0.2);
+    border-radius: 30px;
     }
     
     .max-w-540 {
     max-width: 540px;
+    
+   
     }
     
     .test-payment {
@@ -47,7 +52,7 @@
     }
     
     .btn.primary {
-    background-color: #3282f6;
+    background-color: rgb(149, 5, 38);
     color: #f9fcff;
     }
     

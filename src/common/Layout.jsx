@@ -12,9 +12,8 @@ const Layouts = ({ children }) => {
 export default Layouts;
 
 const Container = styled.div`
-  width: 100%;
-  position: relative;
-  height: 100vh;
+    width: 1050px;
+    margin: 0px auto;
 `;
 
 const Layout = styled.div`

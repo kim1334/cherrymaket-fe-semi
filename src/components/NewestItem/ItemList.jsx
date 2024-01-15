@@ -3,23 +3,29 @@ import styled from 'styled-components';
 import { TiShoppingCart } from "react-icons/ti";
 import { FaRegCommentDots } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discountedPrice}) => {
-  
+
+
+const ItemList = ({ id, name, originalPrice, sale, description, goodsCode, discountedPrice, openModal, closeModal, onItemClick, item }) => {
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat({ style: 'currency', currency: 'KRW' }).format(price);
   };
 
+  // console.log(item);
+
   return (
     <>
-     <Link key = {id} to = {`/detailitem/${goodsCode}`}>
-      <ItemListWrapper>
-        <ItemImageWrapper>
-          <ItemImageSpan>
-            <ItemImage key = {id} src = {`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_0.png`}/>
-          </ItemImageSpan>
-        </ItemImageWrapper>
+
+      <ItemListWrapper >
+        <Link to={`/detailitem/${goodsCode}`}>
+          <ItemImageWrapper>
+            <ItemImageSpan>
+              <ItemImage src={`https://kr.object.ncloudstorage.com/cherry-product/${goodsCode}/${goodsCode}_0.png`} />
+            </ItemImageSpan>
+          </ItemImageWrapper>
+        </Link>
         <ItemButtonWrapper>
-          <ItemButton>
+          <ItemButton onClick={() => onItemClick(item)}>
             <ItemButtonSvg><TiShoppingCart /></ItemButtonSvg>담기
           </ItemButton>
         </ItemButtonWrapper>
@@ -27,7 +33,7 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discou
           <ItemTextDeliveryWrapper>
             <ItemTextDelivery>샛별배송</ItemTextDelivery>
           </ItemTextDeliveryWrapper>
-          
+
           <ItemTextDeliveryWrapper>
             <ItemTextTitle>{name}</ItemTextTitle>
           </ItemTextDeliveryWrapper>
@@ -37,14 +43,14 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discou
         </ItemTextSubTitle>
         <ItemTextPriceWrapper>
           <ItemOriginalPrice>{sale !== null ? (
-            `${formatPrice(originalPrice)}원` ) : (null) }
-            </ItemOriginalPrice>
-        <ItemPriceWrapper>
-          <ItemSale>{sale !== null ? (
-            `${sale}%` ) : (null
-          )}</ItemSale>
-          <ItemPrice>{formatPrice(discountedPrice)}원</ItemPrice>
-        </ItemPriceWrapper>
+            `${formatPrice(originalPrice)}원`) : (null)}
+          </ItemOriginalPrice>
+          <ItemPriceWrapper>
+            <ItemSale>{sale !== null ? (
+              `${sale}%`) : (null
+            )}</ItemSale>
+            <ItemPrice>{formatPrice(discountedPrice)}원</ItemPrice>
+          </ItemPriceWrapper>
         </ItemTextPriceWrapper>
         <CommentWrapper>
           <CommentImageSpan>
@@ -53,7 +59,7 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discou
           <Comment>9999+</Comment>
         </CommentWrapper>
       </ItemListWrapper>
-      </Link>
+
     </>
   );
 };
@@ -61,12 +67,11 @@ const ItemList = ({ id, name, originalPrice, sale, description, goodsCode,discou
 
 export default ItemList;
 
-const ItemListWrapper = styled.a`
+const ItemListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 573px;
   color: rgb(51, 51, 51);
-  cursor: pointer;
 `;
 
 const ItemImageWrapper = styled.div`
@@ -76,6 +81,7 @@ const ItemImageWrapper = styled.div`
   background-color: rgb(245, 245, 245);
   width: 249px;
   height: 320px;
+  cursor: pointer;
 `;
 
 const ItemImageSpan = styled.span`
@@ -93,6 +99,10 @@ object-fit: contain; // 이미지 비율을 유지하면서 부모 컨테이너�
 border: 0;
 padding: 0;
 margin: auto; // 이미지를 중앙에 위치시킴
+transition: all 0.5s ease-in-out 0s;
+ &:hover {
+    transform: scale(1.05); 
+  }
 `;
 
 const ItemButtonWrapper = styled.div`

@@ -28,7 +28,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCartAysnc } from "../../redux/modules/cartSlice";
 import { initializeLogin } from '../../redux/modules/loginSlice.jsx';
 import axios from 'axios';
-
+import { useHistory } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import jwtDecode from "jwt-decode";
 
 const Header = () => {
   const [showFixedHeader, setShowFixedHeader] = useState(false);
@@ -36,9 +38,29 @@ const Header = () => {
   const userData = useSelector((state) => state.login.user);
   const dispatch = useDispatch();
   const [userName, setUserName] = useState('');
-
   const access_token = sessionStorage.getItem('accessToken');
   const baseUrl = process.env.REACT_APP_API;
+  const CartList = useSelector((state) => state.cart?.cart);
+  const [cartLength, setCartLength] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (CartList && CartList.itemsByType) {
+      const newCartData = Object.values(CartList.itemsByType).flat();
+      setCartLength(newCartData);
+    } else {
+      setCartLength([]);
+    }
+  }, [CartList]);
+
+  useEffect(() => {
+
+    if (isLoggedIn && access_token) {
+      dispatch(getCartAysnc());
+    }
+  }, [isLoggedIn, access_token]);
+
+  
 
 
   // async 함수 정의 
@@ -55,7 +77,6 @@ const Header = () => {
       setUserName(name);
 
     } catch (error) {
-      console.error('Error:', error);
     }
   }
   fetchData();
@@ -69,7 +90,6 @@ const Header = () => {
     }
   }, [dispatch]);
 
-  const CartList = useSelector((state) => state?.cart?.cart?.cart);
 
 
   useEffect(() => {
@@ -93,9 +113,11 @@ const Header = () => {
 
 
 
+  const navigate = useNavigate();
   const onLogOut = useCallback(() => {
     sessionStorage.clear(); // 로그아웃 시 세션 스토리지의 모든 데이터를 삭제합니다.
     window.location.reload(); // 페이지를 새로고침합니다.
+    navigate('/'); // 홈으로 이동합니다.
   }, [dispatch]);
 
 
@@ -110,8 +132,33 @@ const Header = () => {
     // 로그인이 되어 있다면, 추가적인 조치는 필요하지 않습니다.
   };
 
+
+
+  // 검색 버튼 클릭 시 호출되는 함수
+  const handleSearchButtonClick = () => {
+    if (searchQuery.trim() !== "") {
+      // 검색어가 비어 있지 않으면 검색 실행
+      performSearch(searchQuery);
+    } else {
+      alert("검색어를 입력해주세요."); // 검색어가 비어 있을 때 경고 메시지 표시
+    }
+  };
+  
+
+  // 검색을 수행하는 함수 (파라미터로 검색어를 받음)
+  const performSearch = (searchQuery) => {
+    // 여기에서 검색어를 사용하여 원하는 동작을 수행할 수 있습니다.
+    console.log("검색어:", searchQuery);
+    navigate(`/search/${searchQuery}`);
+
+  };
+
+
+
+
   return (
     <>
+
       <Headercoupon />
       <HeadTop>
         <UserHead>
@@ -208,8 +255,21 @@ const Header = () => {
           </HeadLeft>
           <HeadCenter>
             <SearchForm>
-              <input placeholder="검색어를 입력해주세요" required />
-              <button></button>
+            <input
+                placeholder="검색어를 입력해주세요."
+                required
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                 // 검색어 입력 시 상태 업데이트
+                 onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    // 엔터 키가 눌렸을 때 검색 기능 실행
+                    handleSearchButtonClick();
+                  }
+                }}
+                 
+              />
+              <button onClick={handleSearchButtonClick}></button>
             </SearchForm>
           </HeadCenter>
           <HeadRight>
@@ -221,7 +281,7 @@ const Header = () => {
               <CartIconWrap>
                 <Link to="/cart">
                   <button>
-                    {CartList?.length > 0 && <span>{CartList?.length}</span>}
+                    {cartLength?.length > 0 && <span>{cartLength?.length}</span>}
                   </button>
                 </Link>
               </CartIconWrap>
@@ -230,7 +290,8 @@ const Header = () => {
         </HeadMain>
       </HeadTop>
       <HeaderNav />
-      {showFixedHeader && <FixedHeader CartList={CartList} />}
+      
+      {showFixedHeader && <FixedHeader CartList={CartList} cartLength={cartLength} />}
     </>
   );
 };

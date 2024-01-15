@@ -1,12 +1,15 @@
 import './App.css';
 import Router from './Router/router.jsx';
-import React, { useEffect } from 'react';
+
+
+// import './SnowEffect.css';
 
 
 
 function App() {
 
   return (
+ 
     <div>
       <Router />
     </div>

@@ -15,15 +15,13 @@ import styled from "styled-components";
 import ProductInquiryBox from "../../components/Mypage/ProductInpquryBox.jsx";
 import FixedSiderbar from "../../common/FiexDiderbar/FixedSiderbar.jsx";
 import Footer from "../../common/Footer/Footer.jsx";
+import MyPageLayout from "../../components/Mypage/MyPageLayout.jsx";
 
 const ProductInquiry = () => {
   return (
     <>
-      <Header />
-      <Mypage />
-      <FlexWrapper>
-        <MypageMenu />
-        <Container>
+
+          <MyPageLayout>
           <TitleWraper>
             <Title>
               <TitleLastDiv>
@@ -49,10 +47,8 @@ const ProductInquiry = () => {
           <UlWrapper>
             <ProductInquiryBox />
           </UlWrapper>
-        </Container>
-      </FlexWrapper>
-      <FixedSiderbar />
-      <Footer />
+          </MyPageLayout>
+
     </>
   );
 };
