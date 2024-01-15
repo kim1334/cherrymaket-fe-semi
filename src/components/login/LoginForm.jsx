@@ -57,7 +57,7 @@ function LoginForm() {
 
     return (
         <Container>
-            <Title>로그인asd</Title>
+            <Title>로그인가나다</Title>
             <Body>
                 <form>
                     <InputArea>
