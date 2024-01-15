@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { A, Img } from "../../components/Mypage/PickBox.jsx";
 
-const ProductInquiryBox = () => {
-  return (
-    <Li>
+const UserBox = () => {
+
+    return(
+<>
+<Li>
       <LiBtn>
         <LiDvi1>
           <a style={{padding: '0px 20px'}}>
@@ -22,11 +23,14 @@ const ProductInquiryBox = () => {
         <LiDiv2>답변대기</LiDiv2>
       </LiBtn>
     </Li>
-  );
-};
 
-export default ProductInquiryBox;
 
+</>
+)
+
+}
+
+export default UserBox;
 
 const Li = styled.li`
   display: list-item;
@@ -106,3 +110,21 @@ flex-direction: row;
 -webkit-box-align: center;
 align-items: center;
 `;
+
+export const Img = styled.img`
+position: absolute;
+    inset: 0px;
+    box-sizing: border-box;
+    padding: 0px;
+    border: none;
+    margin: auto;
+    display: block;
+    width: 0px;
+    height: 0px;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    vertical-align: top;
+`
